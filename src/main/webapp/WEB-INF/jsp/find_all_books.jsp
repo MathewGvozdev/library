@@ -7,6 +7,7 @@
     </title>
 </head>
 <body>
+<%@ include file="header.jsp"%>
 <form action="${pageContext.request.contextPath}/home?cmd=find_all_books" method="get">
     <h1>
         Книги:

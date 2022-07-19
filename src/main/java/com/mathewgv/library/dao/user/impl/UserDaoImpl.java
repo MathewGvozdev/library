@@ -1,7 +1,6 @@
 package com.mathewgv.library.dao.user.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
-import com.mathewgv.library.dao.filter.UserFilter;
 import com.mathewgv.library.dao.user.RoleDao;
 import com.mathewgv.library.dao.user.UserDao;
 import com.mathewgv.library.dao.exception.DaoException;

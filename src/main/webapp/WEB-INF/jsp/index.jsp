@@ -1,10 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>--%>
 <html>
 <head>
     <title>Home</title>
 </head>
 <body>
+<%@ include file="header.jsp"%>
 <button type="button">
     <a href="${pageContext.request.contextPath}/home?cmd=find_all_books">
         find all books
@@ -66,6 +67,12 @@
     <input type="hidden" name="cmd" value="delete_book">
     <input type="submit" value="delete book">
 </form>
+
+<form action="${pageContext.request.contextPath}/home" method="get">
+    <input type="hidden" name="cmd" value="find_all_orders">
+    <input type="submit" value="find orders">
+</form>
+
 
 </body>
 </html>

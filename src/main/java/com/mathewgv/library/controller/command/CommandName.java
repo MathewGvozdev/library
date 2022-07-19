@@ -3,10 +3,15 @@ package com.mathewgv.library.controller.command;
 public enum CommandName {
 
     LOGIN,
+    LOGOUT,
     REGISTER,
     FIND_USER_INFO,
 
-    UPDATE_ORDER,
+    FIND_ALL_ORDERS,
+    FIND_ALL_ORDERS_BY_CLIENT,
+    MAKE_ORDER,
+    UPDATE_ORDER_STATUS,
+    UPDATE_WHEN_BOOK_IS_RETURNED,
 
     ADD_AUTHOR,
     ADD_BOOK,

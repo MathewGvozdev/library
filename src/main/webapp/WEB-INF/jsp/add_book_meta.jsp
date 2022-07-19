@@ -5,6 +5,7 @@
     <title>Add book-meta</title>
 </head>
 <body>
+<%@ include file="header.jsp"%>
 <form action="${pageContext.request.contextPath}/home" method="get">
     <input type="hidden" name="cmd" value="add_book_meta"><br>
     <input type="hidden" name="cfm" value=""><br>

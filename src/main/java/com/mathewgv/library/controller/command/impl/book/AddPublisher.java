@@ -20,14 +20,12 @@ public class AddPublisher implements Command {
     private static final String CITY = "city";
     private static final String CONFIRM = "cfm";
 
-    private static final String JSP_NAME = JspPath.ADD_PUBLISHER;
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
             if (req.getParameter(CONFIRM) == null) {
-                return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+                return new Router(JspHelper.getPath(JspPath.ADD_PUBLISHER), RoutingType.FORWARD);
             } else if (req.getParameter(CONFIRM).equals("")) {
                 var publisherDto = buildPublisherDto(req);
                 req.setAttribute(AttributeName.PUBLISHER_DTO, publisherDto);
@@ -40,7 +38,7 @@ public class AddPublisher implements Command {
                     req.setAttribute(AttributeName.RESULT, "failure");
                 }
             }
-            return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+            return new Router(JspHelper.getPath(JspPath.ADD_PUBLISHER), RoutingType.FORWARD);
         } catch (ServiceException e) {
             req.setAttribute(AttributeName.ERROR, "Error in adding author");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);

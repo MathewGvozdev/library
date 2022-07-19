@@ -15,14 +15,12 @@ public class FindAllBooks implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
-    private static final String JSP_NAME = JspPath.FIND_ALL_BOOKS;
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var allBooks = serviceFactory.getBookService().findAllBooks();
             req.setAttribute(AttributeName.BOOKS, allBooks);
-            return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+            return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOKS), RoutingType.FORWARD);
         } catch (ServiceException e) {
             req.setAttribute(AttributeName.ERROR, "Error in searching books");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);

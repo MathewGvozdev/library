@@ -2,6 +2,10 @@ package com.mathewgv.library.controller.command;
 
 import com.mathewgv.library.controller.command.impl.Home;
 import com.mathewgv.library.controller.command.impl.book.*;
+import com.mathewgv.library.controller.command.impl.library.*;
+import com.mathewgv.library.controller.command.impl.user.Login;
+import com.mathewgv.library.controller.command.impl.user.Logout;
+import com.mathewgv.library.controller.command.impl.user.Register;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +15,8 @@ public class CommandProvider {
     private final Map<CommandName, Command> repository = new HashMap<>();
 
     public CommandProvider() {
+        repository.put(CommandName.HOME, new Home());
+
         repository.put(CommandName.ADD_BOOK, new AddBook());
         repository.put(CommandName.ADD_AUTHOR, new AddAuthor());
         repository.put(CommandName.ADD_BOOK_META, new AddBookMeta());
@@ -23,9 +29,16 @@ public class CommandProvider {
         repository.put(CommandName.FIND_ANY_BOOK, new FindAnyBook());
         repository.put(CommandName.FIND_BOOK_BY_ID, new FindBookById());
         repository.put(CommandName.UPDATE_BOOK, new UpdateBook());
-        repository.put(CommandName.HOME, new Home());
-//        repository.put(CommandName.SIGN_IN, new SingIn());
-//        repository.put(CommandName.REGISTRATION, new Register());
+
+        repository.put(CommandName.LOGIN, new Login());
+        repository.put(CommandName.LOGOUT, new Logout());
+        repository.put(CommandName.REGISTER, new Register());
+
+        repository.put(CommandName.FIND_ALL_ORDERS, new FindAllOrders());
+        repository.put(CommandName.FIND_ALL_ORDERS_BY_CLIENT, new FindAllOrdersByClient());
+        repository.put(CommandName.MAKE_ORDER, new MakeOrder());
+        repository.put(CommandName.UPDATE_ORDER_STATUS, new UpdateOrderStatus());
+        repository.put(CommandName.UPDATE_WHEN_BOOK_IS_RETURNED, new UpdateWhenBookIsReturned());
 //        repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
     }
 

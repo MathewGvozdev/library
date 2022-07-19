@@ -4,6 +4,7 @@ import com.mathewgv.library.entity.book.Book;
 import com.mathewgv.library.entity.user.User;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -12,18 +13,18 @@ public class Order implements Serializable {
     private Long id;
     private User client;
     private Book book;
-    private Date issueDate;
-    private Date dueDate;
-    private Date factDate;
+    private LocalDate issueDate;
+    private LocalDate dueDate;
+    private LocalDate factDate;
     private LoanType type;
     private OrderStatus status;
 
     public Order(Long id,
                  User client,
                  Book book,
-                 Date issueDate,
-                 Date dueDate,
-                 Date factDate,
+                 LocalDate issueDate,
+                 LocalDate dueDate,
+                 LocalDate factDate,
                  LoanType type,
                  OrderStatus status) {
         this.id = id;
@@ -39,8 +40,8 @@ public class Order implements Serializable {
     public Order(Long id,
                  User client,
                  Book book,
-                 Date issueDate,
-                 Date dueDate,
+                 LocalDate issueDate,
+                 LocalDate dueDate,
                  LoanType type,
                  OrderStatus status) {
         this.id = id;
@@ -54,8 +55,8 @@ public class Order implements Serializable {
 
     public Order(User client,
                  Book book,
-                 Date issueDate,
-                 Date dueDate,
+                 LocalDate issueDate,
+                 LocalDate dueDate,
                  LoanType type,
                  OrderStatus status) {
         this.client = client;
@@ -63,6 +64,20 @@ public class Order implements Serializable {
         this.issueDate = issueDate;
         this.dueDate = dueDate;
         this.type = type;
+        this.status = status;
+    }
+
+    public Order(Long id,
+                 OrderStatus status) {
+        this.id = id;
+        this.status = status;
+    }
+
+    public Order(Long id,
+                 LocalDate factDate,
+                 OrderStatus status) {
+        this.id = id;
+        this.factDate = factDate;
         this.status = status;
     }
 
@@ -90,27 +105,27 @@ public class Order implements Serializable {
         this.book = book;
     }
 
-    public Date getIssueDate() {
+    public LocalDate getIssueDate() {
         return issueDate;
     }
 
-    public void setIssueDate(Date issueDate) {
+    public void setIssueDate(LocalDate issueDate) {
         this.issueDate = issueDate;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
-    public Date getFactDate() {
+    public LocalDate getFactDate() {
         return factDate;
     }
 
-    public void setFactDate(Date factDate) {
+    public void setFactDate(LocalDate factDate) {
         this.factDate = factDate;
     }
 

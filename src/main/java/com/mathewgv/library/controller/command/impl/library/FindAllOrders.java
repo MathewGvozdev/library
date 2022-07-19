@@ -1,4 +1,4 @@
-package com.mathewgv.library.controller.command.impl.book;
+package com.mathewgv.library.controller.command.impl.library;
 
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
@@ -11,21 +11,18 @@ import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class FindBookById implements Command {
+public class FindAllOrders implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
-    private static final String BOOK_ID = "bookId";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var bookId = Integer.parseInt(req.getParameter(BOOK_ID));
-            var bookDto = serviceFactory.getBookService().findBookById(bookId).orElse(null);
-            req.setAttribute(AttributeName.BOOK, bookDto);
-            return new Router(JspHelper.getPath(JspPath.FIND_BOOK_BY_ID), RoutingType.FORWARD);
+            var allOrders = serviceFactory.getLibraryService().findAllOrders();
+            req.setAttribute(AttributeName.ORDERS, allOrders);
+            return new Router(JspHelper.getPath(JspPath.FIND_ALL_ORDERS), RoutingType.FORWARD);
         } catch (ServiceException e) {
-            req.setAttribute(AttributeName.ERROR, "Error in searching book with id");
+            req.setAttribute(AttributeName.ERROR, "Error in searching orders");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }

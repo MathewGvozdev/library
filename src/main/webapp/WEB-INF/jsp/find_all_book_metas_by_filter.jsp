@@ -8,6 +8,7 @@
     </title>
 </head>
 <body>
+<%@ include file="header.jsp"%>
 <form action="${pageContext.request.contextPath}/home" method="get">
     <input type="hidden" name="cmd" value="find_all_book_metas_by_filter">
     <h1>
@@ -34,7 +35,7 @@
     <input type="submit" value="Вперед">
 </form>
 <form action="${pageContext.request.contextPath}/home" method="get">
-    <input type="hidden" name="cmd" value="find_all_book_metas_by_filter">
+    <input type="hidden" name="cmd" value="${param.cmd}">
     <input type="hidden" name="page" value="${param.page - 1}">
     <input type="hidden" name="title" value="${param.title}"><br>
     <input type="hidden" name="authors" value="${param.authors}"><br>

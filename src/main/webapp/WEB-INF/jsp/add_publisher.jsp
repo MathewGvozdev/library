@@ -5,6 +5,7 @@
     <title>Add publisher</title>
 </head>
 <body>
+<%@ include file="header.jsp"%>
 <form action="${pageContext.request.contextPath}/home" method="get">
     <input type="hidden" name="cmd" value="add_publisher"><br>
     <input type="hidden" name="cfm" value=""><br>

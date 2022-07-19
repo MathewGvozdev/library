@@ -18,14 +18,12 @@ public class DeleteBook implements Command {
     private static final String BOOK_ID = "bookId";
     private static final String CONFIRM = "cfm";
 
-    private static final String JSP_NAME = JspPath.DELETE_BOOK;
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
             if (req.getParameter(CONFIRM) == null) {
-                return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+                return new Router(JspHelper.getPath(JspPath.DELETE_BOOK), RoutingType.FORWARD);
             } else if (req.getParameter(CONFIRM).equals("")) {
                 var bookById = bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID)));
                 if (bookById.isPresent()) {
@@ -41,7 +39,7 @@ public class DeleteBook implements Command {
                     req.setAttribute(AttributeName.RESULT, "failure");
                 }
             }
-            return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+            return new Router(JspHelper.getPath(JspPath.DELETE_BOOK), RoutingType.FORWARD);
         } catch (ServiceException e) {
             req.setAttribute(AttributeName.ERROR, "Error in deleting book");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);

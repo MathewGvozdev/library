@@ -22,14 +22,12 @@ public class AddBookMeta implements Command {
     private static final String SERIES = "series";
     private static final String CONFIRM = "cfm";
 
-    private static final String JSP_NAME = JspPath.ADD_BOOK_META;
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
             if (req.getParameter(CONFIRM) == null) {
-                return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+                return new Router(JspHelper.getPath(JspPath.ADD_BOOK_META), RoutingType.FORWARD);
             } else if (req.getParameter(CONFIRM).equals("")) {
                 var bookMetaDto = buildBookMetaDto(req);
                 req.setAttribute(AttributeName.BOOK_META_DTO, bookMetaDto);
@@ -42,22 +40,11 @@ public class AddBookMeta implements Command {
                     req.setAttribute(AttributeName.RESULT, "failure");
                 }
             }
-            return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+            return new Router(JspHelper.getPath(JspPath.ADD_BOOK_META), RoutingType.FORWARD);
         } catch (ServiceException e) {
             req.setAttribute(AttributeName.ERROR, "Error in adding book-meta");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
-//        var bookService = serviceFactory.getBookService();
-//        try {
-//            if (req.getParameter(TITLE) != null) {
-//                var bookMeta = bookService.addBookMeta(buildBookMetaDto(req));
-//                req.setAttribute("bookMeta", bookMeta);
-//            }
-//            return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
-//        } catch (ServiceException e) {
-//            req.setAttribute("error", "Error in adding new book-meta");
-//            return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
-//        }
     }
 
     private BookMetaDto buildBookMetaDto(HttpServletRequest req) {

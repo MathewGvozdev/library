@@ -19,14 +19,12 @@ public class AddGenre implements Command {
     private static final String TITLE = "title";
     private static final String CONFIRM = "cfm";
 
-    private static final String JSP_NAME = JspPath.ADD_GENRE;
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
             if (req.getParameter(CONFIRM) == null) {
-                return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+                return new Router(JspHelper.getPath(JspPath.ADD_GENRE), RoutingType.FORWARD);
             } else if (req.getParameter(CONFIRM).equals("")) {
                 var genreDto = buildGenreDto(req);
                 req.setAttribute(AttributeName.GENRE_DTO, genreDto);
@@ -39,7 +37,7 @@ public class AddGenre implements Command {
                     req.setAttribute(AttributeName.RESULT, "failure");
                 }
             }
-            return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+            return new Router(JspHelper.getPath(JspPath.ADD_GENRE), RoutingType.FORWARD);
         } catch (ServiceException e) {
             req.setAttribute(AttributeName.ERROR, "Error in adding new genre");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);

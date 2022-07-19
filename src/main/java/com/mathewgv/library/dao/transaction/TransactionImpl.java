@@ -122,6 +122,15 @@ public class TransactionImpl implements Transaction {
         return setConnection(mapperFactory.getUserRegistrationMapper());
     }
 
+    @Override
+    public OrderCreationMapper getOrderCreationMapper() {
+        return setConnection(mapperFactory.getOrderCreationMapper());
+    }
+    @Override
+    public OrderMapper getOrderMapper() {
+        return setConnection(mapperFactory.getOrderMapper());
+    }
+
     public  <A extends Dao> A setConnection(A dao) {
         ((DaoConnection) dao).setConnection(connection);
         return dao;

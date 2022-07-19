@@ -1,6 +1,7 @@
 package com.mathewgv.library.service.impl;
 
 import com.mathewgv.library.dao.transaction.TransactionFactory;
+import com.mathewgv.library.entity.user.UserInfo;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.mapper.factory.MapperFactory;
@@ -20,7 +21,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> login(String login, String password) {
+    public Optional<UserDto> login(String login, String password) throws ServiceException{
         try (var transaction = transactionFactory.getTransaction()) {
             var userDao = transaction.getUserDao();
             var user = userDao.findByEmailAndPassword(login, password);
@@ -33,9 +34,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer register(UserCreationDto userDto) {
+    public Integer register(UserCreationDto userDto) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
-            var userInfo = mapperFactory.getUserRegistrationMapper().mapFrom(userDto);
+            var userInfo = transaction.getUserRegistrationMapper().mapFrom(userDto);
             transaction.getUserDao().create(userInfo.getUser());
             transaction.getUserInfoDao().create(userInfo);
             transaction.commit();
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> findUserInfoById(Integer id) {
+    public Optional<UserDto> findUserInfoById(Integer id) throws ServiceException {
 //        return daoFactory.getUserInfoDao().findInfoByUserId(id)
 //                .map(userMapper::mapFrom);
         return null;

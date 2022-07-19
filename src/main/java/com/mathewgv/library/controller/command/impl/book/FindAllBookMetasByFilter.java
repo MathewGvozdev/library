@@ -23,15 +23,13 @@ public class FindAllBookMetasByFilter implements Command {
     private static final String SERIES = "series";
     private static final String PAGE = "page";
 
-    private static final String JSP_NAME = JspPath.FIND_ALL_BOOK_METAS_BY_FILTER;
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
             var allBooksByFilter = bookService.findAllBookMetasByFilter(buildBookFilter(req));
             req.setAttribute(AttributeName.BOOK_METAS, allBooksByFilter);
-            return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+            return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOK_METAS_BY_FILTER), RoutingType.FORWARD);
         } catch (ServiceException e) {
             req.setAttribute(AttributeName.ERROR, "Error in searching books with filter");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);

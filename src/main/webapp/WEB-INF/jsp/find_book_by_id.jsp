@@ -5,6 +5,7 @@
     <title>Book by id</title>
 </head>
 <body>
+<%@ include file="header.jsp"%>
 <c:set var="book" value="${requestScope.book}"/>
 №${book.id}<br>
 Название: ${book.title}<br>

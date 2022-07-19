@@ -15,6 +15,7 @@ import com.mathewgv.library.util.ConnectionPool;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -217,13 +218,17 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
     private Order buildOrder(ResultSet resultSet) throws SQLException {
         UserDaoImpl.getInstance().setConnection(connection.get());
         BookDaoImpl.getInstance().setConnection(connection.get());
+        LocalDate factDate = null;
+        if (resultSet.getDate(FACT_DATE) != null) {
+            factDate = resultSet.getDate(FACT_DATE).toLocalDate();
+        }
         return new Order(
                 resultSet.getLong(ID),
                 userDao.findById(resultSet.getInt(USER_ID)).orElse(null),
                 bookDao.findById(resultSet.getInt(BOOK_ID)).orElse(null),
-                resultSet.getDate(ISSUE_DATE),
-                resultSet.getDate(DUE_DATE),
-                resultSet.getDate(FACT_DATE),
+                resultSet.getDate(ISSUE_DATE).toLocalDate(),
+                resultSet.getDate(DUE_DATE).toLocalDate(),
+                factDate,
                 LoanType.findByName(resultSet.getString(TYPE)),
                 OrderStatus.findByName(resultSet.getString(STATUS))
         );

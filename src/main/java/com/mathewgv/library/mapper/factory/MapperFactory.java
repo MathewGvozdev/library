@@ -15,6 +15,8 @@ public class MapperFactory {
     private final PublisherCreationMapper publisherCreationMapper = PublisherCreationMapper.getInstance();
     private final UserMapper userMapper = UserMapper.getInstance();
     private final UserRegistrationMapper userRegistrationMapper = UserRegistrationMapper.getInstance();
+    private final OrderCreationMapper orderCreationMapper = OrderCreationMapper.getInstance();
+    private final OrderMapper orderMapper = OrderMapper.getInstance();
 
     private MapperFactory() {
     }
@@ -53,6 +55,14 @@ public class MapperFactory {
 
     public UserRegistrationMapper getUserRegistrationMapper() {
         return userRegistrationMapper;
+    }
+
+    public OrderCreationMapper getOrderCreationMapper() {
+        return orderCreationMapper;
+    }
+
+    public OrderMapper getOrderMapper() {
+        return orderMapper;
     }
 
     public static MapperFactory getInstance() {

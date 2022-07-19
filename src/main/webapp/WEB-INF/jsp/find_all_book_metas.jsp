@@ -5,6 +5,7 @@
     <title>All book-metas</title>
 </head>
 <body>
+<%@ include file="header.jsp"%>
 <form action="${pageContext.request.contextPath}/home?cmd=find_all_book_metas" method="get">
     <h1>
         Книги:
@@ -12,7 +13,9 @@
     <c:forEach var="bookMeta" items="${requestScope.bookMetas}">
         <ul>
             <li>
-                №${bookMeta.id}<br>
+                <a href="${pageContext.request.contextPath}/home?cmd=find_any_book&bookMetaId=${bookMeta.id}">
+                    №${bookMeta.id}<br>
+                </a>
                 Название: ${bookMeta.title}<br>
                 Автор: ${bookMeta.authors}<br>
                 Жанр: ${bookMeta.genres}<br>

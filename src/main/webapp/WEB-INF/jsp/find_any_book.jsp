@@ -7,8 +7,8 @@
     </title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/home" method="get">
-    <input type="hidden" name="cmd" value="find_any_book_by_filter">
+<%@ include file="header.jsp"%>
+<form action="${pageContext.request.contextPath}/home?cmd=find_any_book_by_filter" method="get">
     <c:set var="book" value="${requestScope.book}"/>
 
     №${book.id}<br>

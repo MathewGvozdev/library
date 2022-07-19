@@ -22,8 +22,6 @@ public class UpdateBook implements Command {
     private static final String PAGES = "pages";
     private static final String PUBLICATION_YEAR = "publicationYear";
 
-    private static final String JSP_NAME = JspPath.UPDATE_BOOK;
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
@@ -31,7 +29,7 @@ public class UpdateBook implements Command {
             bookService.updateBook(buildBookDto(req));
             var updatedBook = bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID))).orElse(null);
             req.setAttribute(AttributeName.BOOK, updatedBook);
-            return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
+            return new Router(JspHelper.getPath(JspPath.UPDATE_BOOK), RoutingType.FORWARD);
         } catch (ServiceException e) {
             req.setAttribute(AttributeName.ERROR, "Error in updating the book");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
