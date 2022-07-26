@@ -28,6 +28,7 @@ public class OrderMapper extends DaoConnection implements Mapper<Order, OrderDto
         if (userInfo != null) {
             return OrderDto.builder()
                     .id(object.getId())
+                    .clientId(object.getClient().getId())
                     .client(userInfo.getFirstName() + " " + userInfo.getSurname())
                     .bookId(object.getBook().getId())
                     .bookTitle(object.getBook().getBookMeta().getTitle())

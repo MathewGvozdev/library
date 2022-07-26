@@ -1,11 +1,13 @@
 package com.mathewgv.library.entity.book;
 
+import com.mathewgv.library.entity.Entity;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class BookMeta implements Serializable {
+public class BookMeta extends Entity {
 
     private Integer id;
     private String title;

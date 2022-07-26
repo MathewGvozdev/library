@@ -6,9 +6,9 @@
 </head>
 <body>
 <%@ include file="header.jsp"%>
-<form action="${pageContext.request.contextPath}/home?cmd=find_all_book_metas" method="get">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}" method="get">
     <h1>
-        Книги:
+        <fmt:message key="page.book.metas.books"/>:
     </h1>
     <c:forEach var="bookMeta" items="${requestScope.bookMetas}">
         <ul>
@@ -16,11 +16,11 @@
                 <a href="${pageContext.request.contextPath}/home?cmd=find_any_book&bookMetaId=${bookMeta.id}">
                     №${bookMeta.id}<br>
                 </a>
-                Название: ${bookMeta.title}<br>
-                Автор: ${bookMeta.authors}<br>
-                Жанр: ${bookMeta.genres}<br>
+                <fmt:message key="page.book.metas.title"/>: ${bookMeta.title}<br>
+                <fmt:message key="page.book.metas.author"/>: ${bookMeta.authors}<br>
+                <fmt:message key="page.book.metas.genre"/>: ${bookMeta.genres}<br>
                 <c:if test="${not empty bookMeta.series}">
-                    Серия: ${bookMeta.series}<br>
+                    <fmt:message key="page.book.metas.series"/>: ${bookMeta.series}<br>
                 </c:if>
             </li>
         </ul>

@@ -71,7 +71,6 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
     public Optional<UserInfo> findInfoByUserId(Integer userId) throws DaoException {
         try (var preparedStatement = connection.get().prepareStatement(FIND_PERSONAL_INFO_OF_THE_USER_SQL)) {
             preparedStatement.setObject(1, userId);
-            System.out.println(preparedStatement);
             var resultSet = preparedStatement.executeQuery();
             UserInfo info = null;
             if (resultSet.next()) {
@@ -91,7 +90,6 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
             preparedStatement.setObject(3, entity.getSurname());
             preparedStatement.setObject(4, entity.getTelephone());
             preparedStatement.setObject(5, entity.getPassportNumber());
-            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {

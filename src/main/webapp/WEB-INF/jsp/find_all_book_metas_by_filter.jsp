@@ -8,40 +8,46 @@
     </title>
 </head>
 <body>
-<%@ include file="header.jsp"%>
-<form action="${pageContext.request.contextPath}/home" method="get">
-    <input type="hidden" name="cmd" value="find_all_book_metas_by_filter">
-    <h1>
-        Книги:
-    </h1>
-    <ol>
-        <c:forEach var="book" items="${requestScope.bookMetas}">
-            <li>
-                Название: ${book.title}<br>
-                Автор: ${book.authors}<br>
-                Жанр: ${book.genres}<br>
-                <c:if test="${not empty book.series}">
-                    Серия:
-                    ${book.series}<br>
-                </c:if>
-            </li>
-        </c:forEach>
-    </ol>
-    <input type="hidden" name="page" value="${param.page + 1}">
-    <input type="hidden" name="title" value="${param.title}"><br>
-    <input type="hidden" name="authors" value="${param.authors}"><br>
-    <input type="hidden" name="genres" value="${param.genres}"><br>
-    <input type="hidden" name="series" value="${param.series}"><br>
-    <input type="submit" value="Вперед">
+<%@ include file="header.jsp" %>
+<form
+        action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page + 1}"
+        method="post">
+    <c:if test="${not empty requestScope.bookMetas}">
+        <h1>
+            <fmt:message key="page.book.metas.books"/>:
+        </h1>
+        <ol>
+            <c:forEach var="book" items="${requestScope.bookMetas}">
+                <li>
+                    <fmt:message key="page.book.metas.title"/>: ${book.title}<br>
+                    <fmt:message key="page.book.metas.author"/>: ${book.authors}<br>
+                    <fmt:message key="page.book.metas.genre"/>: ${book.genres}<br>
+                    <c:if test="${not empty book.series}">
+                        <fmt:message key="page.book.metas.series"/>:
+                        ${book.series}<br>
+                    </c:if>
+                </li>
+            </c:forEach>
+        </ol>
+        <input type="hidden" name="title" value="${param.title}"><br>
+        <input type="hidden" name="authors" value="${param.authors}"><br>
+        <input type="hidden" name="genres" value="${param.genres}"><br>
+        <input type="hidden" name="series" value="${param.series}"><br>
+        <button type="submit">
+            <fmt:message key="page.button.next"/>
+        </button>
+    </c:if>
 </form>
-<form action="${pageContext.request.contextPath}/home" method="get">
-    <input type="hidden" name="cmd" value="${param.cmd}">
-    <input type="hidden" name="page" value="${param.page - 1}">
+<form
+        action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page - 1}"
+        method="post">
     <input type="hidden" name="title" value="${param.title}"><br>
     <input type="hidden" name="authors" value="${param.authors}"><br>
     <input type="hidden" name="genres" value="${param.genres}"><br>
     <input type="hidden" name="series" value="${param.series}"><br>
-    <input type="submit" value="Назад">
+    <button type="submit">
+        <fmt:message key="page.button.previous"/>
+    </button>
 </form>
 </body>
 </html>

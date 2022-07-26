@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class OrderDto {
 
     Long id;
+    Integer clientId;
     String client;
     Integer bookId;
     String bookTitle;

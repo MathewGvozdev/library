@@ -1,9 +1,11 @@
 package com.mathewgv.library.entity.book;
 
+import com.mathewgv.library.entity.Entity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Author implements Serializable {
+public class Author extends Entity {
 
     private Integer id;
     private String firstName;

@@ -2,28 +2,58 @@
 <html>
 <head>
     <title>Orders</title>
+    <style>
+        table {
+            border: 1px solid grey;
+        }
+        th {
+            border: 1px solid grey;
+        }
+        td {
+            border: 1px solid grey;
+        }
+    </style>
 </head>
 <body>
 <%@ include file="header.jsp" %>
-<form action="${pageContext.request.contextPath}/home?cmd=find_all_orders" method="get">
-    <h1>
-        Заявки:
-    </h1>
-    <c:forEach var="order" items="${requestScope.orders}">
-        <ul>
-            <li>
-                №${order.id}<br>
-                Клиент: ${order.client}<br>
-                # книги: ${order.bookId}<br>
-                Название: ${order.bookTitle}<br>
-                Дата выдачи: ${order.issueDate}<br>
-                Дата сдачи: ${order.dueDate}<br>
-                Фактическая дата: ${order.factDate}<br>
-                Тип: ${order.loanType}<br>
-                Статус: ${order.status}<br>
-            </li>
-        </ul>
-    </c:forEach>
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}" method="get">
+    <table>
+        <caption>
+            <fmt:message key="page.order.orders"/>
+        </caption>
+        <tr>
+            <th>№</th>
+            <th><fmt:message key="page.order.client"/></th>
+            <th><fmt:message key="page.order.book.id"/></th>
+            <th>Название</th>
+            <th><fmt:message key="page.order.issue.date"/></th>
+            <th><fmt:message key="page.order.due.date"/></th>
+            <th><fmt:message key="page.order.fact.date"/></th>
+            <th><fmt:message key="page.order.type"/></th>
+            <th><fmt:message key="page.order.status"/></th>
+        </tr>
+        <c:forEach var="order" items="${requestScope.orders}">
+            <tr>
+                <td>
+                    <a href="${pageContext.request.contextPath}/home?cmd=update_order&id=${order.id}">
+                            ${order.id}<br>
+                    </a>
+                </td>
+                <td>
+                    <a href="${pageContext.request.contextPath}/home?cmd=${param.cmd}&clientId=${order.clientId}">
+                        ${order.client}<br>
+                    </a>
+                </td>
+                <td>${order.bookId}</td>
+                <td>${order.bookTitle}</td>
+                <td>${order.issueDate}</td>
+                <td>${order.dueDate}</td>
+                <td>${order.factDate}</td>
+                <td>${order.loanType}</td>
+                <td>${order.status}</td>
+            </tr>
+        </c:forEach>
+    </table>
 </form>
 </body>
 </html>

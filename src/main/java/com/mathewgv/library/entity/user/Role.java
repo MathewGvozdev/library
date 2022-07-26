@@ -1,9 +1,11 @@
 package com.mathewgv.library.entity.user;
 
+import com.mathewgv.library.entity.Entity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Role implements Serializable {
+public class Role extends Entity {
 
     private Integer id;
     private String title;

@@ -5,25 +5,25 @@
     <title>Book by id</title>
 </head>
 <body>
-<%@ include file="header.jsp"%>
-<c:set var="book" value="${requestScope.book}"/>
-№${book.id}<br>
-Название: ${book.title}<br>
-Автор: ${book.authors}<br>
-Жанр: ${book.genres}<br>
-<c:if test="${not empty book.series}">
-    Серия:
-    ${book.series}<br>
+<%@ include file="header.jsp" %>
+ID: ${requestScope.book.id}<br>
+<fmt:message key="page.book.metas.title"/>: ${requestScope.book.title}<br>
+<fmt:message key="page.book.metas.author"/>: ${requestScope.book.authors}<br>
+<fmt:message key="page.book.metas.genre"/>: ${requestScope.book.genres}<br>
+<c:if test="${not empty requestScope.book.series}">
+    <fmt:message key="page.book.metas.series"/>:
+    ${requestScope.book.series}<br>
 </c:if>
-Издатель: ${book.publisher}<br>
-Количество страниц: ${book.pages}<br>
-Год издания: ${book.publicationYear}<br>
+<fmt:message key="page.book.publisher"/>: ${requestScope.book.publisher}<br>
+<fmt:message key="page.book.pages"/>: ${requestScope.book.pages}<br>
+<fmt:message key="page.book.publication.year"/>: ${requestScope.book.publicationYear}<br>
 
-<form action="${pageContext.request.contextPath}/home" method="get">
-    <input type="hidden" name="cmd" value="find_book_by_id">
-    Book id:
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}" method="post">
+    <fmt:message key="page.book.id"/>:
     <input type="number" name="bookId" value="${param.bookId}" required>
-    <input type="submit" value="find">
+    <button type="submit">
+        <fmt:message key="page.button.find"/>
+    </button>
 </form>
 </body>
 </html>

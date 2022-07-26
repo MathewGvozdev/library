@@ -6,14 +6,18 @@ import java.time.format.DateTimeFormatter;
 
 public final class LocalDateFormatter {
 
-    private static final String PATTERN = "dd-MM-yyyy";
+    private static final String PATTERN = "yyyy-MM-dd";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(PATTERN);
 
     private LocalDateFormatter() {
     }
 
     public static LocalDate format(String date) {
-        return LocalDate.parse(date, FORMATTER);
+        try {
+            return LocalDate.parse(date, FORMATTER);
+        } catch (DateTimeException | NullPointerException e) {
+            return null;
+        }
     }
 
     public static String format(LocalDate date) {

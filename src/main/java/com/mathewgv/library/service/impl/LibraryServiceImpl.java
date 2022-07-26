@@ -9,6 +9,7 @@ import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -17,6 +18,18 @@ public class LibraryServiceImpl implements LibraryService {
     private static final LibraryServiceImpl INSTANCE = new LibraryServiceImpl();
 
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
+
+    @Override
+    public void updateOrder(OrderCreationDto orderCreationDto) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var orderDao = transaction.getOrderDao();
+            var orderCreationMapper = transaction.getOrderCreationMapper();
+            orderDao.update(orderCreationMapper.mapFrom(orderCreationDto));
+            transaction.commit();
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
+    }
 
     @Override
     public void updateStatus(OrderCreationDto orderCreationDto) {
@@ -76,6 +89,18 @@ public class LibraryServiceImpl implements LibraryService {
             return orderDao.findAll().stream()
                     .map(orderMapper::mapFrom)
                     .collect(toList());
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<OrderDto> findOrderById(Long id) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var orderDao = transaction.getOrderDao();
+            var orderMapper = transaction.getOrderMapper();
+            return orderDao.findById(id)
+                    .map(orderMapper::mapFrom);
         } catch (Exception e) {
             throw new ServiceException(e);
         }

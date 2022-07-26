@@ -1,5 +1,6 @@
 package com.mathewgv.library.entity.order;
 
+import com.mathewgv.library.entity.Entity;
 import com.mathewgv.library.entity.book.Book;
 import com.mathewgv.library.entity.user.User;
 
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
-public class Order implements Serializable {
+public class Order extends Entity {
 
     private Long id;
     private User client;

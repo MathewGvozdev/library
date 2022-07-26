@@ -21,7 +21,6 @@ public final class JspPath {
     public static final String REGISTRATION = "registration";
 
     public static final String FIND_ALL_ORDERS = "find_all_orders";
-    public static final String FIND_ALL_ORDERS_BY_CLIENT = "find_all_orders_by_client";
     public static final String MAKE_ORDER = "make_order";
     public static final String UPDATE_ORDER = "update_order";
 

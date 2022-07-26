@@ -8,23 +8,23 @@
 </head>
 <body>
 <%@ include file="header.jsp"%>
-<form action="${pageContext.request.contextPath}/home?cmd=find_all_books" method="get">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}" method="get">
     <h1>
-        Книги:
+        <fmt:message key="page.book.examples"/>:
     </h1>
     <c:forEach var="book" items="${requestScope.books}">
         <ul>
             <li>
-                №${book.id}<br>
-                Название: ${book.title}<br>
-                Автор: ${book.authors}<br>
-                Жанр: ${book.genres}<br>
+                ID: ${book.id}<br>
+                <fmt:message key="page.book.metas.title"/>: ${book.title}<br>
+                <fmt:message key="page.book.metas.author"/>: ${book.authors}<br>
+                <fmt:message key="page.book.metas.genre"/>: ${book.genres}<br>
                 <c:if test="${not empty book.series}">
-                    Серия: ${book.series}<br>
+                    <fmt:message key="page.book.metas.series"/>: ${book.series}<br>
                 </c:if>
-                Издатель: ${book.publisher}<br>
-                Количество страниц: ${book.pages}<br>
-                Год издания: ${book.publicationYear}<br>
+                <fmt:message key="page.book.publisher"/>: ${book.publisher}<br>
+                <fmt:message key="page.book.pages"/>: ${book.pages}<br>
+                <fmt:message key="page.book.publication.year"/>: ${book.publicationYear}<br>
             </li>
         </ul>
     </c:forEach>

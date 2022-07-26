@@ -44,8 +44,7 @@ public class Login implements Command {
     }
 
     private Router onLoginFail(HttpServletRequest req) {
-        req.setAttribute(AttributeName.ERROR, "Error in login or password");
-        return new Router(req.getContextPath() + "/home?cmd=login", RoutingType.REDIRECT);
+        return new Router(req.getContextPath() + "/home?cmd=login&error", RoutingType.REDIRECT);
     }
 
 }

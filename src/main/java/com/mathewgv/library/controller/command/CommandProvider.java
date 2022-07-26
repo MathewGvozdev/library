@@ -3,6 +3,7 @@ package com.mathewgv.library.controller.command;
 import com.mathewgv.library.controller.command.impl.Home;
 import com.mathewgv.library.controller.command.impl.book.*;
 import com.mathewgv.library.controller.command.impl.library.*;
+import com.mathewgv.library.controller.command.impl.user.ChangeLocale;
 import com.mathewgv.library.controller.command.impl.user.Login;
 import com.mathewgv.library.controller.command.impl.user.Logout;
 import com.mathewgv.library.controller.command.impl.user.Register;
@@ -28,17 +29,15 @@ public class CommandProvider {
         repository.put(CommandName.FIND_ALL_BOOKS, new FindAllBooks());
         repository.put(CommandName.FIND_ANY_BOOK, new FindAnyBook());
         repository.put(CommandName.FIND_BOOK_BY_ID, new FindBookById());
-        repository.put(CommandName.UPDATE_BOOK, new UpdateBook());
 
         repository.put(CommandName.LOGIN, new Login());
         repository.put(CommandName.LOGOUT, new Logout());
         repository.put(CommandName.REGISTER, new Register());
+        repository.put(CommandName.CHANGE_LOCALE, new ChangeLocale());
 
         repository.put(CommandName.FIND_ALL_ORDERS, new FindAllOrders());
-        repository.put(CommandName.FIND_ALL_ORDERS_BY_CLIENT, new FindAllOrdersByClient());
         repository.put(CommandName.MAKE_ORDER, new MakeOrder());
-        repository.put(CommandName.UPDATE_ORDER_STATUS, new UpdateOrderStatus());
-        repository.put(CommandName.UPDATE_WHEN_BOOK_IS_RETURNED, new UpdateWhenBookIsReturned());
+        repository.put(CommandName.UPDATE_ORDER, new UpdateOrder());
 //        repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
     }
 

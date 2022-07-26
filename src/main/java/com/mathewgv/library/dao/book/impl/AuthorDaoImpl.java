@@ -5,12 +5,15 @@ import com.mathewgv.library.dao.book.AuthorDao;
 import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.entity.book.Author;
 import com.mathewgv.library.util.ConnectionPool;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 import java.sql.*;
 import java.util.*;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@Slf4j
 public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
 
     private static final AuthorDaoImpl INSTANCE = new AuthorDaoImpl();
@@ -74,6 +77,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             }
             return Optional.ofNullable(author);
         } catch (SQLException e) {
+            log.error("Error occurred while searching by name and surname", e);
             throw new DaoException(e);
         }
     }
@@ -89,6 +93,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             }
             return authors;
         } catch (SQLException e) {
+            log.error("Error occurred while searching by name and surname", e);
             throw new DaoException(e);
         }
     }

@@ -6,12 +6,12 @@ public enum CommandName {
     LOGOUT,
     REGISTER,
     FIND_USER_INFO,
+    CHANGE_LOCALE,
 
     FIND_ALL_ORDERS,
     FIND_ALL_ORDERS_BY_CLIENT,
     MAKE_ORDER,
-    UPDATE_ORDER_STATUS,
-    UPDATE_WHEN_BOOK_IS_RETURNED,
+    UPDATE_ORDER,
 
     ADD_AUTHOR,
     ADD_BOOK,
@@ -24,7 +24,6 @@ public enum CommandName {
     FIND_ALL_BOOKS,
     FIND_ANY_BOOK,
     FIND_BOOK_BY_ID,
-    UPDATE_BOOK,
 
     HOME,
     WRONG_REQUEST

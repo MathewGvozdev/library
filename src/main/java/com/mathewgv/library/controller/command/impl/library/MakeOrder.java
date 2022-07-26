@@ -3,8 +3,12 @@ package com.mathewgv.library.controller.command.impl.library;
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
+import com.mathewgv.library.entity.order.LoanType;
+import com.mathewgv.library.entity.order.OrderStatus;
+import com.mathewgv.library.service.BookService;
 import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.service.dto.OrderCreationDto;
+import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
@@ -13,24 +17,31 @@ import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.List;
+import java.util.Optional;
+
 public class MakeOrder implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private static final String CONFIRM = "cfm";
-    private static final String BOOK_META_ID = "bookMetaId";
-    private static final String PUBLISHER_ID = "publisherId";
-    private static final String PAGES = "pages";
-    private static final String PUBLICATION_YEAR = "publicationYear";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            if (req.getSession().getAttribute("user") == null) {
+                return new Router(req.getContextPath() + "/home?cmd=login", RoutingType.REDIRECT);
+            }
             var libraryService = serviceFactory.getLibraryService();
+            var loanTypes = List.of(LoanType.TO_HOME.getValue(), LoanType.READING_ROOM.getValue());
+            req.setAttribute("loanTypes", loanTypes);
             if (req.getParameter(CONFIRM) == null) {
                 return new Router(JspHelper.getPath(JspPath.MAKE_ORDER), RoutingType.FORWARD);
             } else if (req.getParameter(CONFIRM).equals("")) {
                 var orderCreationDto = buildOrderDto(req);
+                var bookService = serviceFactory.getBookService();
+                bookService.findBookById(Integer.parseInt(req.getParameter("bookId")))
+                        .ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
                 req.setAttribute(AttributeName.ORDER_DTO, orderCreationDto);
             } else if (req.getParameter(CONFIRM).equals("y")) {
                 var order = libraryService.makeOrder(buildOrderDto(req));
@@ -49,14 +60,14 @@ public class MakeOrder implements Command {
     }
 
     private OrderCreationDto buildOrderDto(HttpServletRequest req) {
+        var user = (UserDto) req.getSession().getAttribute("user");
         return OrderCreationDto.builder()
-                .userId(Integer.parseInt(req.getParameter("userId")))
+                .userId(user.getId())
                 .bookId(Integer.parseInt(req.getParameter("bookId")))
                 .issueDate(req.getParameter("issueDate"))
                 .dueDate(req.getParameter("dueDate"))
-                .factDate(req.getParameter("factDate"))
                 .loanType(req.getParameter("loanType"))
-                .status(req.getParameter("status"))
+                .status(OrderStatus.OPENED.getValue())
                 .build();
     }
 }

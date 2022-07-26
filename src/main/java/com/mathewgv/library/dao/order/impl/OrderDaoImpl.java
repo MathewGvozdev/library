@@ -197,7 +197,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             preparedStatement.setObject(4, entity.getDueDate());
             preparedStatement.setObject(5, entity.getFactDate());
             preparedStatement.setObject(6, entity.getType().getValue());
-            preparedStatement.setObject(7, entity.getStatus().toString());
+            preparedStatement.setObject(7, entity.getStatus().getValue());
             preparedStatement.setObject(8, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
