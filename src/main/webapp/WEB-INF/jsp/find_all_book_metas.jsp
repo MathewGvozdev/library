@@ -1,12 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>All book-metas</title>
+    <title>
+        <fmt:message key="head.find.all.metas"/>
+    </title>
 </head>
 <body>
 <%@ include file="header.jsp"%>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}" method="get">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="get">
     <h1>
         <fmt:message key="page.book.metas.books"/>:
     </h1>

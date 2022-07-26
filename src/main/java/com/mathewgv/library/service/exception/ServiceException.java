@@ -1,7 +1,5 @@
 package com.mathewgv.library.service.exception;
 
-import java.sql.SQLException;
-
 public class ServiceException extends RuntimeException {
 
     private final String message;

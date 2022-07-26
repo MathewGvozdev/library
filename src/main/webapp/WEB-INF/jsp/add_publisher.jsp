@@ -1,15 +1,29 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Add publisher</title>
+    <title>
+        <fmt:message key="head.add.publisher"/>
+    </title>
 </head>
 <body>
 <%@ include file="header.jsp" %>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm" method="post">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
+      method="post">
     <fmt:message key="page.publisher.msg"/>:<br>
-    <input type="text" name="title" placeholder="<fmt:message key="page.publisher.title"/>" value="${param.title}"><br>
-    <input type="text" name="city" placeholder="<fmt:message key="page.publisher.city"/>" value="${param.city}"><br>
+    <label>
+        <input type="text"
+               name="title"
+               placeholder="<fmt:message key="page.publisher.title"/>"
+               value="${param.title}">
+    </label><br>
+    <label>
+        <input type="text"
+               name="city"
+               placeholder="<fmt:message key="page.publisher.city"/>"
+               value="${param.city}">
+    </label><br>
     <button type="submit">
         <fmt:message key="page.button.add"/>
     </button>
@@ -30,17 +44,28 @@
         </c:if>
     </c:if>
     <c:if test="${not empty requestScope.error}">
-        <span>${requestScope.error}</span>
+        <span>
+                ${requestScope.error}
+        </span>
     </c:if>
 </form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}" method="post">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="post">
     <c:if test="${not empty requestScope.publisherDto}">
         <fmt:message key="page.publisher.confirm.msg"/><br>
         <fmt:message key="page.publisher.title"/>: ${requestScope.publisherDto.title}<br>
         <fmt:message key="page.publisher.city"/>: ${requestScope.publisherDto.city}<br>
-        <input type="hidden" name="cfm" value="y"><br>
-        <input type="hidden" name="title" value="${param.title}"><br>
-        <input type="hidden" name="city" value="${param.city}"><br>
+        <div style="display: none">
+            <input type="hidden"
+                   name="cfm"
+                   value="y"><br>
+            <input type="hidden"
+                   name="title"
+                   value="${param.title}"><br>
+            <input type="hidden"
+                   name="city"
+                   value="${param.city}"><br>
+        </div>
         <button type="submit">
             <fmt:message key="page.button.confirm"/>
         </button>

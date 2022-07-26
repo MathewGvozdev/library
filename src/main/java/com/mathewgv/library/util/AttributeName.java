@@ -22,8 +22,6 @@ public final class AttributeName {
     public static final String PUBLISHER_DTO = "publisherDto";
     public static final String PUBLISHER = "publisher";
 
-    public static final String USER_DTO = "userDto";
-
     public static final String ORDERS = "orders";
     public static final String ORDER_DTO = "orderDto";
     public static final String ORDER = "order";

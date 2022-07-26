@@ -2,8 +2,6 @@ package com.mathewgv.library.service.validation;
 
 import com.mathewgv.library.dao.filter.BookFilter;
 
-import java.lang.reflect.Field;
-
 public class FilterValidator {
 
     public static void validate(BookFilter filter) {

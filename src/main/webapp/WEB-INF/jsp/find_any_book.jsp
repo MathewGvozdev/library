@@ -1,14 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>
-        Book with filter
+        <fmt:message key="head.find.any.book"/>
     </title>
 </head>
 <body>
 <%@ include file="header.jsp"%>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}" method="get">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="get">
     ID: ${requestScope.book.id}<br>
     <fmt:message key="page.book.metas.title"/>: ${requestScope.book.title}<br>
     <fmt:message key="page.book.metas.author"/>: ${requestScope.book.authors}<br>

@@ -1,8 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Book by id</title>
+    <title>
+        <fmt:message key="head.book.by.id"/>
+    </title>
 </head>
 <body>
 <%@ include file="header.jsp" %>
@@ -18,9 +21,15 @@ ID: ${requestScope.book.id}<br>
 <fmt:message key="page.book.pages"/>: ${requestScope.book.pages}<br>
 <fmt:message key="page.book.publication.year"/>: ${requestScope.book.publicationYear}<br>
 
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}" method="post">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="post">
     <fmt:message key="page.book.id"/>:
-    <input type="number" name="bookId" value="${param.bookId}" required>
+    <label for="bookId">
+        <input type="number"
+               name="bookId"
+               id="bookId"
+               value="${param.bookId}" required>
+    </label>
     <button type="submit">
         <fmt:message key="page.button.find"/>
     </button>

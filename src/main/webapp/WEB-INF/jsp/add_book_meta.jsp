@@ -1,19 +1,37 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Add book-meta</title>
+    <title>
+        <fmt:message key="head.add.book.meta"/>
+    </title>
 </head>
 <body>
 <%@ include file="header.jsp" %>
-<form
-        action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
-        method="post">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
+      method="post">
     <fmt:message key="page.book.metas.msg"/>:<br>
-    <input type="text" name="title" placeholder="<fmt:message key="page.book.metas.title"/>"><br>
-    <input type="text" name="authors" placeholder="<fmt:message key="page.book.metas.author"/>"><br>
-    <input type="text" name="genres" placeholder="<fmt:message key="page.book.metas.genre"/>"><br>
-    <input type="text" name="series" placeholder="<fmt:message key="page.book.metas.series"/>"><br>
+    <label>
+        <input type="text"
+               name="title"
+               placeholder="<fmt:message key="page.book.metas.title"/>">
+    </label><br>
+    <label>
+        <input type="text"
+               name="authors"
+               placeholder="<fmt:message key="page.book.metas.author"/>">
+    </label><br>
+    <label>
+        <input type="text"
+               name="genres"
+               placeholder="<fmt:message key="page.book.metas.genre"/>">
+    </label><br>
+    <label>
+        <input type="text"
+               name="series"
+               placeholder="<fmt:message key="page.book.metas.series"/>">
+    </label><br>
     <button type="submit">
         <fmt:message key="page.button.add"/>
     </button>
@@ -49,9 +67,8 @@
         </span>
     </c:if>
 </form>
-<form
-        action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
-        method="post">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="post">
     <c:if test="${not empty requestScope.bookMetaDto}">
         <fmt:message key="page.book.metas.confirm.msg"/><br>
         <fmt:message key="page.book.metas.title"/>: ${requestScope.bookMetaDto.title}<br>
@@ -60,11 +77,23 @@
         <c:if test="${not empty requestScope.bookMetaDto.series}">
             <fmt:message key="page.book.metas.series"/>: ${requestScope.bookMetaDto.series}<br>
         </c:if>
-        <input type="hidden" name="cfm" value="y"><br>
-        <input type="hidden" name="title" value="${param.title}"><br>
-        <input type="hidden" name="authors" value="${param.authors}"><br>
-        <input type="hidden" name="genres" value="${param.genres}"><br>
-        <input type="hidden" name="series" value="${param.series}"><br>
+        <div style="display: none">
+            <input type="hidden"
+                   name="cfm"
+                   value="y"><br>
+            <input type="hidden"
+                   name="title"
+                   value="${param.title}"><br>
+            <input type="hidden"
+                   name="authors"
+                   value="${param.authors}"><br>
+            <input type="hidden"
+                   name="genres"
+                   value="${param.genres}"><br>
+            <input type="hidden"
+                   name="series"
+                   value="${param.series}"><br>
+        </div>
         <button type="submit">
             <fmt:message key="page.button.confirm"/>
         </button>

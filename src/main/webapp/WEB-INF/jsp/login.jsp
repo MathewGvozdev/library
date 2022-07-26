@@ -3,19 +3,25 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Login</title>
+    <title><fmt:message key="head.login"/></title>
 </head>
 <body>
 <fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : (param.lang != null ? param.lang : 'ru_RU')}"/>
 <fmt:setBundle basename="translations"/>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm" method="post">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
+      method="post">
     <label for="login">
         <fmt:message key="page.login.login"/>:
-        <input type="text" name="login" id="login" value="${param.user}" required>
+        <input type="text"
+               name="login"
+               id="login"
+               value="${param.user}" required>
     </label><br>
     <label for="password">
         <fmt:message key="page.login.password"/>:
-        <input type="password" name="password" id="password" required>
+        <input type="password"
+               name="password"
+               id="password" required>
     </label><br>
     <button type="submit">
         <fmt:message key="page.button.sign.in"/>

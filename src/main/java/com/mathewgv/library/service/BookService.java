@@ -30,7 +30,5 @@ public interface BookService {
 
     Optional<BookDto> findBookById(Integer id) throws ServiceException;
 
-    void updateBook(BookDto bookDto) throws ServiceException;
-
     boolean deleteBook(Integer id) throws ServiceException;
 }

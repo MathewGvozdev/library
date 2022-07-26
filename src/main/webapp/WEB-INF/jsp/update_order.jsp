@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Update status</title>
+    <title><fmt:message key="head.update.order"/></title>
     <style>
         table {
             border: 1px solid grey;
@@ -18,7 +19,8 @@
 </head>
 <body>
 <%@ include file="header.jsp" %>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm" method="post">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
+      method="post">
     <table>
         <caption>
             <fmt:message key="page.order.order"/>
@@ -46,12 +48,16 @@
                     ${requestScope.order.factDate}<br>
                 </c:if>
                 <c:if test="${empty requestScope.order.factDate}">
-                    <input type="date" name="factDate"><br>
+                    <label>
+                        <input type="date"
+                               name="factDate">
+                    </label><br>
                 </c:if>
             </td>
             <td>${requestScope.order.loanType}</td>
             <td>
-                <select name="status" id="status">
+                <select name="status"
+                        id="status">
                     <c:forEach var="status" items="${requestScope.statuses}">
                         <option value="${status}">${status}</option>
                     </c:forEach>
@@ -60,14 +66,16 @@
         </tr>
     </table>
     <br>
-    <input type="hidden" name="id" value="${requestScope.order.id}">
-    <input type="hidden" name="clientId" value="${requestScope.order.clientId}">
-    <input type="hidden" name="bookId" value="${requestScope.order.bookId}">
-    <input type="hidden" name="issueDate" value="${requestScope.order.issueDate}">
-    <input type="hidden" name="dueDate" value="${requestScope.order.dueDate}">
-    <input type="hidden" name="factDate" value="${requestScope.order.factDate}">
-    <input type="hidden" name="loanType" value="${requestScope.order.loanType}">
-    <input type="hidden" name="status" value="${requestScope.order.status}">
+    <div style="display: none">
+        <input type="hidden" name="id" value="${requestScope.order.id}">
+        <input type="hidden" name="clientId" value="${requestScope.order.clientId}">
+        <input type="hidden" name="bookId" value="${requestScope.order.bookId}">
+        <input type="hidden" name="issueDate" value="${requestScope.order.issueDate}">
+        <input type="hidden" name="dueDate" value="${requestScope.order.dueDate}">
+        <input type="hidden" name="factDate" value="${requestScope.order.factDate}">
+        <input type="hidden" name="loanType" value="${requestScope.order.loanType}">
+        <input type="hidden" name="status" value="${requestScope.order.status}">
+    </div>
     <button type="submit">
         <fmt:message key="page.button.confirm"/>
     </button>

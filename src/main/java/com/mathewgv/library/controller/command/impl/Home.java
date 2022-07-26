@@ -10,8 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class Home implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     private static final String JSP_NAME = "index";
 
     @Override

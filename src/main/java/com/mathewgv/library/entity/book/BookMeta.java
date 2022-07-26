@@ -2,10 +2,8 @@ package com.mathewgv.library.entity.book;
 
 import com.mathewgv.library.entity.Entity;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class BookMeta extends Entity {
 
@@ -26,25 +24,10 @@ public class BookMeta extends Entity {
         this.authors = authors;
         this.genres = genres;
     }
-    public BookMeta(Integer id,
-                    String title,
-                    List<Author> authors,
-                    List<Genre> genres) {
-        this.id = id;
-        this.title = title;
-        this.authors = authors;
-        this.genres = genres;
-    }
 
     public BookMeta(String title, String series, List<Author> authors, List<Genre> genres) {
         this.title = title;
         this.series = series;
-        this.authors = authors;
-        this.genres = genres;
-    }
-
-    public BookMeta(String title, List<Author> authors, List<Genre> genres) {
-        this.title = title;
         this.authors = authors;
         this.genres = genres;
     }

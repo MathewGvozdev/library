@@ -9,7 +9,6 @@ public enum CommandName {
     CHANGE_LOCALE,
 
     FIND_ALL_ORDERS,
-    FIND_ALL_ORDERS_BY_CLIENT,
     MAKE_ORDER,
     UPDATE_ORDER,
 

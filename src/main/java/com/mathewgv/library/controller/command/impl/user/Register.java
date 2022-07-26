@@ -3,7 +3,6 @@ package com.mathewgv.library.controller.command.impl.user;
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
-import com.mathewgv.library.service.dto.AuthorDto;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;

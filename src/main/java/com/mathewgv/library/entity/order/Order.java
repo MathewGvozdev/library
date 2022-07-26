@@ -4,9 +4,7 @@ import com.mathewgv.library.entity.Entity;
 import com.mathewgv.library.entity.book.Book;
 import com.mathewgv.library.entity.user.User;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 public class Order extends Entity {

@@ -2,8 +2,6 @@ package com.mathewgv.library.dao;
 
 import com.mathewgv.library.dao.exception.DaoException;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 

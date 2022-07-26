@@ -1,22 +1,15 @@
 package com.mathewgv.library.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
-import com.mathewgv.library.dao.book.BookDao;
 import com.mathewgv.library.dao.book.impl.BookDaoImpl;
 import com.mathewgv.library.dao.factory.DaoFactory;
-import com.mathewgv.library.dao.user.UserDao;
 import com.mathewgv.library.dao.user.impl.UserDaoImpl;
-import com.mathewgv.library.entity.book.Book;
 import com.mathewgv.library.entity.order.LoanType;
 import com.mathewgv.library.entity.order.Order;
 import com.mathewgv.library.entity.order.OrderStatus;
-import com.mathewgv.library.entity.user.User;
 import com.mathewgv.library.mapper.Mapper;
 import com.mathewgv.library.service.dto.OrderCreationDto;
 import com.mathewgv.library.util.LocalDateFormatter;
-
-import java.time.DateTimeException;
-import java.util.Optional;
 
 public class OrderCreationMapper extends DaoConnection implements Mapper<OrderCreationDto, Order> {
 

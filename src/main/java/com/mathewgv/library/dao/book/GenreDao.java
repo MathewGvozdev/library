@@ -4,7 +4,6 @@ import com.mathewgv.library.dao.Dao;
 import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.entity.book.Genre;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 

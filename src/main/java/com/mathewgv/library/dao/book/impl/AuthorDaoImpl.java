@@ -52,10 +52,6 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             WHERE bm.id = ?;
             """;
 
-    private static final String FIND_AUTHORS_OF_THE_BOOK_BY_TITLE_SQL = FIND_ALL_SQL + """
-            WHERE bm.title = ?;
-            """;
-
     private static final String FIND_BY_NAME_AND_SURNAME_SQL = FIND_ALL_SQL + """
             WHERE a.first_name = ? AND a.surname = ?;
             """;

@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Orders</title>
+    <title>
+        <fmt:message key="head.find.all.orders"/>
+    </title>
     <style>
         table {
             border: 1px solid grey;
@@ -16,7 +19,8 @@
 </head>
 <body>
 <%@ include file="header.jsp" %>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}" method="get">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="get">
     <table>
         <caption>
             <fmt:message key="page.order.orders"/>
@@ -25,7 +29,7 @@
             <th>№</th>
             <th><fmt:message key="page.order.client"/></th>
             <th><fmt:message key="page.order.book.id"/></th>
-            <th>Название</th>
+            <th><fmt:message key="page.book.metas.title"/></th>
             <th><fmt:message key="page.order.issue.date"/></th>
             <th><fmt:message key="page.order.due.date"/></th>
             <th><fmt:message key="page.order.fact.date"/></th>

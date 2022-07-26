@@ -2,7 +2,6 @@ package com.mathewgv.library.entity.book;
 
 import com.mathewgv.library.entity.Entity;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 public class Genre extends Entity {

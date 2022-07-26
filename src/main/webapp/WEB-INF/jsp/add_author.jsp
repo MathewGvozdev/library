@@ -1,18 +1,30 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Add author</title>
+    <title>
+        <fmt:message key="head.add.author"/>
+    </title>
 </head>
 <body>
 <%@ include file="header.jsp" %>
 
-<form
-        action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
-        method="post">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
+      method="post">
     <fmt:message key="page.author.msg"/>:<br>
-    <input type="text" name="aName" placeholder="<fmt:message key="page.author.name"/>" value="${param.aName}"><br>
-    <input type="text" name="aSurname" placeholder="<fmt:message key="page.author.surname"/>" value="${param.aSurname}"><br>
+    <label>
+        <input type="text"
+               name="aName"
+               placeholder="<fmt:message key="page.author.name"/>"
+               value="${param.aName}">
+    </label><br>
+    <label>
+        <input type="text"
+               name="aSurname"
+               placeholder="<fmt:message key="page.author.surname"/>"
+               value="${param.aSurname}">
+    </label><br>
     <button type="submit">
         <fmt:message key="page.button.add"/>
     </button>
@@ -33,15 +45,16 @@
         <span>${requestScope.error}</span>
     </c:if>
 </form>
-<form
-        action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
-        method="post">
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="post">
     <c:if test="${not empty requestScope.authorDto}">
         <fmt:message key="page.author.confirm.msg"/><br>
         ${requestScope.authorDto.name} ${requestScope.authorDto.surname}<br>
-        <input type="hidden" name="cfm" value="y"><br>
-        <input type="hidden" name="aName" value="${param.aName}"><br>
-        <input type="hidden" name="aSurname" value="${param.aSurname}"><br>
+        <div style="display: none">
+            <input type="hidden" name="cfm" value="y"><br>
+            <input type="hidden" name="aName" value="${param.aName}"><br>
+            <input type="hidden" name="aSurname" value="${param.aSurname}"><br>
+        </div>
         <button type="submit">
             <fmt:message key="page.button.confirm"/>
         </button>
