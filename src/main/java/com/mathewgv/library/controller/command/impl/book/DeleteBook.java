@@ -10,7 +10,9 @@ import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DeleteBook implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -41,9 +43,11 @@ public class DeleteBook implements Command {
             }
             return new Router(JspHelper.getPath(JspPath.DELETE_BOOK), RoutingType.FORWARD);
         } catch (ServiceException e) {
+            log.error("Failure to delete the book", e);
             req.setAttribute(AttributeName.ERROR, "Error in deleting book");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         } catch (NumberFormatException e) {
+            log.error("Failure to process parameter 'bookId', it should be a number", e);
             req.setAttribute(AttributeName.ERROR, "BookId is not a number");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }

@@ -9,7 +9,9 @@ import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ChangeLocale implements Command {
 
     @Override
@@ -20,8 +22,10 @@ public class ChangeLocale implements Command {
             var prevPage = req.getHeader("referer");
 
             var page = prevPage != null ? prevPage : "/home";
+            log.info("Locale is set to - {}", language);
             return new Router(page, RoutingType.REDIRECT);
         } catch (ServiceException e) {
+            log.error("Failure to change locale", e);
             req.setAttribute(AttributeName.ERROR, "Error in login");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }

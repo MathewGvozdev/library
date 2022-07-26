@@ -11,7 +11,9 @@ import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AddBook implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -42,6 +44,7 @@ public class AddBook implements Command {
             }
             return new Router(JspHelper.getPath(JspPath.ADD_BOOK), RoutingType.FORWARD);
         } catch (ServiceException e) {
+            log.error("Failure to add a new book", e);
             req.setAttribute(AttributeName.ERROR, "Error in adding new book");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }

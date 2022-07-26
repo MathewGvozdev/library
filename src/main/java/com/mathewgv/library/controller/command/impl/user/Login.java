@@ -12,9 +12,11 @@ import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
 
+@Slf4j
 public class Login implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -33,6 +35,7 @@ public class Login implements Command {
                         .orElseGet(() -> onLoginFail(req));
             }
         } catch (ServiceException e) {
+            log.error("Failure to login", e);
             req.setAttribute(AttributeName.ERROR, "Error in login");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }

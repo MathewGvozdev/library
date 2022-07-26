@@ -4,15 +4,15 @@ import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.book.GenreDao;
 import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.entity.book.Genre;
-import com.mathewgv.library.util.ConnectionPool;
+import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@Slf4j
 public class GenreDaoImpl extends DaoConnection implements GenreDao {
 
     private static final GenreDaoImpl INSTANCE = new GenreDaoImpl();
@@ -51,10 +51,6 @@ public class GenreDaoImpl extends DaoConnection implements GenreDao {
             WHERE bm.id = ?;
             """;
 
-    private static final String FIND_GENRES_OF_THE_BOOK_BY_TITLE_SQL = FIND_ALL_SQL + """
-            WHERE bm.title = ?;
-            """;
-
     private static final String FIND_BY_TITLE_SQL = FIND_ALL_SQL + """
             WHERE genres.title = ?;
             """;
@@ -73,6 +69,7 @@ public class GenreDaoImpl extends DaoConnection implements GenreDao {
             }
             return Optional.ofNullable(genre);
         } catch (SQLException e) {
+            log.error("Error occurred while searching a genre by title", e);
             throw new DaoException(e);
         }
     }
@@ -88,21 +85,7 @@ public class GenreDaoImpl extends DaoConnection implements GenreDao {
             }
             return genres;
         } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public List<Genre> findAllGenresOfTheBook(String bookMetaTitle) throws DaoException {
-        try (var preparedStatement = connection.get().prepareStatement(FIND_GENRES_OF_THE_BOOK_BY_TITLE_SQL)) {
-            preparedStatement.setObject(1, bookMetaTitle);
-            var resultSet = preparedStatement.executeQuery();
-            List<Genre> genres = new ArrayList<>();
-            while (resultSet.next()) {
-                genres.add(buildGenre(resultSet));
-            }
-            return genres;
-        } catch (SQLException e) {
+            log.error("Error occurred while searching genres of the book", e);
             throw new DaoException(e);
         }
     }
@@ -118,6 +101,7 @@ public class GenreDaoImpl extends DaoConnection implements GenreDao {
             }
             return entity;
         } catch (SQLException e) {
+            log.error("Error occurred while creating the genre", e);
             throw new DaoException(e);
         }
     }
@@ -132,6 +116,7 @@ public class GenreDaoImpl extends DaoConnection implements GenreDao {
             }
             return genres;
         } catch (SQLException e) {
+            log.error("Error occurred while searching all genres", e);
             throw new DaoException(e);
         }
     }
@@ -147,6 +132,7 @@ public class GenreDaoImpl extends DaoConnection implements GenreDao {
             }
             return Optional.ofNullable(genre);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the genre by ID", e);
             throw new DaoException(e);
         }
     }
@@ -158,6 +144,7 @@ public class GenreDaoImpl extends DaoConnection implements GenreDao {
             preparedStatement.setObject(2, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            log.error("Error occurred while updating the genre", e);
             throw new DaoException(e);
         }
     }
@@ -168,6 +155,7 @@ public class GenreDaoImpl extends DaoConnection implements GenreDao {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Error occurred while deleting the genre", e);
             throw new DaoException(e);
         }
     }

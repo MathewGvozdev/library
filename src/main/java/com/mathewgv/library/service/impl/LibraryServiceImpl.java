@@ -7,12 +7,14 @@ import com.mathewgv.library.service.LibraryService;
 import com.mathewgv.library.service.dto.OrderCreationDto;
 import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 public class LibraryServiceImpl implements LibraryService {
 
     private static final LibraryServiceImpl INSTANCE = new LibraryServiceImpl();
@@ -25,32 +27,11 @@ public class LibraryServiceImpl implements LibraryService {
             var orderDao = transaction.getOrderDao();
             var orderCreationMapper = transaction.getOrderCreationMapper();
             orderDao.update(orderCreationMapper.mapFrom(orderCreationDto));
+            var updatedOrder = orderDao.findById(orderCreationDto.getId());
             transaction.commit();
+            log.info("The order with id[{}] was updated, current order: {}", orderCreationDto.getId(), updatedOrder);
         } catch (Exception e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public void updateStatus(OrderCreationDto orderCreationDto) {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var orderDao = transaction.getOrderDao();
-            var orderCreationMapper = transaction.getOrderCreationMapper();
-            orderDao.updateStatus(orderCreationMapper.mapFrom(orderCreationDto));
-            transaction.commit();
-        } catch (Exception e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public void updateWhenBookIsReturned(OrderCreationDto orderCreationDto) {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var orderDao = transaction.getOrderDao();
-            var orderCreationMapper = transaction.getOrderCreationMapper();
-            orderDao.updateWhenBookIsReturned(orderCreationMapper.mapFrom(orderCreationDto));
-            transaction.commit();
-        } catch (Exception e) {
+            log.error("Failure to update the order", e);
             throw new ServiceException(e);
         }
     }
@@ -64,6 +45,7 @@ public class LibraryServiceImpl implements LibraryService {
                     .map(orderMapper::mapFrom)
                     .collect(toList());
         } catch (Exception e) {
+            log.error("Failure to find all orders by client ID", e);
             throw new ServiceException(e);
         }
     }
@@ -74,9 +56,12 @@ public class LibraryServiceImpl implements LibraryService {
             var orderDao = transaction.getOrderDao();
             var orderCreationMapper = transaction.getOrderCreationMapper();
             var order = orderDao.create(orderCreationMapper.mapFrom(orderCreationDto));
+            var createdOrder = orderDao.findById(orderCreationDto.getId()).orElse(null);
             transaction.commit();
+            log.info("New order was made: {}", createdOrder);
             return order;
         } catch (Exception e) {
+            log.error("Failure to make order", e);
             throw new ServiceException(e);
         }
     }
@@ -90,6 +75,7 @@ public class LibraryServiceImpl implements LibraryService {
                     .map(orderMapper::mapFrom)
                     .collect(toList());
         } catch (Exception e) {
+            log.error("Failure to find all orders", e);
             throw new ServiceException(e);
         }
     }
@@ -102,6 +88,7 @@ public class LibraryServiceImpl implements LibraryService {
             return orderDao.findById(id)
                     .map(orderMapper::mapFrom);
         } catch (Exception e) {
+            log.error("Failure to find the order by ID", e);
             throw new ServiceException(e);
         }
     }

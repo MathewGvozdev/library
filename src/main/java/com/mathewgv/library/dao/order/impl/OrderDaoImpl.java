@@ -10,9 +10,8 @@ import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.entity.order.LoanType;
 import com.mathewgv.library.entity.order.Order;
 import com.mathewgv.library.entity.order.OrderStatus;
-import com.mathewgv.library.util.ConnectionPool;
+import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -22,6 +21,7 @@ import java.util.Optional;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@Slf4j
 public class OrderDaoImpl extends DaoConnection implements OrderDao {
 
     private static final OrderDaoImpl INSTANCE = new OrderDaoImpl();
@@ -102,29 +102,6 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
     }
 
     @Override
-    public void updateStatus(Order order) throws DaoException {
-        try (var preparedStatement = connection.get().prepareStatement(UPDATE_STATUS_SQL)) {
-            preparedStatement.setObject(1, order.getStatus());
-            preparedStatement.setObject(2, order.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public void updateWhenBookIsReturned(Order order) throws DaoException {
-        try (var preparedStatement = connection.get().prepareStatement(UPDATE_WHEN_BOOK_IS_RETURNED_SQL)) {
-            preparedStatement.setObject(1, order.getFactDate());
-            preparedStatement.setObject(2, order.getStatus());
-            preparedStatement.setObject(3, order.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
     public List<Order> findAllOrdersByClientId(Integer clientId) throws DaoException {
         try (var preparedStatement = connection.get().prepareStatement(FIND_ALL_BY_USER_ID_SQL)) {
             preparedStatement.setObject(1, clientId);
@@ -135,6 +112,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             }
             return orders;
         } catch (SQLException e) {
+            log.error("Error occurred while searching the orders by client ID", e);
             throw new DaoException(e);
         }
     }
@@ -155,6 +133,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             }
             return entity;
         } catch (SQLException e) {
+            log.error("Error occurred while creating the order", e);
             throw new DaoException(e);
         }
     }
@@ -169,6 +148,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             }
             return orders;
         } catch (SQLException e) {
+            log.error("Error occurred while searching all orders", e);
             throw new DaoException(e);
         }
     }
@@ -184,6 +164,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             }
             return Optional.ofNullable(order);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the order by ID", e);
             throw new DaoException(e);
         }
     }
@@ -201,6 +182,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             preparedStatement.setObject(8, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            log.error("Error occurred while updating the order", e);
             throw new DaoException(e);
         }
     }
@@ -211,6 +193,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Error occurred while deleting the order", e);
             throw new DaoException(e);
         }
     }

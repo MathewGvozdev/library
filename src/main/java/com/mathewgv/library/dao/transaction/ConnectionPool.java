@@ -1,4 +1,8 @@
-package com.mathewgv.library.util;
+package com.mathewgv.library.dao.transaction;
+
+import com.mathewgv.library.dao.exception.ConnectionPoolException;
+import com.mathewgv.library.util.PropertiesUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
@@ -9,7 +13,10 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public final class ConnectionPool {
+@Slf4j
+public class ConnectionPool {
+
+    private static final ConnectionPool INSTANCE = new ConnectionPool();
 
     private static final String URL_KEY = "db.url";
     private static final String USER_KEY = "db.user";
@@ -24,6 +31,9 @@ public final class ConnectionPool {
     static {
         loadDriver();
         initConnectionPool();
+    }
+
+    private ConnectionPool(){
     }
 
     private static void initConnectionPool() {
@@ -43,11 +53,12 @@ public final class ConnectionPool {
         }
     }
 
-    public static Connection get() {
+    public Connection get() {
         try {
             return pool.take();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            log.error("Error occurred while taking a connection from the pool", e);
+            throw new ConnectionPoolException(e);
         }
     }
 
@@ -58,17 +69,19 @@ public final class ConnectionPool {
                     PropertiesUtil.get(USER_KEY),
                     PropertiesUtil.get(PASSWORD_KEY));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error("Error occurred while opening connection with DriverManager", e);
+            throw new ConnectionPoolException(e);
         }
     }
 
-    public static void closePool() {
+    public void closePool() {
         try {
             for (Connection sourceConnection : sourceConnections) {
                 sourceConnection.close();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error("Error occurred while closing the pool", e);
+            throw new ConnectionPoolException(e);
         }
     }
 
@@ -76,7 +89,12 @@ public final class ConnectionPool {
         try {
             Class.forName(PropertiesUtil.get(DRIVER_KEY));
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            log.error("Error occurred while loading the driver for database", e);
+            throw new ConnectionPoolException(e);
         }
+    }
+
+    public static ConnectionPool getInstance() {
+        return INSTANCE;
     }
 }

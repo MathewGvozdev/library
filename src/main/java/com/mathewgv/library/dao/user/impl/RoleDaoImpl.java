@@ -4,9 +4,8 @@ import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.user.RoleDao;
 import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.entity.user.Role;
-import com.mathewgv.library.util.ConnectionPool;
+import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import java.util.Optional;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@Slf4j
 public class RoleDaoImpl extends DaoConnection implements RoleDao {
 
     private static final RoleDaoImpl INSTANCE = new RoleDaoImpl();
@@ -61,6 +61,7 @@ public class RoleDaoImpl extends DaoConnection implements RoleDao {
             }
             return entity;
         } catch (SQLException e) {
+            log.error("Error occurred while creating the role", e);
             throw new DaoException(e);
         }
     }
@@ -75,6 +76,7 @@ public class RoleDaoImpl extends DaoConnection implements RoleDao {
             }
             return roles;
         } catch (SQLException e) {
+            log.error("Error occurred while searching all roles", e);
             throw new DaoException(e);
         }
     }
@@ -90,6 +92,7 @@ public class RoleDaoImpl extends DaoConnection implements RoleDao {
             }
             return Optional.ofNullable(role);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the role by ID", e);
             throw new DaoException(e);
         }
     }
@@ -101,6 +104,7 @@ public class RoleDaoImpl extends DaoConnection implements RoleDao {
             preparedStatement.setObject(2, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            log.error("Error occurred while updating the role", e);
             throw new DaoException(e);
         }
     }
@@ -111,6 +115,7 @@ public class RoleDaoImpl extends DaoConnection implements RoleDao {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Error occurred while deleting the role", e);
             throw new DaoException(e);
         }
     }

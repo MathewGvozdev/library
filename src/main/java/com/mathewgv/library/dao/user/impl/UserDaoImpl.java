@@ -5,6 +5,7 @@ import com.mathewgv.library.dao.user.RoleDao;
 import com.mathewgv.library.dao.user.UserDao;
 import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.entity.user.User;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@Slf4j
 public class UserDaoImpl extends DaoConnection implements UserDao {
 
     private static final UserDaoImpl INSTANCE = new UserDaoImpl();
@@ -71,6 +73,7 @@ public class UserDaoImpl extends DaoConnection implements UserDao {
             }
             return Optional.ofNullable(user);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the user by email and password", e);
             throw new DaoException(e);
         }
     }
@@ -88,6 +91,7 @@ public class UserDaoImpl extends DaoConnection implements UserDao {
             }
             return entity;
         } catch (SQLException e) {
+            log.error("Error occurred while creating the user", e);
             throw new DaoException(e);
         }
     }
@@ -102,6 +106,7 @@ public class UserDaoImpl extends DaoConnection implements UserDao {
             }
             return users;
         } catch (SQLException e) {
+            log.error("Error occurred while searching all users", e);
             throw new DaoException(e);
         }
     }
@@ -117,6 +122,7 @@ public class UserDaoImpl extends DaoConnection implements UserDao {
             }
             return Optional.ofNullable(user);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the user by ID", e);
             throw new DaoException(e);
         }
     }
@@ -129,6 +135,7 @@ public class UserDaoImpl extends DaoConnection implements UserDao {
             preparedStatement.setObject(3, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            log.error("Error occurred while updating the user", e);
             throw new DaoException(e);
         }
     }
@@ -139,6 +146,7 @@ public class UserDaoImpl extends DaoConnection implements UserDao {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Error occurred while deleting the user", e);
             throw new DaoException(e);
         }
     }

@@ -5,9 +5,8 @@ import com.mathewgv.library.dao.user.UserDao;
 import com.mathewgv.library.dao.user.UserInfoDao;
 import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.entity.user.UserInfo;
-import com.mathewgv.library.util.ConnectionPool;
+import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import java.util.Optional;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@Slf4j
 public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
 
     private static final UserInfoDaoImpl INSTANCE = new UserInfoDaoImpl();
@@ -78,6 +78,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
             }
             return Optional.ofNullable(info);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the user's information by user ID", e);
             throw new DaoException(e);
         }
     }
@@ -97,6 +98,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
             }
             return entity;
         } catch (SQLException e) {
+            log.error("Error occurred while creating the user's information", e);
             throw new DaoException(e);
         }
     }
@@ -111,6 +113,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
             }
             return infos;
         } catch (SQLException e) {
+            log.error("Error occurred while searching all user's information", e);
             throw new DaoException(e);
         }
     }
@@ -126,6 +129,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
             }
             return Optional.ofNullable(info);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the user's information by ID", e);
             throw new DaoException(e);
         }
     }
@@ -141,6 +145,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
             preparedStatement.setObject(6, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            log.error("Error occurred while updating the user's information", e);
             throw new DaoException(e);
         }
     }
@@ -151,6 +156,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Error occurred while deleting the user's information", e);
             throw new DaoException(e);
         }
     }

@@ -5,17 +5,16 @@ import com.mathewgv.library.dao.book.BookDao;
 import com.mathewgv.library.dao.book.BookMetaDao;
 import com.mathewgv.library.dao.book.PublisherDao;
 import com.mathewgv.library.dao.exception.DaoException;
-import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.entity.book.Book;
-import com.mathewgv.library.util.ConnectionPool;
+import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@Slf4j
 public class BookDaoImpl extends DaoConnection implements BookDao {
 
     private static final BookDaoImpl INSTANCE = new BookDaoImpl();
@@ -78,6 +77,7 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
             }
             return Optional.ofNullable(book);
         } catch (SQLException e) {
+            log.error("Error occurred while searching some book by book-meta ID", e);
             throw new DaoException(e);
         }
     }
@@ -96,6 +96,7 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
             }
             return entity;
         } catch (SQLException e) {
+            log.error("Error occurred while creating the book", e);
             throw new DaoException(e);
         }
     }
@@ -110,6 +111,7 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
             }
             return books;
         } catch (SQLException e) {
+            log.error("Error occurred while searching all books", e);
             throw new DaoException(e);
         }
     }
@@ -125,6 +127,7 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
             }
             return Optional.ofNullable(book);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the book by ID", e);
             throw new DaoException(e);
         }
     }
@@ -139,6 +142,7 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
             preparedStatement.setObject(5, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            log.error("Error occurred while updating the book", e);
             throw new DaoException(e);
         }
     }
@@ -149,6 +153,7 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Error occurred while deleting the book", e);
             throw new DaoException(e);
         }
     }

@@ -1,17 +1,20 @@
 package com.mathewgv.library.dao.exception;
 
-import java.sql.SQLException;
-
 public class DaoException extends RuntimeException {
 
-    private final String message;
-
-    public DaoException(SQLException e) {
-        message = e.getMessage();
+    public DaoException() {
+        super();
     }
 
-    @Override
-    public String getMessage() {
-        return message;
+    public DaoException(String message) {
+        super(message);
+    }
+
+    public DaoException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public DaoException(Throwable cause) {
+        super(cause);
     }
 }

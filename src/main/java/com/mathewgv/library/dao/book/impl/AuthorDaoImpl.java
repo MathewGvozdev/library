@@ -4,9 +4,7 @@ import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.book.AuthorDao;
 import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.entity.book.Author;
-import com.mathewgv.library.util.ConnectionPool;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 
 import java.sql.*;
 import java.util.*;
@@ -77,7 +75,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             }
             return Optional.ofNullable(author);
         } catch (SQLException e) {
-            log.error("Error occurred while searching by name and surname", e);
+            log.error("Error occurred while searching the author by name and surname", e);
             throw new DaoException(e);
         }
     }
@@ -93,22 +91,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             }
             return authors;
         } catch (SQLException e) {
-            log.error("Error occurred while searching by name and surname", e);
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public List<Author> findAllAuthorsOfTheBook(String bookMetaTitle) throws DaoException {
-        try (var preparedStatement = connection.get().prepareStatement(FIND_AUTHORS_OF_THE_BOOK_BY_TITLE_SQL)) {
-            preparedStatement.setObject(1, bookMetaTitle);
-            var resultSet = preparedStatement.executeQuery();
-            List<Author> authors = new ArrayList<>();
-            while (resultSet.next()) {
-                authors.add(buildAuthor(resultSet));
-            }
-            return authors;
-        } catch (SQLException e) {
+            log.error("Error occurred while searching authors of the book", e);
             throw new DaoException(e);
         }
     }
@@ -125,6 +108,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             }
             return entity;
         } catch (SQLException e) {
+            log.error("Error occurred while creating the author", e);
             throw new DaoException(e);
         }
     }
@@ -139,6 +123,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             }
             return authors;
         } catch (SQLException e) {
+            log.error("Error occurred while searching all authors", e);
             throw new DaoException(e);
         }
     }
@@ -154,6 +139,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             }
             return Optional.ofNullable(author);
         } catch (SQLException e) {
+            log.error("Error occurred while searching an author by ID", e);
             throw new DaoException(e);
         }
     }
@@ -166,6 +152,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             preparedStatement.setObject(3, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            log.error("Error occurred while updating the author", e);
             throw new DaoException(e);
         }
     }
@@ -176,6 +163,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Error occurred while deleting the author", e);
             throw new DaoException(e);
         }
     }

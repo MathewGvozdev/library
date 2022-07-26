@@ -9,7 +9,9 @@ import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Logout implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -20,6 +22,7 @@ public class Logout implements Command {
             req.getSession().invalidate();
             return new Router(req.getContextPath() + "/home", RoutingType.REDIRECT);
         } catch (ServiceException e) {
+            log.error("Failure to logout", e);
             req.setAttribute(AttributeName.ERROR, "Error in login");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }

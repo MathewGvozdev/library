@@ -11,7 +11,9 @@ import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AddPublisher implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -40,19 +42,10 @@ public class AddPublisher implements Command {
             }
             return new Router(JspHelper.getPath(JspPath.ADD_PUBLISHER), RoutingType.FORWARD);
         } catch (ServiceException e) {
+            log.error("Failure to add a new publisher", e);
             req.setAttribute(AttributeName.ERROR, "Error in adding author");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
-//        try {
-//            if (req.getParameter(TITLE) != null && req.getParameter(CITY) != null) {
-//                var publisher = serviceFactory.getBookService().addPublisher(buildPublisherDto(req));
-//                req.setAttribute("publisher", publisher);
-//            }
-//            return new Router(JspHelper.getPath(JSP_NAME), RoutingType.FORWARD);
-//        } catch (ServiceException e) {
-//            req.setAttribute("error", "Error in adding new publisher");
-//            return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
-//        }
     }
 
     private PublisherDto buildPublisherDto(HttpServletRequest req) {

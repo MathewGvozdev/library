@@ -9,9 +9,5 @@ import java.util.Optional;
 
 public interface OrderDao extends Dao<Long, Order> {
 
-    void updateStatus(Order order) throws DaoException;
-
     List<Order> findAllOrdersByClientId(Integer clientId) throws DaoException;
-
-    void updateWhenBookIsReturned(Order order) throws DaoException;
 }

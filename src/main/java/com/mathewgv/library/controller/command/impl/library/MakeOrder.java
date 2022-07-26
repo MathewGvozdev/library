@@ -5,8 +5,6 @@ import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.entity.order.LoanType;
 import com.mathewgv.library.entity.order.OrderStatus;
-import com.mathewgv.library.service.BookService;
-import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.service.dto.OrderCreationDto;
 import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.service.exception.ServiceException;
@@ -16,10 +14,11 @@ import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 public class MakeOrder implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -54,6 +53,7 @@ public class MakeOrder implements Command {
             }
             return new Router(JspHelper.getPath(JspPath.MAKE_ORDER), RoutingType.FORWARD);
         } catch (ServiceException e) {
+            log.error("Failure to make the order", e);
             req.setAttribute(AttributeName.ERROR, "Error in making an order");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }

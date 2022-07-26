@@ -13,6 +13,4 @@ public interface GenreDao extends Dao<Integer, Genre> {
     Optional<Genre> findByTitle(String title) throws DaoException;
 
     List<Genre> findAllGenresOfTheBook(Integer bookMetaId) throws DaoException;
-
-    List<Genre> findAllGenresOfTheBook(String bookMetaTitle) throws DaoException;
 }

@@ -13,9 +13,11 @@ import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+@Slf4j
 public class UpdateOrder implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -41,6 +43,7 @@ public class UpdateOrder implements Command {
                 return new Router(req.getContextPath() + "/home?cmd=find_all_orders", RoutingType.REDIRECT);
             }
         } catch (ServiceException e) {
+            log.error("Failure to update the order", e);
             req.setAttribute(AttributeName.ERROR, "Error in updating");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }

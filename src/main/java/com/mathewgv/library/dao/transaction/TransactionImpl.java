@@ -12,10 +12,12 @@ import com.mathewgv.library.dao.user.UserInfoDao;
 import com.mathewgv.library.mapper.Mapper;
 import com.mathewgv.library.mapper.factory.MapperFactory;
 import com.mathewgv.library.mapper.impl.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Slf4j
 public class TransactionImpl implements Transaction {
 
     private final Connection connection;
@@ -146,6 +148,7 @@ public class TransactionImpl implements Transaction {
         try {
             connection.commit();
         } catch (SQLException e) {
+            log.error("Error occurred while committing the connection", e);
             throw new DaoException(e);
         }
     }
@@ -156,6 +159,7 @@ public class TransactionImpl implements Transaction {
         try {
             connection.close();
         } catch (SQLException e) {
+            log.error("Error occurred while closing the connection", e);
             throw new DaoException(e);
         }
 
@@ -166,6 +170,7 @@ public class TransactionImpl implements Transaction {
         try {
             connection.rollback();
         } catch (SQLException e) {
+            log.error("Error occurred while rolling back the connection", e);
             throw new DaoException(e);
         }
     }

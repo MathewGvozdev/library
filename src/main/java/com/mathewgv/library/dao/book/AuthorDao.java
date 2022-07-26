@@ -13,6 +13,4 @@ public interface AuthorDao extends Dao<Integer, Author> {
     Optional<Author> findByNameAndSurname(String firstName, String surname);
 
     List<Author> findAllAuthorsOfTheBook(Integer bookMetaId) throws DaoException;
-
-    List<Author> findAllAuthorsOfTheBook(String bookMetaTitle) throws DaoException;
 }

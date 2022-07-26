@@ -9,6 +9,7 @@ import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.entity.book.Author;
 import com.mathewgv.library.entity.book.BookMeta;
 import com.mathewgv.library.entity.book.Genre;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import java.util.*;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@Slf4j
 public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
 
     private static final BookMetaDaoImpl INSTANCE = new BookMetaDaoImpl();
@@ -107,6 +109,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             }
             return bookMetas;
         } catch (SQLException e) {
+            log.error("Error occurred while searching book-metas by filter", e);
             throw new DaoException(e);
         }
     }
@@ -139,6 +142,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
 
             return entity;
         } catch (SQLException e) {
+            log.error("Error occurred while creating the book-meta", e);
             throw new DaoException(e);
         }
     }
@@ -153,6 +157,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             }
             return bookMetas;
         } catch (SQLException e) {
+            log.error("Error occurred while searching all book-metas", e);
             throw new DaoException(e);
         }
     }
@@ -168,6 +173,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             }
             return Optional.ofNullable(bookMeta);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the book-meta by ID", e);
             throw new DaoException(e);
         }
     }
@@ -180,6 +186,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             preparedStatement.setObject(3, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            log.error("Error occurred while updating the book-meta", e);
             throw new DaoException(e);
         }
     }
@@ -196,6 +203,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
                    && psForAuthorBookMetaLink.executeUpdate() > 0
                    && psForBookMetaGenreLink.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Error occurred while deleting the book-meta", e);
             throw new DaoException(e);
         }
     }

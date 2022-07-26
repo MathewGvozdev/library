@@ -10,10 +10,6 @@ import java.util.Optional;
 
 public interface LibraryService {
 
-    void updateStatus(OrderCreationDto orderCreationDto) throws ServiceException;
-
-    void updateWhenBookIsReturned(OrderCreationDto orderCreationDto) throws ServiceException;
-
     List<OrderDto> findAllOrdersByClientId(Integer clientId) throws ServiceException;
 
     Order makeOrder(OrderCreationDto orderCreationDto) throws ServiceException;

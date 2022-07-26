@@ -10,7 +10,9 @@ import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class FindAllBookMetas implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -22,6 +24,7 @@ public class FindAllBookMetas implements Command {
             req.setAttribute(AttributeName.BOOK_METAS, allBookMetas);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOK_METAS), RoutingType.FORWARD);
         } catch (ServiceException e) {
+            log.error("Failure to find all book-metas", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching book metas");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }

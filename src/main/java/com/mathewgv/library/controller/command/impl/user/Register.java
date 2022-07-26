@@ -12,7 +12,9 @@ import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Register implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -37,6 +39,7 @@ public class Register implements Command {
                 return new Router(req.getContextPath() + "/home?cmd=login", RoutingType.REDIRECT);
             }
         } catch (ServiceException e) {
+            log.error("Failure to register a new user", e);
             req.setAttribute(AttributeName.ERROR, "Error in registration");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }

@@ -4,9 +4,8 @@ import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.book.PublisherDao;
 import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.entity.book.Publisher;
-import com.mathewgv.library.util.ConnectionPool;
+import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import java.util.Optional;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@Slf4j
 public class PublisherDaoImpl extends DaoConnection implements PublisherDao {
 
     private static final PublisherDaoImpl INSTANCE = new PublisherDaoImpl();
@@ -64,6 +64,7 @@ public class PublisherDaoImpl extends DaoConnection implements PublisherDao {
             }
             return entity;
         } catch (SQLException e) {
+            log.error("Error occurred while creating the publisher", e);
             throw new DaoException(e);
         }
     }
@@ -78,6 +79,7 @@ public class PublisherDaoImpl extends DaoConnection implements PublisherDao {
             }
             return publishers;
         } catch (SQLException e) {
+            log.error("Error occurred while searching all publishers", e);
             throw new DaoException(e);
         }
     }
@@ -93,6 +95,7 @@ public class PublisherDaoImpl extends DaoConnection implements PublisherDao {
             }
             return Optional.ofNullable(publisher);
         } catch (SQLException e) {
+            log.error("Error occurred while searching the publisher by ID", e);
             throw new DaoException(e);
         }
     }
@@ -105,6 +108,7 @@ public class PublisherDaoImpl extends DaoConnection implements PublisherDao {
             preparedStatement.setObject(3, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            log.error("Error occurred while updating the publisher", e);
             throw new DaoException(e);
         }
     }
@@ -115,6 +119,7 @@ public class PublisherDaoImpl extends DaoConnection implements PublisherDao {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
+            log.error("Error occurred while deleting the publisher", e);
             throw new DaoException(e);
         }
     }

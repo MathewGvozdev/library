@@ -11,9 +11,11 @@ import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+@Slf4j
 public class FindAllBooks implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -25,6 +27,7 @@ public class FindAllBooks implements Command {
             req.setAttribute(AttributeName.BOOKS, allBooks);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOKS), RoutingType.FORWARD);
         } catch (ServiceException e) {
+            log.error("Failure to find all books", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching books");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
