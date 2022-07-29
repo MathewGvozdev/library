@@ -5,6 +5,7 @@ import com.mathewgv.library.dao.book.BookDao;
 import com.mathewgv.library.dao.book.BookMetaDao;
 import com.mathewgv.library.dao.book.PublisherDao;
 import com.mathewgv.library.dao.exception.DaoException;
+import com.mathewgv.library.dao.filter.SelectFilter;
 import com.mathewgv.library.entity.book.Book;
 import lombok.extern.slf4j.Slf4j;
 
@@ -104,6 +105,24 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
     @Override
     public List<Book> findAll() throws DaoException {
         try (var preparedStatement = connection.get().prepareStatement(FIND_ALL_SQL)) {
+            var resultSet = preparedStatement.executeQuery();
+            List<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                books.add(buildBook(resultSet));
+            }
+            return books;
+        } catch (SQLException e) {
+            log.error("Error occurred while searching all books", e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Book> findAll(Integer page, Integer limit) throws DaoException {
+        var selectFilter = new SelectFilter(page, limit);
+        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
+        try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
+            selectFilter.setParamsToQuery(preparedStatement);
             var resultSet = preparedStatement.executeQuery();
             List<Book> books = new ArrayList<>();
             while (resultSet.next()) {

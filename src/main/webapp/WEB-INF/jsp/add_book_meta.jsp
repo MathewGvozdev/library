@@ -1,14 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
+    <%@ include file="header.jsp" %>
     <title>
         <fmt:message key="head.add.book.meta"/>
     </title>
 </head>
 <body>
-<%@ include file="header.jsp" %>
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
       method="post">
     <fmt:message key="page.book.metas.msg"/>:<br>

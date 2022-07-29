@@ -20,6 +20,7 @@ public class UserMapper extends DaoConnection implements Mapper<UserInfo, UserDt
                 .firstName(object.getFirstName())
                 .surname(object.getSurname())
                 .telephone(object.getTelephone())
+                .role(object.getUser().getRole().getTitle())
                 .build();
     }
 

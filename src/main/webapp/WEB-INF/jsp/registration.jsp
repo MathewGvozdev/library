@@ -1,13 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : (param.lang != null ? param.lang : 'ru_RU')}"/>
+<fmt:setBundle basename="translations"/>
 <html>
 <head>
     <title><fmt:message key="head.registration"/></title>
 </head>
 <body>
-<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : (param.lang != null ? param.lang : 'ru_RU')}"/>
-<fmt:setBundle basename="translations"/>
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
       method="post">
     <label for="firstName">

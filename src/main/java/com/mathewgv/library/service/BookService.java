@@ -20,9 +20,9 @@ public interface BookService {
 
     Publisher addPublisher(PublisherDto genreDto) throws ServiceException;
 
-    List<BookDto> findAllBooks() throws ServiceException;
+    List<BookDto> findAllBooks(Integer page, Integer limit) throws ServiceException;
 
-    List<BookMetaDto> findAllBookMetas() throws ServiceException;
+    List<BookMetaDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException;
 
     List<BookMetaDto> findAllBookMetasByFilter(BookFilter filter) throws ServiceException;
 

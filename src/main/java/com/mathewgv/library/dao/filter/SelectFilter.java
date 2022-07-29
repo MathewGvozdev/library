@@ -1,9 +1,11 @@
 package com.mathewgv.library.dao.filter;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SelectFilter {
+public class SelectFilter {
 
     private final Integer limit;
     private final Integer offset;
@@ -11,14 +13,26 @@ public abstract class SelectFilter {
     private final List<Object> parameters = new ArrayList<>();
     private final List<String> conditions = new ArrayList<>();
 
-    public SelectFilter(Integer page) {
-        this.limit = 10;
-        this.offset = (page - 1) * 10;
+    public SelectFilter(Integer page, Integer limit) {
+        this.limit = limit;
+        this.offset = (page - 1) * limit;
     }
 
-    public abstract String getSqlRequest(String selectSql);
+    public void setParamsToQuery(PreparedStatement preparedStatement) throws SQLException {
+        for (int i = 0; i < this.getConditionsSize(); i++) {
+            preparedStatement.setObject(i + 1, this.getParameterValue(i));
+        }
+    }
 
-    protected abstract void initConditions();
+    public String getSqlRequest(String selectSql) {
+        initConditions();
+        return selectSql + " LIMIT ? OFFSET ?";
+    }
+
+    protected void initConditions() {
+        addParameter(getLimit());
+        addParameter(getOffset());
+    }
 
     public int getConditionsSize() {
         return getConditions().size() + 2; //limit and offset conditions also

@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface BookMetaDao extends Dao<Integer, BookMeta> {
 
     List<BookMeta> findAllByFilter(BookFilter filter);
+
+    List<BookMeta> findAll(Integer page, Integer limit) throws DaoException;
 }

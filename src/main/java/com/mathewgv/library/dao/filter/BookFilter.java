@@ -15,11 +15,12 @@ public class BookFilter extends SelectFilter {
     private static final String SERIES = "bm.series LIKE ?";
 
     public BookFilter(Integer page,
+                      Integer limit,
                       String title,
                       String author,
                       String genre,
                       String series) {
-        super(page);
+        super(page, limit);
         this.title = title;
         this.author = author;
         this.genre = genre;
@@ -33,9 +34,15 @@ public class BookFilter extends SelectFilter {
     @Override
     public String getSqlRequest(String selectSql) {
         initConditions();
-        String havingSqlCondition = getConditions().stream()
-                .collect(joining(" AND ", "HAVING ", " LIMIT ? OFFSET ?"));
-        return selectSql + havingSqlCondition;
+        String sqlRequest;
+        if (getConditions().size() == 0) {
+            sqlRequest = selectSql + " LIMIT ? OFFSET ?";
+        } else {
+            String havingSqlCondition = getConditions().stream()
+                    .collect(joining(" AND ", "HAVING ", " LIMIT ? OFFSET ?"));
+            sqlRequest = selectSql + havingSqlCondition;
+        }
+        return sqlRequest;
     }
 
     @Override
@@ -94,6 +101,7 @@ public class BookFilter extends SelectFilter {
 
     public static class BookFilterBuilder {
         private Integer page;
+        private Integer limit;
         private String title;
         private String author;
         private String genre;
@@ -104,6 +112,11 @@ public class BookFilter extends SelectFilter {
 
         public BookFilterBuilder page(Integer page) {
             this.page = page;
+            return this;
+        }
+
+        public BookFilterBuilder limit(Integer limit) {
+            this.limit = limit;
             return this;
         }
 
@@ -129,7 +142,7 @@ public class BookFilter extends SelectFilter {
 
 
         public BookFilter build() {
-            return new BookFilter(page, title, author, genre, series);
+            return new BookFilter(page, limit, title, author, genre, series);
         }
     }
 }

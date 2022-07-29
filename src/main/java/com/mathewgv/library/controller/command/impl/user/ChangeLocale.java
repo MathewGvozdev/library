@@ -6,9 +6,12 @@ import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 @Slf4j
 public class ChangeLocale implements Command {

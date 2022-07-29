@@ -1,14 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
+    <%@ include file="header.jsp" %>
     <title>
         <fmt:message key="head.book.by.id"/>
     </title>
 </head>
 <body>
-<%@ include file="header.jsp" %>
 ID: ${requestScope.book.id}<br>
 <fmt:message key="page.book.metas.title"/>: ${requestScope.book.title}<br>
 <fmt:message key="page.book.metas.author"/>: ${requestScope.book.authors}<br>

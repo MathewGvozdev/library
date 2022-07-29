@@ -9,9 +9,12 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 @Slf4j
 public class AddPublisher implements Command {
@@ -23,7 +26,7 @@ public class AddPublisher implements Command {
     private static final String CONFIRM = "cfm";
 
     @Override
-    public Router execute(HttpServletRequest req, HttpServletResponse resp) {
+    public Router execute(HttpServletRequest req, HttpServletResponse resp){
         try {
             var bookService = serviceFactory.getBookService();
             if (req.getParameter(CONFIRM) == null) {

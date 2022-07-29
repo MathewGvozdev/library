@@ -4,7 +4,7 @@ public enum CommandName {
 
     LOGIN,
     LOGOUT,
-    REGISTER,
+    REGISTRATION,
     FIND_USER_INFO,
     CHANGE_LOCALE,
 
@@ -25,5 +25,9 @@ public enum CommandName {
     FIND_BOOK_BY_ID,
 
     HOME,
-    WRONG_REQUEST
+    WRONG_REQUEST;
+
+    public String convertToString() {
+        return this.name().toLowerCase();
+    }
 }

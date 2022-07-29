@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title><fmt:message key="head.update.order"/></title>
+    <%@ include file="header.jsp" %>
+    <title>
+        <fmt:message key="head.update.order"/>
+    </title>
     <style>
         table {
             border: 1px solid grey;
@@ -18,7 +20,7 @@
     </style>
 </head>
 <body>
-<%@ include file="header.jsp" %>
+
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
       method="post">
     <table>

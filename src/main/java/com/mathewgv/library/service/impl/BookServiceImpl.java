@@ -1,5 +1,6 @@
 package com.mathewgv.library.service.impl;
 
+import com.mathewgv.library.dao.filter.SelectFilter;
 import com.mathewgv.library.dao.transaction.TransactionFactory;
 import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.entity.book.*;
@@ -98,11 +99,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findAllBooks() throws ServiceException {
+    public List<BookDto> findAllBooks(Integer page, Integer limit) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookDao();
             var bookMapper = transaction.getBookMapper();
-            return bookDao.findAll().stream()
+            return bookDao.findAll(page, limit).stream()
                     .map(bookMapper::mapFrom)
                     .collect(toList());
         } catch (Exception e) {
@@ -112,11 +113,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookMetaDto> findAllBookMetas() throws ServiceException {
+    public List<BookMetaDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookMetaDao();
             var bookMetaMapper = transaction.getBookMetaMapper();
-            return bookDao.findAll().stream()
+            return bookDao.findAll(page, limit).stream()
                     .map(bookMetaMapper::mapFrom)
                     .collect(toList());
         } catch (Exception e) {
@@ -164,21 +165,6 @@ public class BookServiceImpl implements BookService {
                     .findFirst();
         } catch (Exception e) {
             log.error("Failure to find book by ID", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public void updateBook(BookDto bookDto) throws ServiceException {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var bookDao = transaction.getBookDao();
-            var bookCreationMapper = transaction.getBookCreationMapper();
-            bookDao.update(bookCreationMapper.mapFrom(bookDto));
-            var updatedBook = bookDao.findById(bookDto.getId()).orElse(null);
-            transaction.commit();
-            log.info("The book with id[{}] was updated, current book: {}", bookDto.getId(), updatedBook);
-        } catch (Exception e) {
-            log.error("Failure to update the book", e);
             throw new ServiceException(e);
         }
     }

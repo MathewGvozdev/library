@@ -9,9 +9,12 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 @Slf4j
 public class FindAllBookMetasByFilter implements Command {
@@ -23,6 +26,7 @@ public class FindAllBookMetasByFilter implements Command {
     private static final String GENRES = "genres";
     private static final String SERIES = "series";
     private static final String PAGE = "page";
+    private static final Integer SHOWED_BOOK_METAS_LIMIT = 10;
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -41,6 +45,7 @@ public class FindAllBookMetasByFilter implements Command {
     private BookFilter buildBookFilter(HttpServletRequest req) {
         return BookFilter.builder()
                 .page(Integer.parseInt(req.getParameter(PAGE)))
+                .limit(SHOWED_BOOK_METAS_LIMIT)
                 .title(req.getParameter(TITLE))
                 .author(req.getParameter(AUTHORS))
                 .genre(req.getParameter(GENRES))

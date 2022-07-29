@@ -9,9 +9,12 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 @Slf4j
 public class AddBook implements Command {
@@ -28,6 +31,7 @@ public class AddBook implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
+//            req.setAttribute("publishers", bookService.findAllPublishers());
             if (req.getParameter(CONFIRM) == null) {
                 return new Router(JspHelper.getPath(JspPath.ADD_BOOK), RoutingType.FORWARD);
             } else if (req.getParameter(CONFIRM).equals("")) {

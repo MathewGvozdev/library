@@ -6,12 +6,14 @@ import com.mathewgv.library.controller.command.impl.library.*;
 import com.mathewgv.library.controller.command.impl.user.ChangeLocale;
 import com.mathewgv.library.controller.command.impl.user.Login;
 import com.mathewgv.library.controller.command.impl.user.Logout;
-import com.mathewgv.library.controller.command.impl.user.Register;
+import com.mathewgv.library.controller.command.impl.user.Registration;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandProvider {
+
+    private static final CommandProvider INSTANCE = new CommandProvider();
 
     private final Map<CommandName, Command> repository = new HashMap<>();
 
@@ -32,7 +34,7 @@ public class CommandProvider {
 
         repository.put(CommandName.LOGIN, new Login());
         repository.put(CommandName.LOGOUT, new Logout());
-        repository.put(CommandName.REGISTER, new Register());
+        repository.put(CommandName.REGISTRATION, new Registration());
         repository.put(CommandName.CHANGE_LOCALE, new ChangeLocale());
 
         repository.put(CommandName.FIND_ALL_ORDERS, new FindAllOrders());
@@ -53,5 +55,9 @@ public class CommandProvider {
             command = repository.get(CommandName.WRONG_REQUEST);
         }
         return command;
+    }
+
+    public static CommandProvider getInstance() {
+        return INSTANCE;
     }
 }
