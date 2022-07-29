@@ -1,11 +1,13 @@
 package com.mathewgv.library.entity.book;
 
-import com.mathewgv.library.entity.Entity;
-
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Author extends Entity {
+public class Author implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1741986172323358987L;
     private Integer id;
     private String firstName;
     private String surname;

@@ -1,14 +1,17 @@
 package com.mathewgv.library.entity.order;
 
-import com.mathewgv.library.entity.Entity;
 import com.mathewgv.library.entity.book.Book;
 import com.mathewgv.library.entity.user.User;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Order extends Entity {
+public class Order implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 6286423933793015070L;
     private Long id;
     private User client;
     private Book book;

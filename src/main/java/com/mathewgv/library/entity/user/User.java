@@ -1,11 +1,13 @@
 package com.mathewgv.library.entity.user;
 
-import com.mathewgv.library.entity.Entity;
-
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class User extends Entity {
+public class User implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 8636693797328240419L;
     private Integer id;
     private String login;
     private String password;
