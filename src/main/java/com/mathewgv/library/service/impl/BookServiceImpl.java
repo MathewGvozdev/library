@@ -1,6 +1,9 @@
 package com.mathewgv.library.service.impl;
 
-import com.mathewgv.library.dao.filter.SelectFilter;
+import com.mathewgv.library.dao.book.AuthorDao;
+import com.mathewgv.library.dao.book.BookMetaDao;
+import com.mathewgv.library.dao.book.GenreDao;
+import com.mathewgv.library.dao.transaction.Transaction;
 import com.mathewgv.library.dao.transaction.TransactionFactory;
 import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.entity.book.*;
@@ -10,6 +13,7 @@ import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.validation.FilterValidator;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,27 +27,15 @@ public class BookServiceImpl implements BookService {
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
 
     @Override
-    public Author addAuthor(AuthorDto authorDto) throws ServiceException {
+    public Book addBookTest(BookDto bookDto) {
         try (var transaction = transactionFactory.getTransaction()) {
-            var authorDao = transaction.getAuthorDao();
-            var authorCreationMapper = transaction.getAuthorCreationMapper();
-            var author = authorDao.create(authorCreationMapper.mapFrom(authorDto));
-            log.info("New author is added to database: {}", author);
-            transaction.commit();
-            return author;
-        } catch (Exception e) {
-            log.error("Failure to add a new author", e);
-            throw new ServiceException(e);
-        }
-    }
+            var bookMeta = addBookMetaIfNotExist(transaction, bookDto);
+            var publisher = addPublisherIfNotExist(transaction, bookDto);
 
-    @Override
-    public Book addBook(BookDto bookDto) throws ServiceException {
-//        Validator.isValid(bookDto);
-        try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookDao();
-            var bookCreationMapper = transaction.getBookCreationMapper();
-            var book = bookDao.create(bookCreationMapper.mapFrom(bookDto));
+            var pages = bookDto.getPages();
+            var publicationYear = bookDto.getPublicationYear();
+            var book = bookDao.create(new Book(publisher, bookMeta, pages, publicationYear));
             log.info("New book is added to database: {}", book);
             transaction.commit();
             return book;
@@ -53,49 +45,66 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    @Override
-    public BookMeta addBookMeta(BookMetaDto bookMetaDto) throws ServiceException {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var bookMetaDao = transaction.getBookMetaDao();
-            var bookMetaCreationMapper = transaction.getBookMetaCreationMapper();
-            var bookMeta = bookMetaDao.create(bookMetaCreationMapper.mapFrom(bookMetaDto));
-            log.info("New book-meta is added to database: {}", bookMeta);
-            transaction.commit();
-            return bookMeta;
-        } catch (Exception e) {
-            log.error("Failure to add a new book-meta", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public Genre addGenre(GenreDto genreDto) throws ServiceException {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var genreDao = transaction.getGenreDao();
-            var genreCreationMapper = transaction.getGenreCreationMapper();
-            var genre = genreDao.create(genreCreationMapper.mapFrom(genreDto));
-            log.info("New genre is added to database: {}", genre);
-            transaction.commit();
-            return genre;
-        } catch (Exception e) {
-            log.error("Failure to add a new genre", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public Publisher addPublisher(PublisherDto publisherDto) throws ServiceException {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var publisherDao = transaction.getPublisherDao();
-            var publisherCreationMapper = transaction.getPublisherCreationMapper();
-            var publisher = publisherDao.create(publisherCreationMapper.mapFrom(publisherDto));
+    private Publisher addPublisherIfNotExist(Transaction transaction, BookDto bookDto) {
+        var publisherDao = transaction.getPublisherDao();
+        var searchedPublisher = publisherDao.findByTitleAndCity(bookDto.getPublisher(), bookDto.getPublisherCity());
+        Publisher publisher;
+        if (searchedPublisher.isEmpty()) {
+            publisher = publisherDao.create(new Publisher(bookDto.getPublisher(), bookDto.getPublisherCity()));
             log.info("New publisher is added to database: {}", publisher);
-            transaction.commit();
-            return publisher;
-        } catch (Exception e) {
-            log.error("Failure to add a new publisher", e);
-            throw new ServiceException(e);
+        } else {
+            publisher = searchedPublisher.get();
         }
+        return publisher;
+    }
+
+    private BookMeta addBookMetaIfNotExist(Transaction transaction, BookDto bookDto) {
+        var authors = addAuthorsIfNotExist(transaction, bookDto);
+        var genres = addGenresIfNotExist(transaction, bookDto);
+        var bookMetaDao = transaction.getBookMetaDao();
+        var searchedBookMeta = bookMetaDao.findByTitle(bookDto.getTitle());
+        BookMeta bookMeta;
+        if (searchedBookMeta.isEmpty()) {
+            bookMeta = bookMetaDao.create(new BookMeta(bookDto.getTitle(), bookDto.getSeries(), authors, genres));
+            log.info("New bookMeta is added to database: {}", bookMeta);
+        } else {
+            bookMeta = searchedBookMeta.get();
+        }
+        return bookMeta;
+    }
+
+    private List<Author> addAuthorsIfNotExist(Transaction transaction, BookDto bookDto) {
+        var authors = transaction.getAuthorCreationMapper().mapFrom(bookDto);
+        List<Author> authorList = new ArrayList<>();
+        for (Author author : authors) {
+            var authorDao = transaction.getAuthorDao();
+            var searchedAuthor = authorDao.findByNameAndSurname(author.getFirstName(), author.getSurname());
+            if (searchedAuthor.isEmpty()) {
+                var newAuthor = authorDao.create(author);
+                authorList.add(newAuthor);
+                log.info("New author is added to database: {}", newAuthor);
+            } else {
+                authorList.add(searchedAuthor.get());
+            }
+        }
+        return authorList;
+    }
+
+    private List<Genre> addGenresIfNotExist(Transaction transaction, BookDto bookDto) {
+        var genres = transaction.getGenreCreationMapper().mapFrom(bookDto);
+        List<Genre> genreList = new ArrayList<>();
+        for (Genre genre : genres) {
+            var genreDao = transaction.getGenreDao();
+            var searchedGenre = genreDao.findByTitle(genre.getTitle());
+            if (searchedGenre.isEmpty()) {
+                var newGenre = genreDao.create(genre);
+                genreList.add(newGenre);
+                log.info("New genre is added to database: {}", newGenre);
+            } else {
+                genreList.add(searchedGenre.get());
+            }
+        }
+        return genreList;
     }
 
     @Override
@@ -113,7 +122,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookMetaDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException {
+    public List<BookDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookMetaDao();
             var bookMetaMapper = transaction.getBookMetaMapper();
@@ -127,7 +136,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookMetaDto> findAllBookMetasByFilter(BookFilter filter) throws ServiceException {
+    public List<BookDto> findAllBookMetasByFilter(BookFilter filter) throws ServiceException {
         FilterValidator.validate(filter);
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookMetaDao();

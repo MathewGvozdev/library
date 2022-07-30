@@ -49,7 +49,28 @@ public class PublisherDaoImpl extends DaoConnection implements PublisherDao {
             WHERE id = ?
             """;
 
+    private static final String FIND_BY_TITLE_AND_CITY_SQL = FIND_ALL_SQL + """
+            WHERE title = ? AND city = ?
+            """;
+
     private PublisherDaoImpl() {
+    }
+
+    @Override
+    public Optional<Publisher> findByTitleAndCity(String title, String city) throws DaoException {
+        try (var preparedStatement = connection.get().prepareStatement(FIND_BY_TITLE_AND_CITY_SQL)) {
+            preparedStatement.setObject(1, title);
+            preparedStatement.setObject(2, city);
+            var resultSet = preparedStatement.executeQuery();
+            Publisher publisher = null;
+            if (resultSet.next()) {
+                publisher = buildPublisher(resultSet);
+            }
+            return Optional.ofNullable(publisher);
+        } catch (SQLException e) {
+            log.error("Error occurred while searching the publisher by ID", e);
+            throw new DaoException(e);
+        }
     }
 
     @Override

@@ -72,38 +72,10 @@
         </button>
     </form>
 
-    <form action="${pageContext.request.contextPath}/home?cmd=add_author"
-          method="post">
-        <button type="submit">
-            <fmt:message key="page.index.add.author"/>
-        </button>
-    </form>
-
     <form action="${pageContext.request.contextPath}/home?cmd=add_book"
           method="post">
         <button type="submit">
             <fmt:message key="page.index.add.book.example"/>
-        </button>
-    </form>
-
-    <form action="${pageContext.request.contextPath}/home?cmd=add_book_meta"
-          method="post">
-        <button type="submit">
-            <fmt:message key="page.index.add.book"/>
-        </button>
-    </form>
-
-    <form action="${pageContext.request.contextPath}/home?cmd=add_genre"
-          method="post">
-        <button type="submit">
-            <fmt:message key="page.index.add.genre"/>
-        </button>
-    </form>
-
-    <form action="${pageContext.request.contextPath}/home?cmd=add_publisher"
-          method="post">
-        <button type="submit">
-            <fmt:message key="page.index.add.publisher"/>
         </button>
     </form>
 

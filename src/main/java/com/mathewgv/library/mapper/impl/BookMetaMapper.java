@@ -4,14 +4,14 @@ import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.book.impl.AuthorDaoImpl;
 import com.mathewgv.library.dao.book.impl.GenreDaoImpl;
 import com.mathewgv.library.dao.factory.DaoFactory;
-import com.mathewgv.library.service.dto.BookMetaDto;
+import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.entity.book.BookMeta;
 import com.mathewgv.library.entity.book.Genre;
 import com.mathewgv.library.mapper.Mapper;
 
 import static java.util.stream.Collectors.joining;
 
-public class BookMetaMapper extends DaoConnection implements Mapper<BookMeta, BookMetaDto> {
+public class BookMetaMapper extends DaoConnection implements Mapper<BookMeta, BookDto> {
 
     private static final BookMetaMapper INSTANCE = new BookMetaMapper();
 
@@ -21,12 +21,12 @@ public class BookMetaMapper extends DaoConnection implements Mapper<BookMeta, Bo
     }
 
     @Override
-    public BookMetaDto mapFrom(BookMeta object) {
+    public BookDto mapFrom(BookMeta object) {
         setConnectionForDependencies();
         String authorString = getAuthorsToString(object);
         String genreString = getGenresToString(object);
 
-        return BookMetaDto.builder()
+        return BookDto.builder()
                 .id(object.getId())
                 .title(object.getTitle())
                 .authors(authorString)

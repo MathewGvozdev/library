@@ -38,7 +38,7 @@ public class AddBook implements Command {
                 var bookDto = buildBookDto(req);
                 req.setAttribute(AttributeName.BOOK_DTO, bookDto);
             } else if (req.getParameter(CONFIRM).equals("y")) {
-                var book = bookService.addBook(buildBookDto(req));
+                var book = bookService.addBookTest(buildBookDto(req));
                 if (book.getId() != null) {
                     req.setAttribute(AttributeName.BOOK, book);
                     req.setAttribute(AttributeName.RESULT, "success");
@@ -56,8 +56,12 @@ public class AddBook implements Command {
 
     private BookDto buildBookDto(HttpServletRequest req) {
         return BookDto.builder()
-                .bookMetaId(Integer.parseInt(req.getParameter(BOOK_META_ID)))
-                .publisherId(Integer.parseInt(req.getParameter(PUBLISHER_ID)))
+                .title(req.getParameter("title"))
+                .authors(req.getParameter("authors"))
+                .genres(req.getParameter("genres"))
+                .series(req.getParameter("series"))
+                .publisher(req.getParameter("publisher"))
+                .publisherCity(req.getParameter("publisherCity"))
                 .pages(Integer.parseInt(req.getParameter(PAGES)))
                 .publicationYear(Integer.parseInt(req.getParameter(PUBLICATION_YEAR)))
                 .build();

@@ -76,6 +76,10 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             WHERE id = ?
             """;
 
+    private static final String FIND_BY_TITLE_SQL = FIND_ALL_SQL + """
+            WHERE title = ?
+            """;
+
     private static final String FIND_ALL_BY_FILTER_SQL = """
             SELECT bm.id,
                    bm.title,
@@ -94,6 +98,23 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             """;
 
     private BookMetaDaoImpl() {
+    }
+
+
+    @Override
+    public Optional<BookMeta> findByTitle (String title) throws DaoException {
+        try (var preparedStatement = connection.get().prepareStatement(FIND_BY_TITLE_SQL)) {
+            preparedStatement.setObject(1, title);
+            var resultSet = preparedStatement.executeQuery();
+            BookMeta bookMeta = null;
+            if (resultSet.next()) {
+                bookMeta = buildBookMeta(resultSet);
+            }
+            return Optional.ofNullable(bookMeta);
+        } catch (SQLException e) {
+            log.error("Error occurred while searching the book-meta by ID", e);
+            throw new DaoException(e);
+        }
     }
 
     @Override

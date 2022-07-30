@@ -1,11 +1,15 @@
 package com.mathewgv.library.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
-import com.mathewgv.library.service.dto.GenreDto;
+import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.entity.book.Genre;
 import com.mathewgv.library.mapper.Mapper;
 
-public class GenreCreationMapper extends DaoConnection implements Mapper<GenreDto, Genre> {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class GenreCreationMapper extends DaoConnection implements Mapper<BookDto, List<Genre>> {
 
     private static final GenreCreationMapper INSTANCE = new GenreCreationMapper();
 
@@ -13,10 +17,13 @@ public class GenreCreationMapper extends DaoConnection implements Mapper<GenreDt
     }
 
     @Override
-    public Genre mapFrom(GenreDto object) {
-        return new Genre(
-                object.getTitle()
-        );
+    public List<Genre> mapFrom(BookDto object) {
+        var genresString = Arrays.stream(object.getGenres().split(", ")).toList();
+        List<Genre> genres = new ArrayList<>();
+        for (String genre : genresString) {
+            genres.add(new Genre(genre));
+        }
+        return genres;
     }
 
     public static GenreCreationMapper getInstance() {

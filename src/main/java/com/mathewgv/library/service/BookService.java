@@ -10,21 +10,13 @@ import java.util.Optional;
 
 public interface BookService {
 
-    Author addAuthor(AuthorDto authorDto) throws ServiceException;
-
-    Book addBook(BookDto bookDto) throws ServiceException;
-
-    BookMeta addBookMeta(BookMetaDto bookMetaDto) throws ServiceException;
-
-    Genre addGenre(GenreDto genreDto) throws ServiceException;
-
-    Publisher addPublisher(PublisherDto genreDto) throws ServiceException;
+    Book addBookTest(BookDto bookDto);
 
     List<BookDto> findAllBooks(Integer page, Integer limit) throws ServiceException;
 
-    List<BookMetaDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException;
+    List<BookDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException;
 
-    List<BookMetaDto> findAllBookMetasByFilter(BookFilter filter) throws ServiceException;
+    List<BookDto> findAllBookMetasByFilter(BookFilter filter) throws ServiceException;
 
     Optional<BookDto> findAnyBookByBookMetaId(Integer bookMetaId) throws ServiceException;
 

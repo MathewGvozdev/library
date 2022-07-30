@@ -15,7 +15,7 @@
         <input type="text"
                name="login"
                id="login"
-               value="${param.user}" required>
+               value="${param.login}" required>
     </label><br>
     <label for="password">
         <fmt:message key="page.login.password"/>:
@@ -26,7 +26,7 @@
     <button type="submit">
         <fmt:message key="page.button.sign.in"/>
     </button>
-    <a href="${pageContext.request.contextPath}/home?cmd=register">
+    <a href="${pageContext.request.contextPath}/home?cmd=registration">
         <button type="button">
             <fmt:message key="page.button.registration"/>
         </button>

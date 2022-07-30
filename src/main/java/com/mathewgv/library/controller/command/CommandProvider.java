@@ -21,10 +21,6 @@ public class CommandProvider {
         repository.put(CommandName.HOME, new Home());
 
         repository.put(CommandName.ADD_BOOK, new AddBook());
-        repository.put(CommandName.ADD_AUTHOR, new AddAuthor());
-        repository.put(CommandName.ADD_BOOK_META, new AddBookMeta());
-        repository.put(CommandName.ADD_GENRE, new AddGenre());
-        repository.put(CommandName.ADD_PUBLISHER, new AddPublisher());
         repository.put(CommandName.DELETE_BOOK, new DeleteBook());
         repository.put(CommandName.FIND_ALL_BOOK_METAS, new FindAllBookMetas());
         repository.put(CommandName.FIND_ALL_BOOK_METAS_BY_FILTER, new FindAllBookMetasByFilter());

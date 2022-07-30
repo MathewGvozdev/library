@@ -1,11 +1,15 @@
 package com.mathewgv.library.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
-import com.mathewgv.library.service.dto.AuthorDto;
 import com.mathewgv.library.entity.book.Author;
 import com.mathewgv.library.mapper.Mapper;
+import com.mathewgv.library.service.dto.BookDto;
 
-public class AuthorCreationMapper extends DaoConnection implements Mapper<AuthorDto, Author> {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class AuthorCreationMapper extends DaoConnection implements Mapper<BookDto, List<Author>> {
 
     private static final AuthorCreationMapper INSTANCE = new AuthorCreationMapper();
 
@@ -13,10 +17,14 @@ public class AuthorCreationMapper extends DaoConnection implements Mapper<Author
     }
 
     @Override
-    public Author mapFrom(AuthorDto object) {
-        return new Author(
-                object.getName(),
-                object.getSurname());
+    public List<Author> mapFrom(BookDto object) {
+        var authorsString = Arrays.stream(object.getAuthors().split(", ")).toList();
+        List<Author> authors = new ArrayList<>();
+        for (String author : authorsString) {
+            var nameAndSurname = author.split(" ");
+            authors.add(new Author(nameAndSurname[0], nameAndSurname[1]));
+        }
+        return authors;
     }
 
     public static AuthorCreationMapper getInstance() {

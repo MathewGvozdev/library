@@ -85,18 +85,8 @@ public class TransactionImpl implements Transaction {
     }
 
     @Override
-    public BookCreationMapper getBookCreationMapper() {
-        return setConnection(mapperFactory.getBookCreationMapper());
-    }
-
-    @Override
     public BookMapper getBookMapper() {
         return setConnection(mapperFactory.getBookMapper());
-    }
-
-    @Override
-    public BookMetaCreationMapper getBookMetaCreationMapper() {
-        return setConnection(mapperFactory.getBookMetaCreationMapper());
     }
 
     @Override
@@ -107,11 +97,6 @@ public class TransactionImpl implements Transaction {
     @Override
     public GenreCreationMapper getGenreCreationMapper() {
         return setConnection(mapperFactory.getGenreCreationMapper());
-    }
-
-    @Override
-    public PublisherCreationMapper getPublisherCreationMapper() {
-        return setConnection(mapperFactory.getPublisherCreationMapper());
     }
 
     @Override

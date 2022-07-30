@@ -32,17 +32,11 @@ public interface Transaction extends AutoCloseable {
 
     AuthorCreationMapper getAuthorCreationMapper();
 
-    BookCreationMapper getBookCreationMapper();
-
     BookMapper getBookMapper();
-
-    BookMetaCreationMapper getBookMetaCreationMapper();
 
     BookMetaMapper getBookMetaMapper();
 
     GenreCreationMapper getGenreCreationMapper();
-
-    PublisherCreationMapper getPublisherCreationMapper();
 
     UserMapper getUserMapper();
 
