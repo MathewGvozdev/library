@@ -11,6 +11,7 @@ public enum CommandName {
     FIND_ALL_ORDERS,
     MAKE_ORDER,
     UPDATE_ORDER,
+    UPDATE_USER_INFO,
 
     ADD_BOOK,
     DELETE_BOOK,

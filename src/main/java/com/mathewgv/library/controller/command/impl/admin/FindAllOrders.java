@@ -1,55 +1,58 @@
-package com.mathewgv.library.controller.command.impl.user;
+package com.mathewgv.library.controller.command.impl.admin;
 
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.entity.order.OrderStatus;
-import com.mathewgv.library.service.LibraryService;
-import com.mathewgv.library.service.UserService;
 import com.mathewgv.library.service.dto.OrderDto;
-import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
-public class FindUserInfo implements Command {
+public class FindAllOrders implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
-    private static final String BOOK_META_ID = "bookMetaId";
+    private static final String CLIENT_ID = "clientId";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var userService = serviceFactory.getUserService();
-            var userId = Integer.parseInt(req.getParameter("userId"));
-            var user = userService.findUserInfoById(userId);
-            user.ifPresent(userDto -> req.setAttribute("userDto", userDto));
-
+            var clientId = req.getParameter(CLIENT_ID);
             var status = req.getParameter("status");
-            var libraryService = serviceFactory.getLibraryService();
-            var allOrdersByClientId = libraryService.findAllOrdersByClientId(userId);
-            if (status == null) {
-                req.setAttribute("orders", allOrdersByClientId);
+            if (clientId == null) {
+                var allOrders = serviceFactory.getLibraryService().findAllOrders();
+                if (status == null) {
+                    req.setAttribute(AttributeName.ORDERS, allOrders);
+                } else {
+                    List<OrderDto> ordersByStatus = filterOrdersByStatus(allOrders, status);
+                    req.setAttribute(AttributeName.ORDERS, ordersByStatus);
+                }
             } else {
-                List<OrderDto> ordersByStatus = filterOrdersByStatus(allOrdersByClientId, status);
-                req.setAttribute(AttributeName.ORDERS, ordersByStatus);
-            }
+                var ordersByClientId = serviceFactory.getLibraryService().findAllOrdersByClientId(Integer.parseInt(clientId));
+                if (status == null) {
+                    req.setAttribute(AttributeName.ORDERS, ordersByClientId);
+                } else {
+                    List<OrderDto> ordersByStatus = filterOrdersByStatus(ordersByClientId, status);
+                    req.setAttribute(AttributeName.ORDERS, ordersByStatus);
+                }
 
-            return new Router(JspHelper.getPath(JspPath.FIND_USER_INFO), RoutingType.FORWARD);
+            }
+            return new Router(JspHelper.getPath(JspPath.FIND_ALL_ORDERS), RoutingType.FORWARD);
         } catch (ServiceException e) {
-            log.error("Failure to find any book", e);
-            req.setAttribute(AttributeName.ERROR, "Error in searching book");
+            log.error("Failure to find all orders", e);
+            req.setAttribute(AttributeName.ERROR, "Error in searching orders");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }

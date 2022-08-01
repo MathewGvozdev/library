@@ -5,16 +5,16 @@ import com.mathewgv.library.dao.filter.BookFilter;
 public class FilterValidator {
 
     public static void validate(BookFilter filter) {
-        if (filter.getTitle().equals("")) {
+        if ("".equals(filter.getTitle())) {
             filter.setTitle(null);
         }
-        if (filter.getAuthor().equals("")) {
+        if ("".equals(filter.getAuthor())) {
             filter.setAuthor(null);
         }
-        if (filter.getGenre().equals("")) {
+        if ("".equals(filter.getGenre())) {
             filter.setGenre(null);
         }
-        if (filter.getSeries().equals("")) {
+        if ("".equals(filter.getSeries())) {
             filter.setSeries(null);
         }
     }

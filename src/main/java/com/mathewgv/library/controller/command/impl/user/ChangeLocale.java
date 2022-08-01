@@ -16,12 +16,15 @@ import java.io.IOException;
 @Slf4j
 public class ChangeLocale implements Command {
 
+    private static final String LANGUAGE = "lang";
+    private static final String REFERER = "referer";
+
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var language = req.getParameter("lang");
-            req.getSession().setAttribute("lang", language);
-            var prevPage = req.getHeader("referer");
+            var language = req.getParameter(LANGUAGE);
+            req.getSession().setAttribute(LANGUAGE, language);
+            var prevPage = req.getHeader(REFERER);
 
             var page = prevPage != null ? prevPage : "/home";
             log.info("Locale is set to - {}", language);

@@ -1,4 +1,4 @@
-package com.mathewgv.library.mapper;
+package com.mathewgv.library.service.mapper;
 
 public interface Mapper<F, T> {
 

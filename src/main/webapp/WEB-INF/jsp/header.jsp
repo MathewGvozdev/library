@@ -23,7 +23,15 @@
     </div>
 </c:if>
 <c:if test="${not empty sessionScope.user}">
-    ${sessionScope.user.login}
+    <div id="cabinet">
+        <form action="${pageContext.request.contextPath}/home?cmd=find_user_info&userId=${sessionScope.user.id}"
+              method="post">
+                ${sessionScope.user.login}
+            <button type="submit">
+                Личный кабинет
+            </button>
+        </form>
+    </div>
     <div id="logout">
         <form action="${pageContext.request.contextPath}/home?cmd=logout" method="post">
             <button type="submit">

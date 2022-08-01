@@ -1,6 +1,6 @@
-package com.mathewgv.library.mapper.factory;
+package com.mathewgv.library.service.mapper.factory;
 
-import com.mathewgv.library.mapper.impl.*;
+import com.mathewgv.library.service.mapper.impl.*;
 
 public class MapperFactory {
 

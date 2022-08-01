@@ -132,7 +132,8 @@ public class UserDaoImpl extends DaoConnection implements UserDao {
         try (var preparedStatement = connection.get().prepareStatement(UPDATE_SQL)) {
             preparedStatement.setObject(1, entity.getLogin());
             preparedStatement.setObject(2, entity.getPassword());
-            preparedStatement.setObject(3, entity.getId());
+            preparedStatement.setObject(3, entity.getRole().getId());
+            preparedStatement.setObject(4, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             log.error("Error occurred while updating the user", e);

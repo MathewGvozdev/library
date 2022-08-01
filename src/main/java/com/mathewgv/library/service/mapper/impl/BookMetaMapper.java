@@ -1,4 +1,4 @@
-package com.mathewgv.library.mapper.impl;
+package com.mathewgv.library.service.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.book.impl.AuthorDaoImpl;
@@ -7,7 +7,7 @@ import com.mathewgv.library.dao.factory.DaoFactory;
 import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.entity.book.BookMeta;
 import com.mathewgv.library.entity.book.Genre;
-import com.mathewgv.library.mapper.Mapper;
+import com.mathewgv.library.service.mapper.Mapper;
 
 import static java.util.stream.Collectors.joining;
 

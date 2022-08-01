@@ -65,19 +65,6 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             WHERE id = ?
             """;
 
-    private static final String UPDATE_WHEN_BOOK_IS_RETURNED_SQL = """
-            UPDATE orders
-                SET fact_date = ?,
-                status = ?
-            WHERE id = ?
-            """;
-
-    private static final String UPDATE_STATUS_SQL = """
-            UPDATE orders
-                SET status = ?
-            WHERE id = ?
-            """;
-
     private static final String FIND_ALL_SQL = """
             SELECT id,
                    user_id,

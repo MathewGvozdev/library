@@ -1,4 +1,4 @@
-package com.mathewgv.library.controller.command.impl.book;
+package com.mathewgv.library.controller.command.impl.admin;
 
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
@@ -22,8 +22,12 @@ public class AddBook implements Command {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private static final String CONFIRM = "cfm";
-    private static final String BOOK_META_ID = "bookMetaId";
-    private static final String PUBLISHER_ID = "publisherId";
+    private static final String TITLE = "title";
+    private static final String AUTHORS = "authors";
+    private static final String GENRES = "genres";
+    private static final String SERIES = "series";
+    private static final String PUBLISHER = "publisher";
+    private static final String PUBLISHER_CITY = "publisherCity";
     private static final String PAGES = "pages";
     private static final String PUBLICATION_YEAR = "publicationYear";
 
@@ -31,7 +35,6 @@ public class AddBook implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
-//            req.setAttribute("publishers", bookService.findAllPublishers());
             if (req.getParameter(CONFIRM) == null) {
                 return new Router(JspHelper.getPath(JspPath.ADD_BOOK), RoutingType.FORWARD);
             } else if (req.getParameter(CONFIRM).equals("")) {
@@ -56,12 +59,12 @@ public class AddBook implements Command {
 
     private BookDto buildBookDto(HttpServletRequest req) {
         return BookDto.builder()
-                .title(req.getParameter("title"))
-                .authors(req.getParameter("authors"))
-                .genres(req.getParameter("genres"))
-                .series(req.getParameter("series"))
-                .publisher(req.getParameter("publisher"))
-                .publisherCity(req.getParameter("publisherCity"))
+                .title(req.getParameter(TITLE))
+                .authors(req.getParameter(AUTHORS))
+                .genres(req.getParameter(GENRES))
+                .series(req.getParameter(SERIES))
+                .publisher(req.getParameter(PUBLISHER))
+                .publisherCity(req.getParameter(PUBLISHER_CITY))
                 .pages(Integer.parseInt(req.getParameter(PAGES)))
                 .publicationYear(Integer.parseInt(req.getParameter(PUBLICATION_YEAR)))
                 .build();

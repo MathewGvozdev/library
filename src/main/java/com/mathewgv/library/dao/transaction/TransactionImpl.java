@@ -9,9 +9,9 @@ import com.mathewgv.library.dao.order.OrderDao;
 import com.mathewgv.library.dao.user.RoleDao;
 import com.mathewgv.library.dao.user.UserDao;
 import com.mathewgv.library.dao.user.UserInfoDao;
-import com.mathewgv.library.mapper.Mapper;
-import com.mathewgv.library.mapper.factory.MapperFactory;
-import com.mathewgv.library.mapper.impl.*;
+import com.mathewgv.library.service.mapper.Mapper;
+import com.mathewgv.library.service.mapper.factory.MapperFactory;
+import com.mathewgv.library.service.mapper.impl.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;

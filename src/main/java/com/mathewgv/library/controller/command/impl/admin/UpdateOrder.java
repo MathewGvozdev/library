@@ -1,4 +1,4 @@
-package com.mathewgv.library.controller.command.impl.library;
+package com.mathewgv.library.controller.command.impl.admin;
 
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
@@ -24,6 +24,7 @@ public class UpdateOrder implements Command {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private static final String CONFIRM = "cfm";
+    private static final String ID = "id";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -36,7 +37,7 @@ public class UpdateOrder implements Command {
             req.setAttribute("statuses", statuses);
             var libraryService = serviceFactory.getLibraryService();
             if (req.getParameter(CONFIRM) == null) {
-                libraryService.findOrderById(Long.parseLong(req.getParameter("id")))
+                libraryService.findOrderById(Long.parseLong(req.getParameter(ID)))
                         .ifPresent(orderDto -> req.setAttribute("order", orderDto));
                 return new Router(JspHelper.getPath(JspPath.UPDATE_ORDER), RoutingType.FORWARD);
             } else {

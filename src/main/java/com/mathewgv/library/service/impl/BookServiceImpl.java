@@ -155,9 +155,8 @@ public class BookServiceImpl implements BookService {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookDao();
             var bookMapper = transaction.getBookMapper();
-            return bookDao.findAnyByBookMetaId(bookMetaId).stream()
-                    .map(bookMapper::mapFrom)
-                    .findFirst();
+            return bookDao.findAnyByBookMetaId(bookMetaId)
+                    .map(bookMapper::mapFrom);
         } catch (Exception e) {
             log.error("Failure to find any book by book-meta ID", e);
             throw new ServiceException(e);
@@ -169,9 +168,8 @@ public class BookServiceImpl implements BookService {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookDao();
             var bookMapper = transaction.getBookMapper();
-            return bookDao.findById(id).stream()
-                    .map(bookMapper::mapFrom)
-                    .findFirst();
+            return bookDao.findById(id)
+                    .map(bookMapper::mapFrom);
         } catch (Exception e) {
             log.error("Failure to find book by ID", e);
             throw new ServiceException(e);

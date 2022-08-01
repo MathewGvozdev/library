@@ -53,7 +53,7 @@
                     <label>
                         <input type="date"
                                name="factDate">
-                    </label><br>
+                    </label>
                 </c:if>
             </td>
             <td>${requestScope.order.loanType}</td>
@@ -61,7 +61,9 @@
                 <select name="status"
                         id="status">
                     <c:forEach var="status" items="${requestScope.statuses}">
-                        <option value="${status}">${status}</option>
+                        <option value="${status}">
+                                ${status}
+                        </option>
                     </c:forEach>
                 </select>
             </td>

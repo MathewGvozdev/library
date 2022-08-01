@@ -9,16 +9,32 @@
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/home?cmd=find_all_book_metas&page=1"
-      method="post">
+<form action="${pageContext.request.contextPath}/home"
+      method="get">
+    <div style="display: none">
+        <input type="hidden"
+               name="cmd"
+               value="find_all_book_metas">
+        <input type="hidden"
+               name="page"
+               value="1">
+    </div>
     <button type="submit">
         <fmt:message key="page.index.show.books"/>
     </button>
 </form>
 
-<form action="${pageContext.request.contextPath}/home?cmd=find_all_book_metas_by_filter&page=1"
-      method="post">
+<form action="${pageContext.request.contextPath}/home"
+      method="get">
     <fmt:message key="page.index.filter"/>:<br>
+    <div style="display: none">
+        <input type="hidden"
+               name="cmd"
+               value="find_all_book_metas_by_filter">
+        <input type="hidden"
+               name="page"
+               value="1">
+    </div>
     <label>
         <input type="text"
                name="title"
@@ -44,24 +60,42 @@
     </button>
 </form>
 
-<form action="${pageContext.request.contextPath}/home?cmd=make_order"
-      method="post">
+<form action="${pageContext.request.contextPath}/home"
+      method="get">
+    <div style="display: none">
+        <input type="hidden"
+               name="cmd"
+               value="make_order">
+    </div>
     <button type="submit">
         <fmt:message key="page.index.make.order"/>
     </button>
 </form>
 
 <c:if test="${sessionScope.role == 'Админ' || sessionScope.role == 'Библиотекарь'}">
-    <form action="${pageContext.request.contextPath}/home?cmd=find_all_books&page=1"
-          method="post">
+    <form action="${pageContext.request.contextPath}/home"
+          method="get">
+        <div style="display: none">
+            <input type="hidden"
+                   name="cmd"
+                   value="find_all_books">
+            <input type="hidden"
+                   name="page"
+                   value="1">
+        </div>
         <button type="submit">
             <fmt:message key="page.index.show.book.examples"/>
         </button>
     </form>
 
-    <form action="${pageContext.request.contextPath}/home?cmd=find_book_by_id"
-          method="post">
+    <form action="${pageContext.request.contextPath}/home"
+          method="get">
         <fmt:message key="page.index.book.id"/>
+        <div style="display: none">
+            <input type="hidden"
+                   name="cmd"
+                   value="find_book_by_id">
+        </div>
         <label for="bookId">
             <input type="number"
                    name="bookId"
@@ -72,22 +106,37 @@
         </button>
     </form>
 
-    <form action="${pageContext.request.contextPath}/home?cmd=add_book"
-          method="post">
+    <form action="${pageContext.request.contextPath}/home"
+          method="get">
+        <div style="display: none">
+            <input type="hidden"
+                   name="cmd"
+                   value="add_book">
+        </div>
         <button type="submit">
             <fmt:message key="page.index.add.book.example"/>
         </button>
     </form>
 
-    <form action="${pageContext.request.contextPath}/home?cmd=delete_book"
-          method="post">
+    <form action="${pageContext.request.contextPath}/home"
+          method="get">
+        <div style="display: none">
+            <input type="hidden"
+                   name="cmd"
+                   value="delete_book">
+        </div>
         <button type="submit">
             <fmt:message key="page.index.delete.book.example"/>
         </button>
     </form>
 
-    <form action="${pageContext.request.contextPath}/home?cmd=find_all_orders"
-          method="post">
+    <form action="${pageContext.request.contextPath}/home"
+          method="get">
+        <div style="display: none">
+            <input type="hidden"
+                   name="cmd"
+                   value="find_all_orders">
+        </div>
         <button type="submit">
             <fmt:message key="page.index.find.orders"/>
         </button>

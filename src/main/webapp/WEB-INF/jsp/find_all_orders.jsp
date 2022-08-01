@@ -20,6 +20,42 @@
     </style>
 </head>
 <body>
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="post">
+    <button type="submit">
+        ALL
+    </button>
+</form>
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=opened"
+      method="post">
+    <button type="submit">
+        OPENED
+    </button>
+</form>
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=closed"
+      method="post">
+    <button type="submit">
+        CLOSED
+    </button>
+</form>
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=loaned"
+      method="post">
+    <button type="submit">
+        LOANED
+    </button>
+</form>
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=overdue"
+      method="post">
+    <button type="submit">
+        OVERDUE
+    </button>
+</form>
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=declined"
+      method="post">
+    <button type="submit">
+        DECLINED
+    </button>
+</form>
 <table>
     <caption>
         <fmt:message key="page.order.orders"/>
@@ -43,7 +79,7 @@
                 </a>
             </td>
             <td>
-                <a href="${pageContext.request.contextPath}/home?cmd=${param.cmd}&clientId=${order.clientId}">
+                <a href="${pageContext.request.contextPath}/home?cmd=find_user_info&userId=${order.clientId}">
                         ${order.client}<br>
                 </a>
             </td>

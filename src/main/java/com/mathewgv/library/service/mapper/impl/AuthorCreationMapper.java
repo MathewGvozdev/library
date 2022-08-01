@@ -1,8 +1,8 @@
-package com.mathewgv.library.mapper.impl;
+package com.mathewgv.library.service.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.entity.book.Author;
-import com.mathewgv.library.mapper.Mapper;
+import com.mathewgv.library.service.mapper.Mapper;
 import com.mathewgv.library.service.dto.BookDto;
 
 import java.util.ArrayList;

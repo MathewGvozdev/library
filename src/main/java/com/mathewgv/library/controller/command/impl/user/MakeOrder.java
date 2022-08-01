@@ -1,4 +1,4 @@
-package com.mathewgv.library.controller.command.impl.library;
+package com.mathewgv.library.controller.command.impl.user;
 
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
@@ -26,6 +26,7 @@ public class MakeOrder implements Command {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private static final String CONFIRM = "cfm";
+    private static final String BOOK_ID = "bookId";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -41,7 +42,7 @@ public class MakeOrder implements Command {
             } else if (req.getParameter(CONFIRM).equals("")) {
                 var orderCreationDto = buildOrderDto(req);
                 var bookService = serviceFactory.getBookService();
-                bookService.findBookById(Integer.parseInt(req.getParameter("bookId")))
+                bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID)))
                         .ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
                 req.setAttribute(AttributeName.ORDER_DTO, orderCreationDto);
             } else if (req.getParameter(CONFIRM).equals("y")) {

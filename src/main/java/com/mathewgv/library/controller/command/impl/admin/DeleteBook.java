@@ -1,4 +1,4 @@
-package com.mathewgv.library.controller.command.impl.book;
+package com.mathewgv.library.controller.command.impl.admin;
 
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;

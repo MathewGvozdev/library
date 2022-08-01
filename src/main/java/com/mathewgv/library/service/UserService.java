@@ -13,4 +13,6 @@ public interface UserService {
     Integer register(UserCreationDto userDto) throws ServiceException;
 
     Optional<UserDto> findUserInfoById(Integer id) throws ServiceException;
+
+    void updateUserInfo(UserCreationDto userCreationDto) throws ServiceException;
 }

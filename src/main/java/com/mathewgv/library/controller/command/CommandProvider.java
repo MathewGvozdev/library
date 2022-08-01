@@ -1,12 +1,8 @@
 package com.mathewgv.library.controller.command;
 
 import com.mathewgv.library.controller.command.impl.Home;
-import com.mathewgv.library.controller.command.impl.book.*;
-import com.mathewgv.library.controller.command.impl.library.*;
-import com.mathewgv.library.controller.command.impl.user.ChangeLocale;
-import com.mathewgv.library.controller.command.impl.user.Login;
-import com.mathewgv.library.controller.command.impl.user.Logout;
-import com.mathewgv.library.controller.command.impl.user.Registration;
+import com.mathewgv.library.controller.command.impl.admin.*;
+import com.mathewgv.library.controller.command.impl.user.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +30,10 @@ public class CommandProvider {
         repository.put(CommandName.CHANGE_LOCALE, new ChangeLocale());
 
         repository.put(CommandName.FIND_ALL_ORDERS, new FindAllOrders());
+        repository.put(CommandName.FIND_USER_INFO, new FindUserInfo());
         repository.put(CommandName.MAKE_ORDER, new MakeOrder());
         repository.put(CommandName.UPDATE_ORDER, new UpdateOrder());
+        repository.put(CommandName.UPDATE_USER_INFO, new UpdateUserInfo());
 //        repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
     }
 

@@ -1,11 +1,15 @@
 package com.mathewgv.library.service.impl;
 
 import com.mathewgv.library.dao.transaction.TransactionFactory;
+import com.mathewgv.library.dao.user.UserDao;
+import com.mathewgv.library.dao.user.UserInfoDao;
+import com.mathewgv.library.entity.user.UserInfo;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.dto.UserDto;
-import com.mathewgv.library.mapper.factory.MapperFactory;
+import com.mathewgv.library.service.mapper.factory.MapperFactory;
 import com.mathewgv.library.service.UserService;
 import com.mathewgv.library.service.exception.ServiceException;
+import com.mathewgv.library.service.mapper.impl.UserRegistrationMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
@@ -19,6 +23,24 @@ public class UserServiceImpl implements UserService {
     private final MapperFactory mapperFactory = MapperFactory.getInstance();
 
     private UserServiceImpl() {
+    }
+
+    @Override
+    public void updateUserInfo(UserCreationDto userCreationDto) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var userInfoDao = transaction.getUserInfoDao();
+            var userDao = transaction.getUserDao();
+            var userRegistrationMapper = transaction.getUserRegistrationMapper();
+            var userInfo = userRegistrationMapper.mapFrom(userCreationDto);
+            userInfoDao.update(userInfo);
+            userDao.update(userInfo.getUser());
+            var updatedUser = userInfoDao.findInfoByUserId(userCreationDto.getId());
+            transaction.commit();
+            log.info("The user with id[{}] was updated, current user: {}", userCreationDto.getId(), updatedUser);
+        } catch (Exception e) {
+            log.error("Failure to update the order", e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
@@ -54,9 +76,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDto> findUserInfoById(Integer id) throws ServiceException {
-//        return daoFactory.getUserInfoDao().findInfoByUserId(id)
-//                .map(userMapper::mapFrom);
-        return null;
+        try (var transaction = transactionFactory.getTransaction()) {
+            var userInfoDao = transaction.getUserInfoDao();
+            var userMapper = transaction.getUserMapper();
+            return userInfoDao.findInfoByUserId(id)
+                    .map(userMapper::mapFrom);
+        } catch (Exception e) {
+            log.error("Failure to register new user", e);
+            throw new ServiceException(e);
+        }
     }
 
     public static UserServiceImpl getInstance() {

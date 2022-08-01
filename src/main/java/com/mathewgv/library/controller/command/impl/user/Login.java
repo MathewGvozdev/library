@@ -22,6 +22,10 @@ public class Login implements Command {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private static final String CONFIRM = "cfm";
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
+    private static final String USER = "user";
+    private static final String ROLE = "role";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -30,7 +34,7 @@ public class Login implements Command {
             if (req.getParameter(CONFIRM) == null) {
                 return new Router(JspHelper.getPath(JspPath.LOGIN), RoutingType.FORWARD);
             } else {
-                return userService.login(req.getParameter("login"), req.getParameter("password"))
+                return userService.login(req.getParameter(LOGIN), req.getParameter(PASSWORD))
                         .map(dto -> onLoginSuccess(dto, req))
                         .orElseGet(() -> onLoginFail(req));
             }
@@ -42,8 +46,8 @@ public class Login implements Command {
     }
 
     private Router onLoginSuccess(UserDto userDto, HttpServletRequest req) {
-        req.getSession().setAttribute("user", userDto);
-        req.getSession().setAttribute("role", userDto.getRole());
+        req.getSession().setAttribute(USER, userDto);
+        req.getSession().setAttribute(ROLE, userDto.getRole());
         return new Router(req.getContextPath() + "/home", RoutingType.REDIRECT);
     }
 

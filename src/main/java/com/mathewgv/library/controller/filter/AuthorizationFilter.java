@@ -24,6 +24,8 @@ public class AuthorizationFilter implements Filter {
             LOGIN.convertToString(),
             LOGOUT.convertToString(),
             FIND_ANY_BOOK.convertToString(),
+            FIND_USER_INFO.convertToString(),
+            UPDATE_USER_INFO.convertToString(),
             WRONG_REQUEST.convertToString());
 
     @Override
@@ -32,7 +34,7 @@ public class AuthorizationFilter implements Filter {
         var params = ((HttpServletRequest) servletRequest).getQueryString();
         String addressString;
         if (params != null) {
-            addressString = uri + "/" + params;
+            addressString = uri + "?" + params;
         } else {
             addressString = uri;
         }
@@ -41,7 +43,6 @@ public class AuthorizationFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             var prevPage = ((HttpServletRequest) servletRequest).getHeader("referer");
-
             ((HttpServletResponse) servletResponse).sendRedirect(prevPage != null ? prevPage : homePage);
         }
     }
