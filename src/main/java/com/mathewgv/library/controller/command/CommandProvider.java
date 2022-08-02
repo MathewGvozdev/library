@@ -34,6 +34,8 @@ public class CommandProvider {
         repository.put(CommandName.MAKE_ORDER, new MakeOrder());
         repository.put(CommandName.UPDATE_ORDER, new UpdateOrder());
         repository.put(CommandName.UPDATE_USER_INFO, new UpdateUserInfo());
+        repository.put(CommandName.ADMIN_MENU, new OpenAdminMenu());
+        repository.put(CommandName.FIND_ALL_USERS, new FindAllUsers());
 //        repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
     }
 

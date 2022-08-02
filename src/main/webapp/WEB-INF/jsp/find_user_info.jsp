@@ -33,11 +33,12 @@ Passport: ${requestScope.userDto.passportNumber}<br>
         <input type="hidden" name="surname" value="${requestScope.userDto.surname}">
         <input type="hidden" name="telephone" value="${requestScope.userDto.telephone}">
         <input type="hidden" name="passportNumber" value="${requestScope.userDto.passportNumber}">
-<%--        <input type="hidden" name="password" value="${requestScope.userDto.password}">--%>
     </div>
-    <button type="submit">
-        UPDATE
-    </button>
+    <c:if test="${sessionScope.user.login == requestScope.userDto.login}">
+        <button type="submit">
+            UPDATE
+        </button>
+    </c:if>
 </form>
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}"
       method="post">

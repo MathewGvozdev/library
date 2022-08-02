@@ -1,9 +1,11 @@
 package com.mathewgv.library.dao.user.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
+import com.mathewgv.library.dao.filter.SelectFilter;
 import com.mathewgv.library.dao.user.UserDao;
 import com.mathewgv.library.dao.user.UserInfoDao;
 import com.mathewgv.library.dao.exception.DaoException;
+import com.mathewgv.library.entity.book.Book;
 import com.mathewgv.library.entity.user.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,6 +67,24 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
             """;
 
     private UserInfoDaoImpl() {
+    }
+
+    @Override
+    public List<UserInfo> findAll(Integer page, Integer limit) throws DaoException {
+        var selectFilter = new SelectFilter(page, limit);
+        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
+        try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
+            selectFilter.setParamsToQuery(preparedStatement);
+            var resultSet = preparedStatement.executeQuery();
+            List<UserInfo> userInfos = new ArrayList<>();
+            while (resultSet.next()) {
+                userInfos.add(buildUserInfo(resultSet));
+            }
+            return userInfos;
+        } catch (SQLException e) {
+            log.error("Error occurred while searching all books", e);
+            throw new DaoException(e);
+        }
     }
 
     @Override

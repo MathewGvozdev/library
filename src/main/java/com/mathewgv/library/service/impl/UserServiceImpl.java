@@ -12,7 +12,10 @@ import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.mapper.impl.UserRegistrationMapper;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 public class UserServiceImpl implements UserService {
@@ -23,6 +26,20 @@ public class UserServiceImpl implements UserService {
     private final MapperFactory mapperFactory = MapperFactory.getInstance();
 
     private UserServiceImpl() {
+    }
+
+    @Override
+    public List<UserDto> findAllUsers(Integer page, Integer limit) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var userInfoDao = transaction.getUserInfoDao();
+            var userMapper = transaction.getUserMapper();
+            return userInfoDao.findAll(page, limit).stream()
+                    .map(userMapper::mapFrom)
+                    .collect(toList());
+        } catch (Exception e) {
+            log.error("Failure to find all books", e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override

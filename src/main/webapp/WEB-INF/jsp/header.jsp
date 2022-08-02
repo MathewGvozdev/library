@@ -3,55 +3,117 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'ru_RU'}"/>
 <fmt:setBundle basename="translations"/>
-<a href="${pageContext.request.contextPath}/home">
-    <fmt:message key="page.header.to.home"/>
-</a><br>
-<c:if test="${empty sessionScope.user}">
-    <div id="login">
-        <form action="${pageContext.request.contextPath}/home?cmd=login"
-              method="post">
-            <input type="submit"
-                   value=" <fmt:message key="page.header.login"/>">
-        </form>
-    </div>
-    <div id="registration">
-        <form action="${pageContext.request.contextPath}/home?cmd=registration"
-              method="post">
-            <input type="submit"
-                   value=" <fmt:message key="page.header.registration"/>">
-        </form>
-    </div>
-</c:if>
-<c:if test="${not empty sessionScope.user}">
-    <div id="cabinet">
-        <form action="${pageContext.request.contextPath}/home?cmd=find_user_info&userId=${sessionScope.user.id}"
-              method="post">
-                ${sessionScope.user.login}
-            <button type="submit">
-                Личный кабинет
-            </button>
-        </form>
-    </div>
-    <div id="logout">
-        <form action="${pageContext.request.contextPath}/home?cmd=logout" method="post">
-            <button type="submit">
-                <fmt:message key="page.header.logout"/>
-            </button>
-        </form>
-    </div>
-</c:if>
-<div id="locale">
-    <form action="${pageContext.request.contextPath}/home?cmd=change_locale"
-          method="post">
-        <button type="submit"
-                name="lang"
-                value="ru_RU">
+<style>
+    .header {
+        width: 100%;
+        height: 80px;
+        display: block;
+        background-color: #2b6068;
+    }
+    .inner_header {
+        width: 1200px;
+        height: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+    .logo_container {
+        height: 100%;
+        display: table;
+        float: left;
+    }
+    .logo_container h1 {
+        color: white;
+        height: 100%;
+        display: table-cell;
+        vertical-align: middle;
+        font-family: "Roboto Thin", ui-monospace;
+        font-size: 32px;
+    }
+    .lang_container {
+        width: 100px;
+        height: 100%;
+        display: table;
+        float: right;
+    }
+    .lang_container a {
+        color: white;
+        height: 100%;
+        display: table-cell;
+        vertical-align: middle;
+        font-family: Cambria, serif;
+        font-size: 16px;
+        text-decoration: none;
+    }
+    .lang_container a:hover {
+         text-decoration: underline;
+     }
+    .navigation {
+        float: right;
+        height: 100%;
+        margin: 0;
+    }
+    .navigation li {
+        height: 100%;
+        display: table;
+        float: left;
+        padding: 0 20px;
+    }
+    .navigation li a {
+        display: table-cell;
+        vertical-align: middle;
+        height: 100%;
+        color: white;
+        font-family: Cambria, serif;
+        font-size: 24px;
+        text-decoration: none;
+    }
+    .navigation li a:hover {
+        text-decoration: underline;
+    }
+</style>
+<div class="header">
+    <div class="lang_container">
+        <a href="${pageContext.request.contextPath}/home?cmd=change_locale&lang=ru_RU">
             RU
-        </button>
-        <button type="submit"
-                name="lang"
-                value="en_US">
+        </a>
+        <a href="${pageContext.request.contextPath}/home?cmd=change_locale&lang=en_US">
             EN
-        </button>
-    </form>
+        </a>
+    </div>
+    <div class="inner_header">
+        <div class="logo_container">
+            <h1>E-LIBRARY</h1>
+        </div>
+        <ul class="navigation">
+            <li>
+                <a href="${pageContext.request.contextPath}/home">
+                    <fmt:message key="page.header.to.home"/>
+                </a>
+            </li>
+            <c:if test="${empty sessionScope.user}">
+                <li>
+                    <a href="${pageContext.request.contextPath}/home?cmd=login">
+                        <fmt:message key="page.header.login"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/home?cmd=registration">
+                        <fmt:message key="page.header.registration"/>
+                    </a>
+                </li>
+            </c:if>
+            <c:if test="${not empty sessionScope.user}">
+                <li>
+                    <a href="${pageContext.request.contextPath}/home?cmd=find_user_info&userId=${sessionScope.user.id}">
+                            ${sessionScope.user.login}
+                    </a>
+                </li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/home?cmd=logout">
+                        <fmt:message key="page.header.logout"/>
+                    </a>
+                </li>
+            </c:if>
+        </ul>
+    </div>
 </div>

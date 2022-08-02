@@ -1,0 +1,132 @@
+.header {
+    width: 100%;
+    height: 80px;
+    display: block;
+    background-color: #2b6068;
+}
+.inner_header {
+    width: 1200px;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+.logo_container {
+    height: 100%;
+    display: table;
+    float: left;
+}
+.logo_container h1 {
+    color: white;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    font-family: "Roboto Thin", ui-monospace;
+    font-size: 32px;
+}
+.lang_container {
+    width: 100px;
+    height: 100%;
+    display: table;
+    float: right;
+}
+.lang_container a {
+    color: white;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    font-family: Cambria, serif;
+    font-size: 16px;
+    text-decoration: none;
+}
+.lang_container a:hover {
+    text-decoration: underline;
+}
+.navigation {
+    float: right;
+    height: 100%;
+    margin: 0;
+}
+.navigation li {
+    height: 100%;
+    display: table;
+    float: left;
+    padding: 0 20px;
+}
+.navigation li a {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+    color: white;
+    font-family: Cambria, serif;
+    font-size: 24px;
+    text-decoration: none;
+}
+.navigation li a:hover {
+    text-decoration: underline;
+}
+.centered-wrapper {
+    position: relative;
+    text-align: center;
+}
+
+.centered-wrapper:before {
+    content: "";
+    position: relative;
+    display: inline-block;
+    width: 0;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.centered-content {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 30px;
+    margin: 80px;
+}
+
+button.aqua {
+    border-radius: 4px;
+    color: #fff;
+    display: block;
+    width: 240px;
+    height: 80px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    padding: 12px 20px;
+    margin: 30px auto;
+    text-decoration: none;
+}
+
+button.aqua {
+    background-color: #2b6068;
+    border: 1px solid #115868;
+}
+
+button.aqua:hover {
+    background-color: #158ea2;
+}
+
+input[type=text] {
+    width: 240px;
+    height: 50px;
+    font-size: 16px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+span {
+    color: black;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    font-family: "Roboto Thin", ui-monospace;
+    font-size: 24px;
+}

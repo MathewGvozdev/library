@@ -22,6 +22,8 @@ public enum CommandName {
     FIND_BOOK_BY_ID,
 
     HOME,
+    ADMIN_MENU,
+    FIND_ALL_USERS,
     WRONG_REQUEST;
 
     public String convertToString() {

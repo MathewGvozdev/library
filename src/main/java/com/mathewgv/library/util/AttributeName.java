@@ -15,6 +15,8 @@ public final class AttributeName {
     public static final String ORDER_DTO = "orderDto";
     public static final String ORDER = "order";
 
+    public static final String USERS = "users";
+
     private AttributeName(){
     }
 }

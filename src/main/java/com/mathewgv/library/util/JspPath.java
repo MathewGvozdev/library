@@ -3,6 +3,7 @@ package com.mathewgv.library.util;
 public final class JspPath {
 
     public static final String HOME = "index";
+    public static final String ADMIN_MENU = "admin_menu";
 
     public static final String ADD_BOOK = "add_book";
     public static final String DELETE_BOOK = "delete_book";
@@ -20,6 +21,7 @@ public final class JspPath {
     public static final String UPDATE_ORDER = "update_order";
     public static final String FIND_USER_INFO = "find_user_info";
     public static final String UPDATE_USER_INFO = "update_user_info";
+    public static final String FIND_ALL_USERS = "find_all_users";
 
     private JspPath() {
     }
