@@ -21,7 +21,6 @@ public class CommandProvider {
         repository.put(CommandName.FIND_ALL_BOOK_METAS, new FindAllBookMetas());
         repository.put(CommandName.FIND_ALL_BOOK_METAS_BY_FILTER, new FindAllBookMetasByFilter());
         repository.put(CommandName.FIND_ALL_BOOKS, new FindAllBooks());
-        repository.put(CommandName.FIND_ANY_BOOK, new FindAnyBook());
         repository.put(CommandName.FIND_BOOK_BY_ID, new FindBookById());
 
         repository.put(CommandName.LOGIN, new Login());

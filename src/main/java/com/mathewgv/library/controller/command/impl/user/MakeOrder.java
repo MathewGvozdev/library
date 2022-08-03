@@ -5,6 +5,7 @@ import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.entity.order.LoanType;
 import com.mathewgv.library.entity.order.OrderStatus;
+import com.mathewgv.library.service.BookService;
 import com.mathewgv.library.service.dto.OrderCreationDto;
 import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.service.exception.ServiceException;
@@ -27,6 +28,7 @@ public class MakeOrder implements Command {
 
     private static final String CONFIRM = "cfm";
     private static final String BOOK_ID = "bookId";
+    private static final String BOOK_META_ID = "bookMetaId";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -37,13 +39,16 @@ public class MakeOrder implements Command {
             var libraryService = serviceFactory.getLibraryService();
             var loanTypes = List.of(LoanType.TO_HOME.getValue(), LoanType.READING_ROOM.getValue());
             req.setAttribute("loanTypes", loanTypes);
+            var bookService = serviceFactory.getBookService();
             if (req.getParameter(CONFIRM) == null) {
+                var bookMetaId = Integer.parseInt(req.getParameter(BOOK_META_ID));
+                bookService.findAnyBookByBookMetaId(bookMetaId)
+                        .ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
                 return new Router(JspHelper.getPath(JspPath.MAKE_ORDER), RoutingType.FORWARD);
             } else if (req.getParameter(CONFIRM).equals("")) {
-                var orderCreationDto = buildOrderDto(req);
-                var bookService = serviceFactory.getBookService();
                 bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID)))
                         .ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
+                var orderCreationDto = buildOrderDto(req);
                 req.setAttribute(AttributeName.ORDER_DTO, orderCreationDto);
             } else if (req.getParameter(CONFIRM).equals("y")) {
                 var order = libraryService.makeOrder(buildOrderDto(req));

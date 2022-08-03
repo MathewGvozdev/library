@@ -23,7 +23,6 @@ public class AuthorizationFilter implements Filter {
             REGISTRATION.convertToString(),
             LOGIN.convertToString(),
             LOGOUT.convertToString(),
-            FIND_ANY_BOOK.convertToString(),
             FIND_USER_INFO.convertToString(),
             UPDATE_USER_INFO.convertToString(),
             WRONG_REQUEST.convertToString());

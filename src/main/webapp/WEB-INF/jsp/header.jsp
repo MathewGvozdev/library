@@ -26,7 +26,7 @@
         height: 100%;
         display: table-cell;
         vertical-align: middle;
-        font-family: "Roboto Thin", ui-monospace;
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
         font-size: 32px;
     }
     .lang_container {
@@ -40,7 +40,7 @@
         height: 100%;
         display: table-cell;
         vertical-align: middle;
-        font-family: Cambria, serif;
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
         font-size: 16px;
         text-decoration: none;
     }
@@ -63,7 +63,7 @@
         vertical-align: middle;
         height: 100%;
         color: white;
-        font-family: Cambria, serif;
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
         font-size: 24px;
         text-decoration: none;
     }

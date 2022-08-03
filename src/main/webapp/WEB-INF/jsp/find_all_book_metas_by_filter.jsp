@@ -66,7 +66,7 @@
             height: 100%;
             display: table-cell;
             vertical-align: middle;
-            font-family: "Roboto Thin", ui-monospace;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 32px;
         }
     </style>

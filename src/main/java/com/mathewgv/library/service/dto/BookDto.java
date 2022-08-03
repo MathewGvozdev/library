@@ -8,8 +8,6 @@ import lombok.Value;
 public class BookDto {
 
     Integer id;
-//    Integer bookMetaId;
-//    Integer publisherId;
     String title;
     String authors;
     String genres;

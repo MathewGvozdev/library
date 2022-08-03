@@ -5,15 +5,38 @@
     <title>Title</title>
     <style>
         table {
-            border: 1px solid grey;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 14px;
+            background: white;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin: 0 auto 20px;
         }
 
-        th {
-            border: 1px solid grey;
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
         }
 
-        td {
-            border: 1px solid grey;
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        .table th {
+            font-size: 14px;
+            font-weight: normal;
+            color: #039;
+            border-bottom: 2px solid #6678b1;
+            padding: 10px 8px;
+        }
+
+        .table td {
+            color: #669;
+            padding: 9px 8px;
         }
     </style>
 </head>
@@ -22,6 +45,7 @@
     <caption>
         USERS
     </caption>
+    <tbody>
     <tr>
         <th>№</th>
         <th>LOGIN</th>
@@ -48,6 +72,7 @@
             <td>${user.role}</td>
         </tr>
     </c:forEach>
+    </tbody>
 </table>
 <c:if test="${not empty requestScope.users}">
     <div>

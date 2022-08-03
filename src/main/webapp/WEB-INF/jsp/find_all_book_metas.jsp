@@ -65,7 +65,7 @@
             height: 100%;
             display: table-cell;
             vertical-align: middle;
-            font-family: "Roboto Thin", ui-monospace;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 32px;
         }
     </style>
@@ -79,7 +79,7 @@
         <c:forEach var="bookMeta" items="${requestScope.bookMetas}">
             <ul class="first">
                 <li>
-                    <a href="${pageContext.request.contextPath}/home?cmd=find_any_book&bookMetaId=${bookMeta.id}">
+                    <a href="${pageContext.request.contextPath}/home?cmd=make_order&bookMetaId=${bookMeta.id}">
                             ${bookMeta.title}<br>
                     </a>
                     <fmt:message key="page.book.metas.author"/>: ${bookMeta.authors}<br>
