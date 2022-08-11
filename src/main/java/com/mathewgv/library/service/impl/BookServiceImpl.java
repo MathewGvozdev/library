@@ -27,7 +27,7 @@ public class BookServiceImpl implements BookService {
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
 
     @Override
-    public Book addBookTest(BookDto bookDto) {
+    public BookDto addBook(BookDto bookDto) {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookMeta = addBookMetaIfNotExist(transaction, bookDto);
             var publisher = addPublisherIfNotExist(transaction, bookDto);
@@ -36,9 +36,10 @@ public class BookServiceImpl implements BookService {
             var pages = bookDto.getPages();
             var publicationYear = bookDto.getPublicationYear();
             var book = bookDao.create(new Book(publisher, bookMeta, pages, publicationYear));
-            log.info("New book is added to database: {}", book);
+            var createdBookDto = transaction.getBookMapper().mapFrom(book);
+            log.info("New book is added to database: {}", createdBookDto);
             transaction.commit();
-            return book;
+            return createdBookDto;
         } catch (Exception e) {
             log.error("Failure to add a new book", e);
             throw new ServiceException(e);
@@ -47,10 +48,12 @@ public class BookServiceImpl implements BookService {
 
     private Publisher addPublisherIfNotExist(Transaction transaction, BookDto bookDto) {
         var publisherDao = transaction.getPublisherDao();
-        var searchedPublisher = publisherDao.findByTitleAndCity(bookDto.getPublisher(), bookDto.getPublisherCity());
+        var publisherFromDto = bookDto.getPublisher();
+        var cityFromDto = bookDto.getPublisherCity();
+        var searchedPublisher = publisherDao.findByTitleAndCity(publisherFromDto, cityFromDto);
         Publisher publisher;
         if (searchedPublisher.isEmpty()) {
-            publisher = publisherDao.create(new Publisher(bookDto.getPublisher(), bookDto.getPublisherCity()));
+            publisher = publisherDao.create(new Publisher(publisherFromDto, cityFromDto));
             log.info("New publisher is added to database: {}", publisher);
         } else {
             publisher = searchedPublisher.get();
@@ -75,9 +78,9 @@ public class BookServiceImpl implements BookService {
 
     private List<Author> addAuthorsIfNotExist(Transaction transaction, BookDto bookDto) {
         var authors = transaction.getAuthorCreationMapper().mapFrom(bookDto);
+        var authorDao = transaction.getAuthorDao();
         List<Author> authorList = new ArrayList<>();
         for (Author author : authors) {
-            var authorDao = transaction.getAuthorDao();
             var searchedAuthor = authorDao.findByNameAndSurname(author.getFirstName(), author.getSurname());
             if (searchedAuthor.isEmpty()) {
                 var newAuthor = authorDao.create(author);
@@ -92,9 +95,9 @@ public class BookServiceImpl implements BookService {
 
     private List<Genre> addGenresIfNotExist(Transaction transaction, BookDto bookDto) {
         var genres = transaction.getGenreCreationMapper().mapFrom(bookDto);
+        var genreDao = transaction.getGenreDao();
         List<Genre> genreList = new ArrayList<>();
         for (Genre genre : genres) {
-            var genreDao = transaction.getGenreDao();
             var searchedGenre = genreDao.findByTitle(genre.getTitle());
             if (searchedGenre.isEmpty()) {
                 var newGenre = genreDao.create(genre);

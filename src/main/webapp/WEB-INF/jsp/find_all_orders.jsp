@@ -109,6 +109,11 @@
         button.page:hover {
             background-color: #158ea2;
         }
+        .centered-content {
+            position: relative;
+            text-align: center;
+            margin: 20px;
+        }
     </style>
 </head>
 <body>
@@ -199,30 +204,32 @@
     </c:forEach>
     </tbody>
 </table>
-<div class="pagination-content">
-    <c:if test="${param.page > 1}">
-        <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page - 1}&status=${param.status}"
-              method="post">
-            <button type="submit" class="page">
-                <fmt:message key="page.button.previous"/>
-            </button>
-        </form>
-    </c:if>
-</div>
-<div class="pagination-content">
+<div class="centered-content">
+    <div class="pagination-content">
+        <c:if test="${param.page > 1}">
+            <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page - 1}&status=${param.status}"
+                  method="post">
+                <button type="submit" class="page">
+                    <fmt:message key="page.button.previous"/>
+                </button>
+            </form>
+        </c:if>
+    </div>
+    <div class="pagination-content">
     <span>
         [${param.page}]
     </span>
-</div>
-<div class="pagination-content">
-    <c:if test="${param.page < requestScope.pages}">
-        <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page + 1}&status=${param.status}"
-              method="post">
-            <button type="submit" class="page">
-                <fmt:message key="page.button.next"/>
-            </button>
-        </form>
-    </c:if>
+    </div>
+    <div class="pagination-content">
+        <c:if test="${param.page < requestScope.pages}">
+            <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page + 1}&status=${param.status}"
+                  method="post">
+                <button type="submit" class="page">
+                    <fmt:message key="page.button.next"/>
+                </button>
+            </form>
+        </c:if>
+    </div>
 </div>
 </body>
 </html>

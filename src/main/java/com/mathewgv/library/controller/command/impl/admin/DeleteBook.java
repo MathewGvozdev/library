@@ -27,18 +27,14 @@ public class DeleteBook implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
-            if (req.getParameter(CONFIRM) == null) {
-                return new Router(JspHelper.getPath(JspPath.DELETE_BOOK), RoutingType.FORWARD);
-            } else if (req.getParameter(CONFIRM).equals("")) {
+            if ("".equals(req.getParameter(CONFIRM))) {
                 var bookById = bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID)));
                 if (bookById.isPresent()) {
-                    req.setAttribute(AttributeName.BOOK, bookById.orElse(null));
+                    req.setAttribute(AttributeName.BOOK, bookById.get());
                 } else {
                     req.setAttribute(AttributeName.ERROR, "The book doesn't exist");
                 }
-            } else if (req.getParameter(CONFIRM).equals("y")) {
-                var bookById = bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID)));
-                bookById.ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
+            } else if ("y".equals(req.getParameter(CONFIRM))) {
                 var result = bookService.deleteBook(Integer.parseInt(req.getParameter(BOOK_ID)));
                 if (result) {
                     req.setAttribute(AttributeName.RESULT, "success");

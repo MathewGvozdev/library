@@ -64,6 +64,46 @@
         button.aqua:hover {
             background-color: #158ea2;
         }
+
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 14px;
+            background: white;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin: 0 auto 20px;
+        }
+
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        th {
+            font-size: 14px;
+            font-weight: normal;
+            color: black;
+            border-bottom: 2px solid #158ea2;
+            padding: 10px 8px;
+        }
+
+        td {
+            color: black;
+            padding: 9px 8px;
+        }
+
+        caption {
+            font-size: 30px;
+            line-height: 36px;
+        }
     </style>
 </head>
 <body>
@@ -72,9 +112,9 @@
         <c:if test="${param.cfm == null}">
             <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
                   method="post">
-            <span>
-                <fmt:message key="page.book.msg"/>:<br>
-            </span>
+                <span>
+                    <fmt:message key="page.book.msg"/>:<br>
+                </span>
                 <label>
                     <input type="text"
                            name="title"
@@ -127,34 +167,6 @@
                     <fmt:message key="page.button.add"/>
                 </button>
                 <br>
-                <c:if test="${not empty requestScope.result}">
-                    <c:if test="${requestScope.result == 'success'}">
-                <span>
-                    <fmt:message key="page.book.result.success.msg"/><br>
-                    ID: ${requestScope.book.id}<br>
-                    <fmt:message key="page.book.metas.title"/>: ${requestScope.book.bookMeta.title}<br>
-                    <fmt:message key="page.book.metas.author"/>:<br>
-                        <c:forEach var="author" items="${requestScope.book.bookMeta.authors}">
-                            ${author.firstName} ${author.surname}<br>
-                        </c:forEach>
-                    <fmt:message key="page.book.metas.genre"/>:<br>
-                        <c:forEach var="genre" items="${requestScope.book.bookMeta.genres}">
-                            ${genre.title}<br>
-                        </c:forEach>
-                    <fmt:message key="page.book.publisher"/>: ${requestScope.book.publisher.title}<br>
-                    <fmt:message key="page.book.pages"/>:${requestScope.book.pages}<br>
-                    <fmt:message key="page.book.publication.year"/>:${requestScope.book.publicationYear}<br>
-                </span>
-                    </c:if>
-                    <c:if test="${requestScope.result == 'failure'}">
-                <span>
-                    <fmt:message key="page.book.result.failure.msg"/>
-                </span>
-                    </c:if>
-                </c:if>
-                <c:if test="${not empty requestScope.error}">
-                    <span>${requestScope.error}</span>
-                </c:if>
             </form>
         </c:if>
         <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
@@ -162,14 +174,14 @@
             <c:if test="${not empty requestScope.bookDto}">
                 <span>
                     <fmt:message key="page.book.confirm.msg"/><br>
-                <fmt:message key="page.book.metas.title"/>:${requestScope.bookDto.title}<br>
-                <fmt:message key="page.book.metas.author"/>:${requestScope.bookDto.authors}<br>
-                <fmt:message key="page.book.metas.genre"/>:${requestScope.bookDto.genres}<br>
-                <fmt:message key="page.book.metas.series"/>:${requestScope.bookDto.series}<br>
-                <fmt:message key="page.book.publisher"/>: ${requestScope.bookDto.publisher}<br>
-                city: ${requestScope.bookDto.publisherCity}<br>
-                <fmt:message key="page.book.pages"/>: ${requestScope.bookDto.pages}<br>
-                <fmt:message key="page.book.publication.year"/>: ${requestScope.bookDto.publicationYear}<br>
+                    <fmt:message key="page.book.metas.title"/>:${requestScope.bookDto.title}<br>
+                    <fmt:message key="page.book.metas.author"/>:${requestScope.bookDto.authors}<br>
+                    <fmt:message key="page.book.metas.genre"/>:${requestScope.bookDto.genres}<br>
+                    <fmt:message key="page.book.metas.series"/>:${requestScope.bookDto.series}<br>
+                    <fmt:message key="page.book.publisher"/>: ${requestScope.bookDto.publisher}<br>
+                    city: ${requestScope.bookDto.publisherCity}<br>
+                    <fmt:message key="page.book.pages"/>: ${requestScope.bookDto.pages}<br>
+                    <fmt:message key="page.book.publication.year"/>: ${requestScope.bookDto.publicationYear}<br>
                 </span>
                 <div style="display: none">
                     <input type="hidden"
@@ -207,5 +219,37 @@
         </form>
     </div>
 </div>
+<c:if test="${not empty requestScope.book}">
+    <table>
+        <caption>
+            Книга добавлена
+        </caption>
+        <tbody>
+        <tr>
+            <th><fmt:message key="page.book.id"/></th>
+            <th><fmt:message key="page.book.metas.title"/></th>
+            <th><fmt:message key="page.book.metas.author"/></th>
+            <th><fmt:message key="page.book.metas.genre"/></th>
+            <th><fmt:message key="page.book.metas.series"/></th>
+            <th><fmt:message key="page.book.publisher"/></th>
+            <th><fmt:message key="page.book.pages"/></th>
+            <th><fmt:message key="page.book.publication.year"/></th>
+        </tr>
+        <tr>
+            <td>${requestScope.book.id}</td>
+            <td>${requestScope.book.title}</td>
+            <td>${requestScope.book.authors}</td>
+            <td>${requestScope.book.genres}</td>
+            <td>${requestScope.book.series}</td>
+            <td>${requestScope.book.publisher}</td>
+            <td>${requestScope.book.pages}</td>
+            <td>${requestScope.book.publicationYear}</td>
+        </tr>
+        </tbody>
+    </table>
+</c:if>
+<c:if test="${not empty requestScope.error}">
+    <span>${requestScope.error}</span>
+</c:if>
 </body>
 </html>

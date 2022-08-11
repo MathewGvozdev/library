@@ -96,23 +96,6 @@
                     <fmt:message key="page.button.delete"/>
                 </button>
                 <br>
-                <c:if test="${not empty requestScope.result}">
-                    <c:if test="${requestScope.result == 'success'}">
-            <span>
-                <fmt:message key="page.book.delete.success.msg"/>
-            </span>
-                    </c:if>
-                    <c:if test="${requestScope.result == 'failure'}">
-            <span>
-                <fmt:message key="page.book.delete.failure.msg"/>
-            </span>
-                    </c:if>
-                </c:if>
-                <c:if test="${not empty requestScope.error}">
-            <span>
-                ${requestScope.error}
-            </span>
-                </c:if>
             </form>
         </c:if>
         <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
@@ -131,7 +114,7 @@
                 <fmt:message key="page.book.publisher"/>: ${requestScope.book.publisher}<br>
                 <fmt:message key="page.book.pages"/>: ${requestScope.book.pages}<br>
                 <fmt:message key="page.book.publication.year"/>: ${requestScope.book.publicationYear}<br>
-                </span>
+            </span>
                 <div style="display: none">
                     <input type="hidden"
                            name="cfm"
@@ -146,6 +129,25 @@
                 <br>
             </c:if>
         </form>
+    </div>
+    <div class="centered-content">
+        <c:if test="${not empty requestScope.result}">
+            <c:if test="${requestScope.result == 'success'}">
+            <span>
+                <fmt:message key="page.book.delete.success.msg"/>
+            </span>
+            </c:if>
+            <c:if test="${requestScope.result == 'failure'}">
+            <span>
+                <fmt:message key="page.book.delete.failure.msg"/>
+            </span>
+            </c:if>
+        </c:if>
+        <c:if test="${not empty requestScope.error}">
+        <span>
+            the book doesn't exist
+        </span>
+        </c:if>
     </div>
 </div>
 </body>

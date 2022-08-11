@@ -13,7 +13,7 @@
             width: 100%;
             border-collapse: collapse;
             text-align: center;
-            margin: 0 auto 20px;
+            margin: 10px auto 20px;
         }
 
         tbody {
@@ -44,6 +44,28 @@
         caption {
             font-size: 30px;
             line-height: 36px;
+        }
+        button.aqua {
+            border-radius: 4px;
+            color: #fff;
+            display: block;
+            width: 140px;
+            height: 50px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            padding: 12px 20px;
+            margin: 30px auto;
+            text-decoration: none;
+        }
+
+        button.aqua {
+            background-color: #2b6068;
+            border: 1px solid #115868;
+        }
+
+        button.aqua:hover {
+            background-color: #158ea2;
         }
     </style>
 </head>
@@ -108,7 +130,7 @@
         <input type="hidden" name="loanType" value="${requestScope.order.loanType}">
         <input type="hidden" name="status" value="${requestScope.order.status}">
     </div>
-    <button type="submit">
+    <button type="submit" class="aqua">
         <fmt:message key="page.button.confirm"/>
     </button>
     <br>

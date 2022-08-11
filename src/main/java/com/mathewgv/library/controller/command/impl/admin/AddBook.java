@@ -9,12 +9,9 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
 
 @Slf4j
 public class AddBook implements Command {
@@ -31,26 +28,24 @@ public class AddBook implements Command {
     private static final String PAGES = "pages";
     private static final String PUBLICATION_YEAR = "publicationYear";
 
+    private static final String EMPTY_CONFIRM_PARAM = "";
+    private static final String POSITIVE_CONFIRM_PARAM = "y";
+
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var bookService = serviceFactory.getBookService();
-            if (req.getParameter(CONFIRM) == null) {
-                return new Router(JspHelper.getPath(JspPath.ADD_BOOK), RoutingType.FORWARD);
-            } else if (req.getParameter(CONFIRM).equals("")) {
+            if (EMPTY_CONFIRM_PARAM.equals(req.getParameter(CONFIRM))) {
                 var bookDto = buildBookDto(req);
                 req.setAttribute(AttributeName.BOOK_DTO, bookDto);
-            } else if (req.getParameter(CONFIRM).equals("y")) {
-                var book = bookService.addBookTest(buildBookDto(req));
+            } else if (POSITIVE_CONFIRM_PARAM.equals(req.getParameter(CONFIRM))) {
+                var bookService = serviceFactory.getBookService();
+                var book = bookService.addBook(buildBookDto(req));
                 if (book.getId() != null) {
                     req.setAttribute(AttributeName.BOOK, book);
-                    req.setAttribute(AttributeName.RESULT, "success");
-                } else {
-                    req.setAttribute(AttributeName.RESULT, "failure");
                 }
             }
             return new Router(JspHelper.getPath(JspPath.ADD_BOOK), RoutingType.FORWARD);
-        } catch (ServiceException e) {
+        } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to add a new book", e);
             req.setAttribute(AttributeName.ERROR, "Error in adding new book");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
