@@ -84,6 +84,24 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
     }
 
     @Override
+    public List<Book> findAll(Integer page, Integer limit) throws DaoException {
+        var selectFilter = new SelectFilter(page, limit);
+        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
+        try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
+            selectFilter.setParamsToQuery(preparedStatement);
+            var resultSet = preparedStatement.executeQuery();
+            List<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                books.add(buildBook(resultSet));
+            }
+            return books;
+        } catch (SQLException e) {
+            log.error("Error occurred while searching all books", e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public Book create(Book entity) throws DaoException {
         try (var preparedStatement = connection.get().prepareStatement(CREATE_SQL, RETURN_GENERATED_KEYS)) {
             preparedStatement.setObject(1, entity.getPublisher().getId());
@@ -105,24 +123,6 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
     @Override
     public List<Book> findAll() throws DaoException {
         try (var preparedStatement = connection.get().prepareStatement(FIND_ALL_SQL)) {
-            var resultSet = preparedStatement.executeQuery();
-            List<Book> books = new ArrayList<>();
-            while (resultSet.next()) {
-                books.add(buildBook(resultSet));
-            }
-            return books;
-        } catch (SQLException e) {
-            log.error("Error occurred while searching all books", e);
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public List<Book> findAll(Integer page, Integer limit) throws DaoException {
-        var selectFilter = new SelectFilter(page, limit);
-        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
-        try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
-            selectFilter.setParamsToQuery(preparedStatement);
             var resultSet = preparedStatement.executeQuery();
             List<Book> books = new ArrayList<>();
             while (resultSet.next()) {

@@ -28,15 +28,10 @@ public class ConnectionPool {
     private static BlockingQueue<Connection> pool;
     private static List<Connection> sourceConnections;
 
-    static {
-        loadDriver();
-        initConnectionPool();
-    }
-
     private ConnectionPool(){
     }
 
-    private static void initConnectionPool() {
+    public void initConnectionPool() {
         var poolSize = PropertiesUtil.get(POOL_SIZE_KEY);
         var size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
         pool = new ArrayBlockingQueue<>(size);
@@ -62,7 +57,7 @@ public class ConnectionPool {
         }
     }
 
-    private static Connection open() {
+    private Connection open() {
         try {
             return DriverManager.getConnection(
                     PropertiesUtil.get(URL_KEY),
@@ -74,7 +69,7 @@ public class ConnectionPool {
         }
     }
 
-    public void closePool() {
+    public void closePool() throws ConnectionPoolException {
         try {
             for (Connection sourceConnection : sourceConnections) {
                 sourceConnection.close();
@@ -85,7 +80,7 @@ public class ConnectionPool {
         }
     }
 
-    private static void loadDriver() {
+    public void loadDriver() {
         try {
             Class.forName(PropertiesUtil.get(DRIVER_KEY));
         } catch (ClassNotFoundException e) {

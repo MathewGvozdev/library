@@ -5,20 +5,16 @@ import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.entity.order.OrderStatus;
 import com.mathewgv.library.service.dto.OrderCreationDto;
-import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 public class UpdateOrder implements Command {
@@ -41,13 +37,13 @@ public class UpdateOrder implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.setAttribute(AttributeName.STATUSES, getListOfStatuses());
-            var libraryService = serviceFactory.getLibraryService();
+            var orderService = serviceFactory.getOrderService();
             if (req.getParameter(CONFIRM) == null) {
-                var order = libraryService.findOrderById(Long.parseLong(req.getParameter(ID)));
+                var order = orderService.findOrderById(Long.parseLong(req.getParameter(ID)));
                 order.ifPresent(orderDto -> req.setAttribute(AttributeName.ORDER, orderDto));
                 return new Router(JspHelper.getPath(JspPath.UPDATE_ORDER), RoutingType.FORWARD);
             } else {
-                libraryService.updateOrder(buildOrderDto(req));
+                orderService.updateOrder(buildOrderDto(req));
                 return new Router(req.getContextPath() + REDIRECT_TO_ALL_ORDERS, RoutingType.REDIRECT);
             }
         } catch (ServiceException | NumberFormatException e) {

@@ -4,20 +4,16 @@ import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.entity.order.OrderStatus;
-import com.mathewgv.library.service.LibraryService;
-import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +33,11 @@ public class FindAllOrders implements Command {
         try {
             var clientId = req.getParameter(CLIENT_ID);
             var status = req.getParameter(STATUS);
-            var libraryService = serviceFactory.getLibraryService();
+            var orderService = serviceFactory.getOrderService();
             if (clientId == null) {
                 var page = Integer.parseInt(req.getParameter(PAGE));
-                var showedOrders = libraryService.findAllOrders(page, SHOWED_ORDERS_LIMIT);
-                var totalOrders = libraryService.findAllOrders();
+                var showedOrders = orderService.findAllOrders(page, SHOWED_ORDERS_LIMIT);
+                var totalOrders = orderService.findAllOrders();
                 if (ALL_STATUS_VALUE.equals(status)) {
                     req.setAttribute(AttributeName.PAGES, countPages(totalOrders));
                     req.setAttribute(AttributeName.ORDERS, showedOrders);
@@ -56,7 +52,7 @@ public class FindAllOrders implements Command {
                     }
                 }
             } else {
-                var ordersByClientId = libraryService.findAllOrdersByClientId(Integer.parseInt(clientId));
+                var ordersByClientId = orderService.findAllOrdersByClientId(Integer.parseInt(clientId));
                 if (status == null) {
                     req.setAttribute(AttributeName.ORDERS, ordersByClientId);
                 } else {

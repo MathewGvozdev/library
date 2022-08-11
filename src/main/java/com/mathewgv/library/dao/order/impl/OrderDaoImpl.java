@@ -96,17 +96,17 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
     }
 
     @Override
-    public Optional<Order> findIfLoaned(Integer bookId) throws DaoException {
-        try (var preparedStatement = connection.get().prepareStatement(FIND_IF_LOANED_SQL)) {
-            preparedStatement.setObject(1, bookId);
+    public List<Order> findAllOrdersByClientId(Integer clientId) throws DaoException {
+        try (var preparedStatement = connection.get().prepareStatement(FIND_ALL_BY_USER_ID_SQL)) {
+            preparedStatement.setObject(1, clientId);
             var resultSet = preparedStatement.executeQuery();
-            Order order = null;
-            if (resultSet.next()) {
-                order = buildOrder(resultSet);
+            List<Order> orders = new ArrayList<>();
+            while (resultSet.next()) {
+                orders.add(buildOrder(resultSet));
             }
-            return Optional.ofNullable(order);
+            return orders;
         } catch (SQLException e) {
-            log.error("Error occurred while searching the order by ID", e);
+            log.error("Error occurred while searching the orders by client ID", e);
             throw new DaoException(e);
         }
     }
@@ -130,17 +130,17 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
     }
 
     @Override
-    public List<Order> findAllOrdersByClientId(Integer clientId) throws DaoException {
-        try (var preparedStatement = connection.get().prepareStatement(FIND_ALL_BY_USER_ID_SQL)) {
-            preparedStatement.setObject(1, clientId);
+    public Optional<Order> findIfLoaned(Integer bookId) throws DaoException {
+        try (var preparedStatement = connection.get().prepareStatement(FIND_IF_LOANED_SQL)) {
+            preparedStatement.setObject(1, bookId);
             var resultSet = preparedStatement.executeQuery();
-            List<Order> orders = new ArrayList<>();
-            while (resultSet.next()) {
-                orders.add(buildOrder(resultSet));
+            Order order = null;
+            if (resultSet.next()) {
+                order = buildOrder(resultSet);
             }
-            return orders;
+            return Optional.ofNullable(order);
         } catch (SQLException e) {
-            log.error("Error occurred while searching the orders by client ID", e);
+            log.error("Error occurred while searching the order by ID", e);
             throw new DaoException(e);
         }
     }

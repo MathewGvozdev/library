@@ -5,7 +5,6 @@ import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.entity.order.LoanType;
 import com.mathewgv.library.entity.order.OrderStatus;
-import com.mathewgv.library.service.BookService;
 import com.mathewgv.library.service.dto.OrderCreationDto;
 import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.service.exception.ServiceException;
@@ -13,12 +12,10 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -45,7 +42,7 @@ public class MakeOrder implements Command {
                 return new Router(req.getContextPath() + REDIRECT_TO_LOGIN, RoutingType.REDIRECT);
             }
             req.setAttribute(AttributeName.LOAN_TYPES, getListOfLoanTypes());
-            var libraryService = serviceFactory.getLibraryService();
+            var orderService = serviceFactory.getOrderService();
             var bookService = serviceFactory.getBookService();
             if (req.getParameter(CONFIRM) == null) {
                 var bookMetaId = Integer.parseInt(req.getParameter(BOOK_META_ID));
@@ -58,7 +55,7 @@ public class MakeOrder implements Command {
                 var orderCreationDto = buildOrderDto(req);
                 req.setAttribute(AttributeName.ORDER_DTO, orderCreationDto);
             } else if (POSITIVE_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
-                var order = libraryService.makeOrder(buildOrderDto(req));
+                var order = orderService.makeOrder(buildOrderDto(req));
                 if (order.getId() != null) {
                     req.setAttribute(AttributeName.ORDER, order);
                 }

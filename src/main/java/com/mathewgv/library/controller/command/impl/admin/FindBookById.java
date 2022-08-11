@@ -3,21 +3,14 @@ package com.mathewgv.library.controller.command.impl.admin;
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
-import com.mathewgv.library.service.BookService;
-import com.mathewgv.library.service.LibraryService;
-import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
-import java.util.Optional;
 
 @Slf4j
 public class FindBookById implements Command {
@@ -35,8 +28,8 @@ public class FindBookById implements Command {
                 var bookDto = bookService.findBookById(bookId);
                 if (bookDto.isPresent()) {
                     req.setAttribute(AttributeName.BOOK, bookDto.get());
-                    var libraryService = serviceFactory.getLibraryService();
-                    var order = libraryService.findOrderIfBookIsLoaned(bookId);
+                    var orderService = serviceFactory.getOrderService();
+                    var order = orderService.findOrderIfBookIsLoaned(bookId);
                     order.ifPresent(orderDto -> req.setAttribute("order", orderDto));
                 }
             }

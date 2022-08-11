@@ -102,22 +102,6 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
 
 
     @Override
-    public Optional<BookMeta> findByTitle (String title) throws DaoException {
-        try (var preparedStatement = connection.get().prepareStatement(FIND_BY_TITLE_SQL)) {
-            preparedStatement.setObject(1, title);
-            var resultSet = preparedStatement.executeQuery();
-            BookMeta bookMeta = null;
-            if (resultSet.next()) {
-                bookMeta = buildBookMeta(resultSet);
-            }
-            return Optional.ofNullable(bookMeta);
-        } catch (SQLException e) {
-            log.error("Error occurred while searching the book-meta by ID", e);
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
     public List<BookMeta> findAllByFilter(BookFilter filter) {
         var filterSqlRequest = filter.getSqlRequest(FIND_ALL_BY_FILTER_SQL);
         try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
@@ -132,6 +116,40 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             return bookMetas;
         } catch (SQLException e) {
             log.error("Error occurred while searching book-metas by filter", e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<BookMeta> findAll(Integer page, Integer limit) throws DaoException {
+        var selectFilter = new SelectFilter(page, limit);
+        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
+        try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
+            selectFilter.setParamsToQuery(preparedStatement);
+            var resultSet = preparedStatement.executeQuery();
+            List<BookMeta> bookMetas = new ArrayList<>();
+            while (resultSet.next()) {
+                bookMetas.add(buildBookMeta(resultSet));
+            }
+            return bookMetas;
+        } catch (SQLException e) {
+            log.error("Error occurred while searching all book-metas", e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<BookMeta> findByTitle (String title) throws DaoException {
+        try (var preparedStatement = connection.get().prepareStatement(FIND_BY_TITLE_SQL)) {
+            preparedStatement.setObject(1, title);
+            var resultSet = preparedStatement.executeQuery();
+            BookMeta bookMeta = null;
+            if (resultSet.next()) {
+                bookMeta = buildBookMeta(resultSet);
+            }
+            return Optional.ofNullable(bookMeta);
+        } catch (SQLException e) {
+            log.error("Error occurred while searching the book-meta by ID", e);
             throw new DaoException(e);
         }
     }
@@ -172,25 +190,6 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
     @Override
     public List<BookMeta> findAll() throws DaoException {
         try (var preparedStatement = connection.get().prepareStatement(FIND_ALL_SQL)) {
-            var resultSet = preparedStatement.executeQuery();
-            List<BookMeta> bookMetas = new ArrayList<>();
-            while (resultSet.next()) {
-                bookMetas.add(buildBookMeta(resultSet));
-            }
-            return bookMetas;
-        } catch (SQLException e) {
-            log.error("Error occurred while searching all book-metas", e);
-            throw new DaoException(e);
-        }
-    }
-
-
-    @Override
-    public List<BookMeta> findAll(Integer page, Integer limit) throws DaoException {
-        var selectFilter = new SelectFilter(page, limit);
-        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
-        try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
-            selectFilter.setParamsToQuery(preparedStatement);
             var resultSet = preparedStatement.executeQuery();
             List<BookMeta> bookMetas = new ArrayList<>();
             while (resultSet.next()) {

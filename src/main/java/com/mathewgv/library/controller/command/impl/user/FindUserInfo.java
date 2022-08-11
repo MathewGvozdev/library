@@ -4,10 +4,7 @@ import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.entity.order.OrderStatus;
-import com.mathewgv.library.service.LibraryService;
-import com.mathewgv.library.service.UserService;
 import com.mathewgv.library.service.dto.OrderDto;
-import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
@@ -19,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 public class FindUserInfo implements Command {
@@ -38,8 +34,8 @@ public class FindUserInfo implements Command {
             user.ifPresent(userDto -> req.setAttribute(AttributeName.USER_DTO, userDto));
 
             var status = req.getParameter(STATUS);
-            var libraryService = serviceFactory.getLibraryService();
-            var allOrdersByClientId = libraryService.findAllOrdersByClientId(userId);
+            var orderService = serviceFactory.getOrderService();
+            var allOrdersByClientId = orderService.findAllOrdersByClientId(userId);
             if (status == null) {
                 req.setAttribute(AttributeName.ORDERS, allOrdersByClientId);
             } else {

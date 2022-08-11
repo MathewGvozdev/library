@@ -2,7 +2,7 @@ package com.mathewgv.library.service.impl;
 
 import com.mathewgv.library.dao.transaction.TransactionFactory;
 import com.mathewgv.library.entity.order.Order;
-import com.mathewgv.library.service.LibraryService;
+import com.mathewgv.library.service.OrderService;
 import com.mathewgv.library.service.dto.OrderCreationDto;
 import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;
@@ -14,9 +14,9 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 
 @Slf4j
-public class LibraryServiceImpl implements LibraryService {
+public class OrderServiceImpl implements OrderService {
 
-    private static final LibraryServiceImpl INSTANCE = new LibraryServiceImpl();
+    private static final OrderServiceImpl INSTANCE = new OrderServiceImpl();
 
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
 
@@ -119,7 +119,7 @@ public class LibraryServiceImpl implements LibraryService {
         }
     }
 
-    public static LibraryServiceImpl getInstance() {
+    public static OrderServiceImpl getInstance() {
         return INSTANCE;
     }
 }

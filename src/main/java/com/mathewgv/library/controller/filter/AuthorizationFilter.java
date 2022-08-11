@@ -2,6 +2,7 @@ package com.mathewgv.library.controller.filter;
 
 import com.mathewgv.library.controller.command.CommandName;
 import com.mathewgv.library.service.dto.UserDto;
+import com.mathewgv.library.util.AttributeName;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +28,11 @@ public class AuthorizationFilter implements Filter {
             UPDATE_USER_INFO.convertToString(),
             WRONG_REQUEST.convertToString());
 
+    private static final String REFERER = "referer";
+    private static final String REDIRECT_TO_HOME = "/home";
+    private static final String ADMIN = "Админ";
+    private static final String LIBRARIAN = "Библиотекарь";
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         var uri = ((HttpServletRequest) servletRequest).getRequestURI();
@@ -37,27 +43,29 @@ public class AuthorizationFilter implements Filter {
         } else {
             addressString = uri;
         }
-        var homePage = (((HttpServletRequest) servletRequest).getContextPath()) + "/home";
-        if (addressString.equals(homePage) || isPublicCmd(addressString) || isUserLoggedIn(servletRequest)) {
+        var homePage = (((HttpServletRequest) servletRequest).getContextPath()) + REDIRECT_TO_HOME;
+        if (addressString.equals(homePage) || isPublicCmd(addressString) || isUserLoggedInAndAdmin(servletRequest)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            var prevPage = ((HttpServletRequest) servletRequest).getHeader("referer");
+            var prevPage = ((HttpServletRequest) servletRequest).getHeader(REFERER);
             ((HttpServletResponse) servletResponse).sendRedirect(prevPage != null ? prevPage : homePage);
         }
     }
 
-    private boolean isUserLoggedIn(ServletRequest servletRequest) {
-        var user = (UserDto) ((HttpServletRequest) servletRequest).getSession().getAttribute("user");
-        return user != null && isAdmin(user);
+    private boolean isUserLoggedInAndAdmin(ServletRequest servletRequest) {
+        var user = (UserDto) ((HttpServletRequest) servletRequest).getSession().getAttribute(AttributeName.USER);
+        return user != null && (isAdmin(user) || isLibrarian(user));
     }
 
     private boolean isAdmin(UserDto user) {
-        return user.getRole().equals("Админ") || user.getRole().equals("Библиотекарь");
+        return ADMIN.equals(user.getRole());
+    }
+
+    private boolean isLibrarian(UserDto user) {
+        return LIBRARIAN.equals(user.getRole());
     }
 
     private boolean isPublicCmd(String addressString) {
         return PUBLIC_CMD.stream().anyMatch(addressString::contains);
     }
-
-
 }
