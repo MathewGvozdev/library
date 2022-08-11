@@ -14,15 +14,6 @@
             text-align: center;
         }
 
-        .centered-wrapper:before {
-            content: "";
-            position: relative;
-            display: inline-block;
-            width: 0;
-            height: 100%;
-            vertical-align: middle;
-        }
-
         .centered-content {
             display: inline-block;
             vertical-align: middle;
@@ -140,6 +131,29 @@
         .lang_container a:hover {
             text-decoration: underline;
         }
+        .navigation {
+            float: right;
+            height: 100%;
+            margin: 0;
+        }
+        .navigation li {
+            height: 100%;
+            display: table;
+            float: left;
+            padding: 0 20px;
+        }
+        .navigation li a {
+            display: table-cell;
+            vertical-align: middle;
+            height: 100%;
+            color: white;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 24px;
+            text-decoration: none;
+        }
+        .navigation li a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -156,6 +170,13 @@
         <div class="logo_container">
             <h1>E-LIBRARY</h1>
         </div>
+        <ul class="navigation">
+            <li>
+                <a href="${pageContext.request.contextPath}/home">
+                    <fmt:message key="page.header.to.home"/>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
 <div class="centered-wrapper">
@@ -163,39 +184,51 @@
         <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
               method="post">
             <label for="firstName">
+                <span>
+                    <fmt:message key="page.registration.name"/>:
+                </span>
                 <input type="text"
                        name="firstName"
-                       placeholder="<fmt:message key="page.registration.name"/>"
                        id="firstName" required>
             </label><br>
             <label for="surname">
+                <span>
+                    <fmt:message key="page.registration.surname"/>:
+                </span>
                 <input type="text"
                        name="surname"
-                       placeholder="<fmt:message key="page.registration.surname"/>"
                        id="surname" required>
             </label><br>
             <label for="telephone">
+                <span>
+                    <fmt:message key="page.registration.telephone"/>:
+                </span>
                 <input type="text"
                        name="telephone"
-                       id="telephone"
-                       placeholder="<fmt:message key="page.registration.telephone"/>" required>
+                       id="telephone">
             </label><br>
             <label for="passportNumber">
+                <span>
+                    <fmt:message key="page.registration.name"/>:
+                </span>
                 <input type="text"
                        name="passportNumber"
-                       placeholder="<fmt:message key="page.registration.name"/>"
                        id="passportNumber" required>
             </label><br>
             <label for="login">
+                <span>
+                    <fmt:message key="page.registration.name"/>:
+                </span>
                 <input type="text"
                        name="login"
-                       placeholder="<fmt:message key="page.registration.name"/>"
                        id="login" required>
             </label><br>
             <label for="password">
+                <span>
+                    <fmt:message key="page.login.password"/>:
+                </span>
                 <input type="password"
                        name="password"
-                       placeholder="<fmt:message key="page.login.password"/>"
                        id="password">
             </label><br>
             <button type="submit" class="aqua">

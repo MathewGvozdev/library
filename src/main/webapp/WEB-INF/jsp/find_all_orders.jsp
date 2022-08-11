@@ -45,45 +45,121 @@
             font-size: 30px;
             line-height: 36px;
         }
+
+        .status-content {
+            display: inline-block;
+        }
+
+        button.status {
+            border-radius: 4px;
+            color: #fff;
+            display: block;
+            width: 100px;
+            height: 40px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            padding: 12px 20px;
+            margin: 30px auto;
+            text-decoration: none;
+        }
+
+        button.status {
+            background-color: #2b6068;
+            border: 1px solid #115868;
+        }
+
+        button.status:hover {
+            background-color: #158ea2;
+        }
+
+
+        .pagination-content {
+            display: inline-block;
+            text-align: center;
+        }
+
+        .pagination-content span {
+            color: black;
+            height: 100%;
+            vertical-align: middle;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 22px;
+        }
+
+        button.page {
+            border-radius: 4px;
+            color: #fff;
+            display: block;
+            width: 80px;
+            height: 30px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            padding: 6px 10px;
+            margin: 20px auto;
+            text-decoration: none;
+        }
+
+        button.page {
+            background-color: black;
+            border: 1px solid #890f0f;
+        }
+
+        button.page:hover {
+            background-color: #158ea2;
+        }
     </style>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
-      method="post">
-    <button type="submit">
-        ALL
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=opened"
-      method="post">
-    <button type="submit">
-        OPENED
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=closed"
-      method="post">
-    <button type="submit">
-        CLOSED
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=loaned"
-      method="post">
-    <button type="submit">
-        LOANED
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=overdue"
-      method="post">
-    <button type="submit">
-        OVERDUE
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&status=declined"
-      method="post">
-    <button type="submit">
-        DECLINED
-    </button>
-</form>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=all"
+          method="post">
+        <button type="submit" class="status">
+            ALL
+        </button>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=opened"
+          method="post">
+        <button type="submit" class="status">
+            OPENED
+        </button>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=closed"
+          method="post">
+        <button type="submit" class="status">
+            CLOSED
+        </button>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=loaned"
+          method="post">
+        <button type="submit" class="status">
+            LOANED
+        </button>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=overdue"
+          method="post">
+        <button type="submit" class="status">
+            OVERDUE
+        </button>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=declined"
+          method="post">
+        <button type="submit" class="status">
+            DECLINED
+        </button>
+    </form>
+</div>
 <table>
     <caption>
         <fmt:message key="page.order.orders"/>
@@ -123,5 +199,30 @@
     </c:forEach>
     </tbody>
 </table>
+<div class="pagination-content">
+    <c:if test="${param.page > 1}">
+        <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page - 1}&status=${param.status}"
+              method="post">
+            <button type="submit" class="page">
+                <fmt:message key="page.button.previous"/>
+            </button>
+        </form>
+    </c:if>
+</div>
+<div class="pagination-content">
+    <span>
+        [${param.page}]
+    </span>
+</div>
+<div class="pagination-content">
+    <c:if test="${param.page < requestScope.pages}">
+        <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page + 1}&status=${param.status}"
+              method="post">
+            <button type="submit" class="page">
+                <fmt:message key="page.button.next"/>
+            </button>
+        </form>
+    </c:if>
+</div>
 </body>
 </html>

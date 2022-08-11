@@ -12,20 +12,22 @@
             text-align: center;
         }
 
-        .centered-wrapper:before {
-            content: "";
-            position: relative;
-            display: inline-block;
-            width: 0;
-            height: 100%;
-            vertical-align: middle;
-        }
-
         .centered-content {
             display: inline-block;
+            margin: 20px;
+        }
+
+        .pagination-content {
+            display: inline-block;
+            text-align: center;
+        }
+
+        .pagination-content span {
+            color: black;
+            height: 100%;
             vertical-align: middle;
-            padding: 30px;
-            margin: 40px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 22px;
         }
 
         .first {
@@ -68,6 +70,29 @@
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 32px;
         }
+
+        button.page {
+            border-radius: 4px;
+            color: #fff;
+            display: block;
+            width: 80px;
+            height: 30px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            padding: 6px 10px;
+            margin: 20px auto;
+            text-decoration: none;
+        }
+
+        button.page {
+            background-color: black;
+            border: 1px solid #890f0f;
+        }
+
+        button.page:hover {
+            background-color: #158ea2;
+        }
     </style>
 </head>
 <body>
@@ -90,22 +115,29 @@
                 </li>
             </ul>
         </c:forEach>
-        <c:if test="${not empty requestScope.bookMetas}">
-            <div>
-                [${param.page}]
-            </div>
-            <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page + 1}"
-                  method="post">
-                <button type="submit">
-                    <fmt:message key="page.button.next"/>
-                </button>
-            </form>
-        </c:if>
+    </div>
+    <br>
+    <div class="pagination-content">
         <c:if test="${param.page > 1}">
             <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page - 1}"
                   method="post">
-                <button type="submit">
+                <button type="submit" class="page">
                     <fmt:message key="page.button.previous"/>
+                </button>
+            </form>
+        </c:if>
+    </div>
+    <div class="pagination-content">
+    <span>
+        [${param.page}]
+    </span>
+    </div>
+    <div class="pagination-content">
+        <c:if test="${param.page < requestScope.pages}">
+            <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page + 1}"
+                  method="post">
+                <button type="submit" class="page">
+                    <fmt:message key="page.button.next"/>
                 </button>
             </form>
         </c:if>

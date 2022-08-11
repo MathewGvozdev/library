@@ -26,17 +26,58 @@
             border-color: inherit;
         }
 
-        .table th {
+        th {
             font-size: 14px;
             font-weight: normal;
-            color: #039;
-            border-bottom: 2px solid #6678b1;
+            color: black;
+            border-bottom: 2px solid #158ea2;
             padding: 10px 8px;
         }
 
-        .table td {
-            color: #669;
+        td {
+            color: black;
             padding: 9px 8px;
+        }
+
+        caption {
+            font-size: 30px;
+            line-height: 36px;
+        }
+
+        .pagination-content {
+            display: inline-block;
+            text-align: center;
+        }
+
+        .pagination-content span {
+            color: black;
+            height: 100%;
+            vertical-align: middle;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 22px;
+        }
+
+        button.page {
+            border-radius: 4px;
+            color: #fff;
+            display: block;
+            width: 80px;
+            height: 30px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            padding: 6px 10px;
+            margin: 20px auto;
+            text-decoration: none;
+        }
+
+        button.page {
+            background-color: black;
+            border: 1px solid #890f0f;
+        }
+
+        button.page:hover {
+            background-color: #158ea2;
         }
     </style>
 </head>
@@ -74,24 +115,30 @@
     </c:forEach>
     </tbody>
 </table>
-<c:if test="${not empty requestScope.users}">
-    <div>
+<div class="pagination-content">
+    <c:if test="${param.page > 1}">
+        <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page - 1}"
+              method="post">
+            <button type="submit" class="page">
+                <fmt:message key="page.button.previous"/>
+            </button>
+        </form>
+    </c:if>
+</div>
+<div class="pagination-content">
+    <span>
         [${param.page}]
-    </div>
-    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page + 1}"
-          method="post">
-        <button type="submit">
-            <fmt:message key="page.button.next"/>
-        </button>
-    </form>
-</c:if>
-<c:if test="${param.page > 1}">
-    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page - 1}"
-          method="post">
-        <button type="submit">
-            <fmt:message key="page.button.previous"/>
-        </button>
-    </form>
-</c:if>
+    </span>
+</div>
+<div class="pagination-content">
+    <c:if test="${not empty requestScope.users}">
+        <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page + 1}"
+              method="post">
+            <button type="submit" class="page">
+                <fmt:message key="page.button.next"/>
+            </button>
+        </form>
+    </c:if>
+</div>
 </body>
 </html>

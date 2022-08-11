@@ -6,76 +6,191 @@
         Title
     </title>
     <style>
+        .centered-wrapper {
+            position: relative;
+            text-align: center;
+        }
+
+        .centered-content {
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .status-content {
+            display: inline-block;
+        }
+
         table {
-            border: 1px solid grey;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 14px;
+            background: white;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin: 0 auto 20px;
+        }
+
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
         }
 
         th {
-            border: 1px solid grey;
+            font-size: 14px;
+            font-weight: normal;
+            color: black;
+            border-bottom: 2px solid #158ea2;
+            padding: 10px 8px;
         }
 
         td {
-            border: 1px solid grey;
+            color: black;
+            padding: 9px 8px;
+        }
+
+        caption {
+            font-size: 30px;
+            line-height: 36px;
+        }
+
+        button.aqua {
+            border-radius: 4px;
+            color: #fff;
+            display: block;
+            width: 140px;
+            height: 50px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            padding: 12px 20px;
+            margin: 30px auto;
+            text-decoration: none;
+        }
+
+        button.aqua {
+            background-color: #2b6068;
+            border: 1px solid #115868;
+        }
+
+        button.aqua:hover {
+            background-color: #158ea2;
+        }
+
+        button.status {
+            border-radius: 4px;
+            color: #fff;
+            display: block;
+            width: 100px;
+            height: 40px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            padding: 12px 20px;
+            margin: 30px auto;
+            text-decoration: none;
+        }
+
+        button.status {
+            background-color: #2b6068;
+            border: 1px solid #115868;
+        }
+
+        button.status:hover {
+            background-color: #158ea2;
+        }
+
+        span {
+            color: black;
+            height: 100%;
+            display: table-cell;
+            vertical-align: middle;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
-Login: ${requestScope.userDto.login}<br>
-First name: ${requestScope.userDto.firstName}<br>
-Surname: ${requestScope.userDto.surname}<br>
-Telephone: ${requestScope.userDto.telephone}<br>
-Passport: ${requestScope.userDto.passportNumber}<br>
-<form action="${pageContext.request.contextPath}/home"
-      method="get">
-    <div style="display: none">
-        <input type="hidden" name="cmd" value="update_user_info">
-        <input type="hidden" name="firstName" value="${requestScope.userDto.firstName}">
-        <input type="hidden" name="surname" value="${requestScope.userDto.surname}">
-        <input type="hidden" name="telephone" value="${requestScope.userDto.telephone}">
-        <input type="hidden" name="passportNumber" value="${requestScope.userDto.passportNumber}">
+<div class="centered-wrapper">
+    <div class="centered-content">
+        <span>
+            Login: ${requestScope.userDto.login}<br>
+            First name: ${requestScope.userDto.firstName}<br>
+            Surname: ${requestScope.userDto.surname}<br>
+            Telephone: ${requestScope.userDto.telephone}<br>
+            Passport: ${requestScope.userDto.passportNumber}<br>
+        </span>
+        <form action="${pageContext.request.contextPath}/home"
+              method="get">
+            <div style="display: none">
+                <input type="hidden" name="cmd" value="update_user_info">
+                <input type="hidden" name="firstName" value="${requestScope.userDto.firstName}">
+                <input type="hidden" name="surname" value="${requestScope.userDto.surname}">
+                <input type="hidden" name="telephone" value="${requestScope.userDto.telephone}">
+                <input type="hidden" name="passportNumber" value="${requestScope.userDto.passportNumber}">
+            </div>
+            <c:if test="${sessionScope.user.login == requestScope.userDto.login}">
+                <button type="submit" class="aqua">
+                    UPDATE
+                </button>
+            </c:if>
+        </form>
     </div>
-    <c:if test="${sessionScope.user.login == requestScope.userDto.login}">
-        <button type="submit">
-            UPDATE
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}"
+          method="post">
+        <button type="submit" class="status">
+            ALL
         </button>
-    </c:if>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}"
-      method="post">
-    <button type="submit">
-        ALL
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=opened"
-      method="post">
-    <button type="submit">
-        OPENED
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=closed"
-      method="post">
-    <button type="submit">
-        CLOSED
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=loaned"
-      method="post">
-    <button type="submit">
-        LOANED
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=overdue"
-      method="post">
-    <button type="submit">
-        OVERDUE
-    </button>
-</form>
-<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=declined"
-      method="post">
-    <button type="submit">
-        DECLINED
-    </button>
-</form>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=opened"
+          method="post">
+        <button type="submit" class="status">
+            OPENED
+        </button>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=closed"
+          method="post">
+        <button type="submit" class="status">
+            CLOSED
+        </button>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=loaned"
+          method="post">
+        <button type="submit" class="status">
+            LOANED
+        </button>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=overdue"
+          method="post">
+        <button type="submit" class="status">
+            OVERDUE
+        </button>
+    </form>
+</div>
+<div class="status-content">
+    <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=declined"
+          method="post">
+        <button type="submit" class="status">
+            DECLINED
+        </button>
+    </form>
+</div>
 <table>
     <caption>
         <fmt:message key="page.order.orders"/>

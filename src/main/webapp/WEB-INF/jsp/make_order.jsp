@@ -28,18 +28,22 @@
             border-color: inherit;
         }
 
-        .table th {
+        th {
             font-size: 14px;
             font-weight: normal;
-            color: #039;
-            border-bottom: 2px solid #6678b1;
+            color: black;
+            border-bottom: 2px solid #158ea2;
             padding: 10px 8px;
-
         }
 
-        .table td {
-            color: #669;
+        td {
+            color: black;
             padding: 9px 8px;
+        }
+
+        caption {
+            font-size: 30px;
+            line-height: 36px;
         }
 
         .centered-wrapper {
@@ -47,19 +51,9 @@
             text-align: center;
         }
 
-        .centered-wrapper:before {
-            content: "";
-            position: relative;
-            display: inline-block;
-            width: 0;
-            height: 100%;
-            vertical-align: middle;
-        }
-
         .centered-content {
             display: inline-block;
             vertical-align: middle;
-            padding: 30px;
             margin: 40px;
         }
 

@@ -12,15 +12,6 @@
             text-align: center;
         }
 
-        .centered-wrapper:before {
-            content: "";
-            position: relative;
-            display: inline-block;
-            width: 0;
-            height: 100%;
-            vertical-align: middle;
-        }
-
         .centered-content {
             display: inline-block;
             vertical-align: middle;
@@ -129,6 +120,29 @@
         .lang_container a:hover {
             text-decoration: underline;
         }
+        .navigation {
+            float: right;
+            height: 100%;
+            margin: 0;
+        }
+        .navigation li {
+            height: 100%;
+            display: table;
+            float: left;
+            padding: 0 20px;
+        }
+        .navigation li a {
+            display: table-cell;
+            vertical-align: middle;
+            height: 100%;
+            color: white;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 24px;
+            text-decoration: none;
+        }
+        .navigation li a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -145,6 +159,13 @@
         <div class="logo_container">
             <h1>E-LIBRARY</h1>
         </div>
+        <ul class="navigation">
+            <li>
+                <a href="${pageContext.request.contextPath}/home">
+                    <fmt:message key="page.header.to.home"/>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
 <div class="centered-wrapper">

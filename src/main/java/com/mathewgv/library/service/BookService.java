@@ -14,7 +14,11 @@ public interface BookService {
 
     List<BookDto> findAllBooks(Integer page, Integer limit) throws ServiceException;
 
+    List<BookDto> findAllBooks() throws ServiceException;
+
     List<BookDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException;
+
+    List<BookDto> findAllBookMetas() throws ServiceException;
 
     List<BookDto> findAllBookMetasByFilter(BookFilter filter) throws ServiceException;
 

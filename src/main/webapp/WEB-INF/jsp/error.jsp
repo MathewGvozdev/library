@@ -6,6 +6,16 @@
     <title>
         <fmt:message key="head.error"/>
     </title>
+    <style>
+        span {
+            color: black;
+            height: 100%;
+            display: table-cell;
+            vertical-align: middle;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
 <c:if test="${not empty requestScope.error}">

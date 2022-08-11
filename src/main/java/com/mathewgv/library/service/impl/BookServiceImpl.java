@@ -108,6 +108,20 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<BookDto> findAllBooks() throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var bookDao = transaction.getBookDao();
+            var bookMapper = transaction.getBookMapper();
+            return bookDao.findAll().stream()
+                    .map(bookMapper::mapFrom)
+                    .collect(toList());
+        } catch (Exception e) {
+            log.error("Failure to find all books", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public List<BookDto> findAllBooks(Integer page, Integer limit) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookDao();
@@ -117,6 +131,20 @@ public class BookServiceImpl implements BookService {
                     .collect(toList());
         } catch (Exception e) {
             log.error("Failure to find all books", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<BookDto> findAllBookMetas() throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var bookDao = transaction.getBookMetaDao();
+            var bookMetaMapper = transaction.getBookMetaMapper();
+            return bookDao.findAll().stream()
+                    .map(bookMetaMapper::mapFrom)
+                    .collect(toList());
+        } catch (Exception e) {
+            log.error("Failure to find all book-metas", e);
             throw new ServiceException(e);
         }
     }

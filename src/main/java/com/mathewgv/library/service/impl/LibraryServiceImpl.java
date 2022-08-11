@@ -21,6 +21,19 @@ public class LibraryServiceImpl implements LibraryService {
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
 
     @Override
+    public Optional<OrderDto> findOrderIfBookIsLoaned(Integer bookId) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var orderDao = transaction.getOrderDao();
+            var orderMapper = transaction.getOrderMapper();
+            return orderDao.findIfLoaned(bookId)
+                    .map(orderMapper::mapFrom);
+        } catch (Exception e) {
+            log.error("Failure to find the order by ID", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void updateOrder(OrderCreationDto orderCreationDto) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var orderDao = transaction.getOrderDao();
@@ -55,12 +68,26 @@ public class LibraryServiceImpl implements LibraryService {
             var orderDao = transaction.getOrderDao();
             var orderCreationMapper = transaction.getOrderCreationMapper();
             var order = orderDao.create(orderCreationMapper.mapFrom(orderCreationDto));
-            var createdOrder = orderDao.findById(orderCreationDto.getId()).orElse(null);
+            var createdOrder = orderDao.findById(order.getId()).orElse(null);
             transaction.commit();
             log.info("New order was made: {}", createdOrder);
             return order;
         } catch (Exception e) {
             log.error("Failure to make order", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<OrderDto> findAllOrders(Integer page, Integer limit) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var orderDao = transaction.getOrderDao();
+            var orderMapper = transaction.getOrderMapper();
+            return orderDao.findAll(page, limit).stream()
+                    .map(orderMapper::mapFrom)
+                    .collect(toList());
+        } catch (Exception e) {
+            log.error("Failure to find all orders", e);
             throw new ServiceException(e);
         }
     }

@@ -4,6 +4,8 @@ import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.entity.order.OrderStatus;
+import com.mathewgv.library.service.LibraryService;
+import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
@@ -25,22 +27,35 @@ public class FindAllOrders implements Command {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private static final String CLIENT_ID = "clientId";
+    private static final Integer SHOWED_ORDERS_LIMIT = 20;
+    private static final String PAGE = "page";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var clientId = req.getParameter(CLIENT_ID);
             var status = req.getParameter("status");
+            var page = Integer.parseInt(req.getParameter(PAGE));
+            var libraryService = serviceFactory.getLibraryService();
             if (clientId == null) {
-                var allOrders = serviceFactory.getLibraryService().findAllOrders();
-                if (status == null) {
-                    req.setAttribute(AttributeName.ORDERS, allOrders);
+                var showedOrders = libraryService.findAllOrders(page, SHOWED_ORDERS_LIMIT);
+                var totalOrders = libraryService.findAllOrders();
+                if (status.equals("all")) {
+                    req.setAttribute("pages", countPages(totalOrders));
+                    req.setAttribute(AttributeName.ORDERS, showedOrders);
                 } else {
-                    List<OrderDto> ordersByStatus = filterOrdersByStatus(allOrders, status);
-                    req.setAttribute(AttributeName.ORDERS, ordersByStatus);
+                    List<OrderDto> totalOrdersByStatus = filterOrdersByStatus(totalOrders, status);
+                    if (totalOrdersByStatus.size() < SHOWED_ORDERS_LIMIT) {
+                        req.setAttribute(AttributeName.ORDERS, totalOrdersByStatus);
+                    } else {
+                        var pages = countPages(totalOrdersByStatus);
+                        req.setAttribute("pages", pages);
+                        showedOrders = totalOrdersByStatus.subList((page - 1) * SHOWED_ORDERS_LIMIT, page * SHOWED_ORDERS_LIMIT);
+                        req.setAttribute(AttributeName.ORDERS, showedOrders);
+                    }
                 }
             } else {
-                var ordersByClientId = serviceFactory.getLibraryService().findAllOrdersByClientId(Integer.parseInt(clientId));
+                var ordersByClientId = libraryService.findAllOrdersByClientId(Integer.parseInt(clientId));
                 if (status == null) {
                     req.setAttribute(AttributeName.ORDERS, ordersByClientId);
                 } else {
@@ -57,9 +72,19 @@ public class FindAllOrders implements Command {
         }
     }
 
-    private List<OrderDto> filterOrdersByStatus(List<OrderDto> allOrders, String status) {
+    private Integer countPages(List<OrderDto> totalOrders) {
+        int pages;
+        if (totalOrders.size() % SHOWED_ORDERS_LIMIT == 0) {
+            pages = totalOrders.size() / SHOWED_ORDERS_LIMIT;
+        } else {
+            pages = totalOrders.size() / SHOWED_ORDERS_LIMIT + 1;
+        }
+        return pages;
+    }
+
+    private List<OrderDto> filterOrdersByStatus(List<OrderDto> orders, String status) {
         List<OrderDto> ordersByStatus = new ArrayList<>();
-        for (OrderDto orderDto : allOrders) {
+        for (OrderDto orderDto : orders) {
             if (OrderStatus.findByName(orderDto.getStatus()).name().equalsIgnoreCase(status)) {
                 ordersByStatus.add(orderDto);
             }

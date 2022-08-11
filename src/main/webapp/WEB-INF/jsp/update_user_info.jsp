@@ -11,15 +11,6 @@
             text-align: center;
         }
 
-        .centered-wrapper:before {
-            content: "";
-            position: relative;
-            display: inline-block;
-            width: 0;
-            height: 100%;
-            vertical-align: middle;
-        }
-
         .centered-content {
             display: inline-block;
             vertical-align: middle;

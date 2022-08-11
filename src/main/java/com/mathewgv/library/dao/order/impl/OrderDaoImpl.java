@@ -3,6 +3,7 @@ package com.mathewgv.library.dao.order.impl;
 import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.book.BookDao;
 import com.mathewgv.library.dao.book.impl.BookDaoImpl;
+import com.mathewgv.library.dao.filter.SelectFilter;
 import com.mathewgv.library.dao.user.impl.UserDaoImpl;
 import com.mathewgv.library.dao.order.OrderDao;
 import com.mathewgv.library.dao.user.UserDao;
@@ -81,11 +82,51 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             WHERE id = ?
             """;
 
+    private static final String FIND_IF_LOANED_SQL = FIND_ALL_SQL + """
+            WHERE book_id = ? 
+                AND fact_date IS NULL
+                AND (status = 'На выдаче' OR status = 'Просрочен');
+            """;
+
     private static final String FIND_ALL_BY_USER_ID_SQL = FIND_ALL_SQL + """
             WHERE user_id = ?
             """;
 
     private OrderDaoImpl() {
+    }
+
+    @Override
+    public Optional<Order> findIfLoaned(Integer bookId) throws DaoException {
+        try (var preparedStatement = connection.get().prepareStatement(FIND_IF_LOANED_SQL)) {
+            preparedStatement.setObject(1, bookId);
+            var resultSet = preparedStatement.executeQuery();
+            Order order = null;
+            if (resultSet.next()) {
+                order = buildOrder(resultSet);
+            }
+            return Optional.ofNullable(order);
+        } catch (SQLException e) {
+            log.error("Error occurred while searching the order by ID", e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Order> findAll(Integer page, Integer limit) throws DaoException {
+        var selectFilter = new SelectFilter(page, limit);
+        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
+        try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
+            selectFilter.setParamsToQuery(preparedStatement);
+            var resultSet = preparedStatement.executeQuery();
+            List<Order> orders = new ArrayList<>();
+            while (resultSet.next()) {
+                orders.add(buildOrder(resultSet));
+            }
+            return orders;
+        } catch (SQLException e) {
+            log.error("Error occurred while searching all orders", e);
+            throw new DaoException(e);
+        }
     }
 
     @Override

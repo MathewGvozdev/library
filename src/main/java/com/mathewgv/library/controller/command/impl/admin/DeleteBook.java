@@ -37,6 +37,8 @@ public class DeleteBook implements Command {
                     req.setAttribute(AttributeName.ERROR, "The book doesn't exist");
                 }
             } else if (req.getParameter(CONFIRM).equals("y")) {
+                var bookById = bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID)));
+                bookById.ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
                 var result = bookService.deleteBook(Integer.parseInt(req.getParameter(BOOK_ID)));
                 if (result) {
                     req.setAttribute(AttributeName.RESULT, "success");

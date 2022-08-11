@@ -9,10 +9,10 @@ public class BookFilter extends SelectFilter {
     private String genre;
     private String series;
 
-    private static final String TITLE = "bm.title LIKE ?";
-    private static final String AUTHOR = "author_req.author LIKE ?";
-    private static final String GENRE = "string_agg(g.title, ', ') LIKE ?";
-    private static final String SERIES = "bm.series LIKE ?";
+    private static final String TITLE = "upper(bm.title) LIKE upper(?)";
+    private static final String AUTHOR = "upper(author_req.author) LIKE upper(?)";
+    private static final String GENRE = "upper(string_agg(g.title, ', ')) LIKE upper(?)";
+    private static final String SERIES = "upper(bm.series) LIKE upper(?)";
 
     public BookFilter(Integer page,
                       Integer limit,

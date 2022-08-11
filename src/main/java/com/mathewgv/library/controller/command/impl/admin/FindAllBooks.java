@@ -3,6 +3,8 @@ package com.mathewgv.library.controller.command.impl.admin;
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
+import com.mathewgv.library.service.BookService;
+import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
@@ -14,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 public class FindAllBooks implements Command {
@@ -27,13 +30,27 @@ public class FindAllBooks implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp)  {
         try {
             var page = Integer.parseInt(req.getParameter(PAGE));
-            var allBooks = serviceFactory.getBookService().findAllBooks(page, SHOWED_BOOK_LIMIT);
-            req.setAttribute(AttributeName.BOOKS, allBooks);
+            var bookService = serviceFactory.getBookService();
+            var showedBooks = bookService.findAllBooks(page, SHOWED_BOOK_LIMIT);
+            var totalBooks = bookService.findAllBooks();
+            var pages = countPages(totalBooks);
+            req.setAttribute("pages", pages);
+            req.setAttribute(AttributeName.BOOKS, showedBooks);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOKS), RoutingType.FORWARD);
         } catch (ServiceException e) {
             log.error("Failure to find all books", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching books");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
+    }
+
+    private Integer countPages(List<BookDto> totalBooks) {
+        int pages;
+        if (totalBooks.size() % SHOWED_BOOK_LIMIT == 0) {
+            pages = totalBooks.size() / SHOWED_BOOK_LIMIT;
+        } else {
+            pages = totalBooks.size() / SHOWED_BOOK_LIMIT + 1;
+        }
+        return pages;
     }
 }

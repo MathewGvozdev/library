@@ -4,6 +4,8 @@ import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.dao.filter.BookFilter;
+import com.mathewgv.library.service.BookService;
+import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
@@ -15,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 public class FindAllBookMetasByFilter implements Command {
@@ -32,8 +35,11 @@ public class FindAllBookMetasByFilter implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
-            var allBooksByFilter = bookService.findAllBookMetasByFilter(buildBookFilter(req));
-            req.setAttribute(AttributeName.BOOK_METAS, allBooksByFilter);
+            var page = Integer.parseInt(req.getParameter(PAGE));
+            var showedBooksByFilter = bookService.findAllBookMetasByFilter(buildBookFilter(req, page));
+            var booksOnNextPage = bookService.findAllBookMetasByFilter(buildBookFilter(req, page + 1));
+            setNextButtonIfNotEmpty(req, booksOnNextPage);
+            req.setAttribute(AttributeName.BOOK_METAS, showedBooksByFilter);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOK_METAS_BY_FILTER), RoutingType.FORWARD);
         } catch (ServiceException e) {
             log.error("Failure to find all book-metas by filter", e);
@@ -42,9 +48,27 @@ public class FindAllBookMetasByFilter implements Command {
         }
     }
 
-    private BookFilter buildBookFilter(HttpServletRequest req) {
+    private void setNextButtonIfNotEmpty(HttpServletRequest req, List<BookDto> booksOnNextPage) {
+        if (booksOnNextPage.size() == 0) {
+            req.setAttribute("hasNextBtn", false);
+        } else {
+            req.setAttribute("hasNextBtn", true);
+        }
+    }
+
+    private Integer countPages(List<BookDto> totalBooks) {
+        int pages;
+        if (totalBooks.size() % SHOWED_BOOK_METAS_LIMIT == 0) {
+            pages = totalBooks.size() / SHOWED_BOOK_METAS_LIMIT;
+        } else {
+            pages = totalBooks.size() / SHOWED_BOOK_METAS_LIMIT + 1;
+        }
+        return pages;
+    }
+
+    private BookFilter buildBookFilter(HttpServletRequest req, Integer page) {
         return BookFilter.builder()
-                .page(Integer.parseInt(req.getParameter(PAGE)))
+                .page(page)
                 .limit(SHOWED_BOOK_METAS_LIMIT)
                 .title(req.getParameter(TITLE))
                 .author(req.getParameter(AUTHORS))

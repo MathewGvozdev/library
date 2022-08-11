@@ -7,15 +7,43 @@
     </title>
     <style>
         table {
-            border: 1px solid grey;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 14px;
+            background: white;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin: 0 auto 20px;
+        }
+
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
         }
 
         th {
-            border: 1px solid grey;
+            font-size: 14px;
+            font-weight: normal;
+            color: black;
+            border-bottom: 2px solid #158ea2;
+            padding: 10px 8px;
         }
 
         td {
-            border: 1px solid grey;
+            color: black;
+            padding: 9px 8px;
+        }
+
+        caption {
+            font-size: 30px;
+            line-height: 36px;
         }
     </style>
 </head>
