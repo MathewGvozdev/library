@@ -15,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OpenAdminMenu implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp)  {
         try {

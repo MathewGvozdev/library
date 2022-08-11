@@ -3,6 +3,7 @@ package com.mathewgv.library.controller.command.impl.admin;
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
+import com.mathewgv.library.service.UserService;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
@@ -24,10 +25,11 @@ public class FindAllUsers implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp)  {
         try {
             var page = Integer.parseInt(req.getParameter(PAGE));
-            var allUsers = serviceFactory.getUserService().findAllUsers(page, SHOWED_USERS_LIMIT);
-            req.setAttribute(AttributeName.USERS, allUsers);
+            var userService = serviceFactory.getUserService();
+            var showedUsers = userService.findAllUsers(page, SHOWED_USERS_LIMIT);
+            req.setAttribute(AttributeName.USERS, showedUsers);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_USERS), RoutingType.FORWARD);
-        } catch (ServiceException e) {
+        } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to find all books", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching books");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);

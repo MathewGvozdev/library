@@ -5,6 +5,7 @@ import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.entity.order.OrderStatus;
 import com.mathewgv.library.service.dto.OrderCreationDto;
+import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class UpdateOrder implements Command {
@@ -25,42 +27,54 @@ public class UpdateOrder implements Command {
 
     private static final String CONFIRM = "cfm";
     private static final String ID = "id";
+    private static final String CLIENT_ID = "clientId";
+    private static final String BOOK_ID = "bookId";
+    private static final String ISSUE_DATE = "issueDate";
+    private static final String DUE_DATE = "dueDate";
+    private static final String FACT_DATE = "factDate";
+    private static final String LOAN_TYPE = "loanType";
+    private static final String STATUS = "status";
+
+    private static final String REDIRECT_TO_ALL_ORDERS = "/home?cmd=find_all_orders";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var statuses = List.of(OrderStatus.OPENED.getValue(),
-                    OrderStatus.DECLINED.getValue(),
-                    OrderStatus.LOANED.getValue(),
-                    OrderStatus.CLOSED.getValue(),
-                    OrderStatus.OVERDUE.getValue());
-            req.setAttribute("statuses", statuses);
+            req.setAttribute(AttributeName.STATUSES, getListOfStatuses());
             var libraryService = serviceFactory.getLibraryService();
             if (req.getParameter(CONFIRM) == null) {
-                libraryService.findOrderById(Long.parseLong(req.getParameter(ID)))
-                        .ifPresent(orderDto -> req.setAttribute("order", orderDto));
+                var order = libraryService.findOrderById(Long.parseLong(req.getParameter(ID)));
+                order.ifPresent(orderDto -> req.setAttribute(AttributeName.ORDER, orderDto));
                 return new Router(JspHelper.getPath(JspPath.UPDATE_ORDER), RoutingType.FORWARD);
             } else {
                 libraryService.updateOrder(buildOrderDto(req));
-                return new Router(req.getContextPath() + "/home?cmd=find_all_orders", RoutingType.REDIRECT);
+                return new Router(req.getContextPath() + REDIRECT_TO_ALL_ORDERS, RoutingType.REDIRECT);
             }
-        } catch (ServiceException e) {
+        } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to update the order", e);
             req.setAttribute(AttributeName.ERROR, "Error in updating");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }
 
+    private List<String> getListOfStatuses() {
+        return List.of(OrderStatus.OPENED.getValue(),
+                OrderStatus.DECLINED.getValue(),
+                OrderStatus.LOANED.getValue(),
+                OrderStatus.CLOSED.getValue(),
+                OrderStatus.OVERDUE.getValue());
+    }
+
     private OrderCreationDto buildOrderDto(HttpServletRequest req) {
         return OrderCreationDto.builder()
-                .id(Long.parseLong(req.getParameter("id")))
-                .userId(Integer.parseInt(req.getParameter("clientId")))
-                .bookId(Integer.parseInt(req.getParameter("bookId")))
-                .issueDate(req.getParameter("issueDate"))
-                .dueDate(req.getParameter("dueDate"))
-                .factDate(req.getParameter("factDate"))
-                .loanType(req.getParameter("loanType"))
-                .status(req.getParameter("status"))
+                .id(Long.parseLong(req.getParameter(ID)))
+                .userId(Integer.parseInt(req.getParameter(CLIENT_ID)))
+                .bookId(Integer.parseInt(req.getParameter(BOOK_ID)))
+                .issueDate(req.getParameter(ISSUE_DATE))
+                .dueDate(req.getParameter(DUE_DATE))
+                .factDate(req.getParameter(FACT_DATE))
+                .loanType(req.getParameter(LOAN_TYPE))
+                .status(req.getParameter(STATUS))
                 .build();
     }
 }

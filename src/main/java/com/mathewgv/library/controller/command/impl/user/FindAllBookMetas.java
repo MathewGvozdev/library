@@ -33,10 +33,10 @@ public class FindAllBookMetas implements Command {
             var bookService = serviceFactory.getBookService();
             var showedBookMetas = bookService.findAllBookMetas(page, SHOWED_BOOK_METAS_LIMIT);
             var totalBookMetas = bookService.findAllBookMetas();
-            req.setAttribute("pages", countPages(totalBookMetas));
+            req.setAttribute(AttributeName.PAGES, countPages(totalBookMetas));
             req.setAttribute(AttributeName.BOOK_METAS, showedBookMetas);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOK_METAS), RoutingType.FORWARD);
-        } catch (ServiceException e) {
+        } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to find all book-metas", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching book metas");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);

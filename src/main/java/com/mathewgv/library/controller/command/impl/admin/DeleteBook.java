@@ -23,18 +23,21 @@ public class DeleteBook implements Command {
     private static final String BOOK_ID = "bookId";
     private static final String CONFIRM = "cfm";
 
+    private static final String EMPTY_CONFIRM_VALUE = "";
+    private static final String POSITIVE_CONFIRM_VALUE = "y";
+
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
-            if ("".equals(req.getParameter(CONFIRM))) {
+            if (EMPTY_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 var bookById = bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID)));
                 if (bookById.isPresent()) {
                     req.setAttribute(AttributeName.BOOK, bookById.get());
                 } else {
                     req.setAttribute(AttributeName.ERROR, "The book doesn't exist");
                 }
-            } else if ("y".equals(req.getParameter(CONFIRM))) {
+            } else if (POSITIVE_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 var result = bookService.deleteBook(Integer.parseInt(req.getParameter(BOOK_ID)));
                 if (result) {
                     req.setAttribute(AttributeName.RESULT, "success");

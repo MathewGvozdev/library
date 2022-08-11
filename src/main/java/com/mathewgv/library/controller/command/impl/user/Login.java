@@ -24,8 +24,9 @@ public class Login implements Command {
     private static final String CONFIRM = "cfm";
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
-    private static final String USER = "user";
-    private static final String ROLE = "role";
+
+    private static final String REDIRECT_TO_HOME = "/home";
+    private static final String REDIRECT_TO_LOGIN_WITH_ERROR = "/home?cmd=login&error";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -46,13 +47,13 @@ public class Login implements Command {
     }
 
     private Router onLoginSuccess(UserDto userDto, HttpServletRequest req) {
-        req.getSession().setAttribute(USER, userDto);
-        req.getSession().setAttribute(ROLE, userDto.getRole());
-        return new Router(req.getContextPath() + "/home", RoutingType.REDIRECT);
+        req.getSession().setAttribute(AttributeName.USER, userDto);
+        req.getSession().setAttribute(AttributeName.ROLE, userDto.getRole());
+        return new Router(req.getContextPath() + REDIRECT_TO_HOME, RoutingType.REDIRECT);
     }
 
     private Router onLoginFail(HttpServletRequest req) {
-        return new Router(req.getContextPath() + "/home?cmd=login&error", RoutingType.REDIRECT);
+        return new Router(req.getContextPath() + REDIRECT_TO_LOGIN_WITH_ERROR, RoutingType.REDIRECT);
     }
 
 }

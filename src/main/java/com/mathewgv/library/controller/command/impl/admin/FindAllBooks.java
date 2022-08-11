@@ -34,10 +34,10 @@ public class FindAllBooks implements Command {
             var showedBooks = bookService.findAllBooks(page, SHOWED_BOOK_LIMIT);
             var totalBooks = bookService.findAllBooks();
             var pages = countPages(totalBooks);
-            req.setAttribute("pages", pages);
+            req.setAttribute(AttributeName.PAGES, pages);
             req.setAttribute(AttributeName.BOOKS, showedBooks);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOKS), RoutingType.FORWARD);
-        } catch (ServiceException e) {
+        } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to find all books", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching books");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);

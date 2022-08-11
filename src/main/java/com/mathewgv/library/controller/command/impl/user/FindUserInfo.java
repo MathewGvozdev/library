@@ -26,28 +26,29 @@ public class FindUserInfo implements Command {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
-    private static final String BOOK_META_ID = "bookMetaId";
+    private static final String USER_ID = "userId";
+    private static final String STATUS = "status";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            var userId = Integer.parseInt(req.getParameter(USER_ID));
             var userService = serviceFactory.getUserService();
-            var userId = Integer.parseInt(req.getParameter("userId"));
             var user = userService.findUserInfoById(userId);
-            user.ifPresent(userDto -> req.setAttribute("userDto", userDto));
+            user.ifPresent(userDto -> req.setAttribute(AttributeName.USER_DTO, userDto));
 
-            var status = req.getParameter("status");
+            var status = req.getParameter(STATUS);
             var libraryService = serviceFactory.getLibraryService();
             var allOrdersByClientId = libraryService.findAllOrdersByClientId(userId);
             if (status == null) {
-                req.setAttribute("orders", allOrdersByClientId);
+                req.setAttribute(AttributeName.ORDERS, allOrdersByClientId);
             } else {
                 List<OrderDto> ordersByStatus = filterOrdersByStatus(allOrdersByClientId, status);
                 req.setAttribute(AttributeName.ORDERS, ordersByStatus);
             }
 
             return new Router(JspHelper.getPath(JspPath.FIND_USER_INFO), RoutingType.FORWARD);
-        } catch (ServiceException e) {
+        } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to find any book", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching book");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);

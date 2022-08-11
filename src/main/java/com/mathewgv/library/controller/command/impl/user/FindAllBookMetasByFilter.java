@@ -41,7 +41,7 @@ public class FindAllBookMetasByFilter implements Command {
             setNextButtonIfNotEmpty(req, booksOnNextPage);
             req.setAttribute(AttributeName.BOOK_METAS, showedBooksByFilter);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOK_METAS_BY_FILTER), RoutingType.FORWARD);
-        } catch (ServiceException e) {
+        } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to find all book-metas by filter", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching books with filter");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
@@ -50,20 +50,10 @@ public class FindAllBookMetasByFilter implements Command {
 
     private void setNextButtonIfNotEmpty(HttpServletRequest req, List<BookDto> booksOnNextPage) {
         if (booksOnNextPage.size() == 0) {
-            req.setAttribute("hasNextBtn", false);
+            req.setAttribute(AttributeName.HAS_NEXT_BTN, false);
         } else {
-            req.setAttribute("hasNextBtn", true);
+            req.setAttribute(AttributeName.HAS_NEXT_BTN, true);
         }
-    }
-
-    private Integer countPages(List<BookDto> totalBooks) {
-        int pages;
-        if (totalBooks.size() % SHOWED_BOOK_METAS_LIMIT == 0) {
-            pages = totalBooks.size() / SHOWED_BOOK_METAS_LIMIT;
-        } else {
-            pages = totalBooks.size() / SHOWED_BOOK_METAS_LIMIT + 1;
-        }
-        return pages;
     }
 
     private BookFilter buildBookFilter(HttpServletRequest req, Integer page) {

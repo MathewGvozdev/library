@@ -28,53 +28,61 @@ public class MakeOrder implements Command {
 
     private static final String CONFIRM = "cfm";
     private static final String BOOK_ID = "bookId";
+    private static final String ISSUE_DATE = "issueDate";
+    private static final String DUE_DATE = "dueDate";
+    private static final String LOAN_TYPE = "loanType";
     private static final String BOOK_META_ID = "bookMetaId";
+
+    private static final String EMPTY_CONFIRM_VALUE = "";
+    private static final String POSITIVE_CONFIRM_VALUE = "y";
+
+    private static final String REDIRECT_TO_LOGIN = "/home?cmd=login";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            if (req.getSession().getAttribute("user") == null) {
-                return new Router(req.getContextPath() + "/home?cmd=login", RoutingType.REDIRECT);
+            if (req.getSession().getAttribute(AttributeName.USER) == null) {
+                return new Router(req.getContextPath() + REDIRECT_TO_LOGIN, RoutingType.REDIRECT);
             }
+            req.setAttribute(AttributeName.LOAN_TYPES, getListOfLoanTypes());
             var libraryService = serviceFactory.getLibraryService();
-            var loanTypes = List.of(LoanType.TO_HOME.getValue(), LoanType.READING_ROOM.getValue());
-            req.setAttribute("loanTypes", loanTypes);
             var bookService = serviceFactory.getBookService();
             if (req.getParameter(CONFIRM) == null) {
                 var bookMetaId = Integer.parseInt(req.getParameter(BOOK_META_ID));
                 bookService.findAnyBookByBookMetaId(bookMetaId)
                         .ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
                 return new Router(JspHelper.getPath(JspPath.MAKE_ORDER), RoutingType.FORWARD);
-            } else if (req.getParameter(CONFIRM).equals("")) {
+            } else if (EMPTY_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID)))
                         .ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
                 var orderCreationDto = buildOrderDto(req);
                 req.setAttribute(AttributeName.ORDER_DTO, orderCreationDto);
-            } else if (req.getParameter(CONFIRM).equals("y")) {
+            } else if (POSITIVE_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 var order = libraryService.makeOrder(buildOrderDto(req));
                 if (order.getId() != null) {
                     req.setAttribute(AttributeName.ORDER, order);
-                    req.setAttribute(AttributeName.RESULT, "success");
-                } else {
-                    req.setAttribute(AttributeName.RESULT, "failure");
                 }
             }
             return new Router(JspHelper.getPath(JspPath.MAKE_ORDER), RoutingType.FORWARD);
-        } catch (ServiceException e) {
+        } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to make the order", e);
             req.setAttribute(AttributeName.ERROR, "Error in making an order");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }
 
+    private List<String> getListOfLoanTypes() {
+        return List.of(LoanType.TO_HOME.getValue(), LoanType.READING_ROOM.getValue());
+    }
+
     private OrderCreationDto buildOrderDto(HttpServletRequest req) {
-        var user = (UserDto) req.getSession().getAttribute("user");
+        var user = (UserDto) req.getSession().getAttribute(AttributeName.USER);
         return OrderCreationDto.builder()
                 .userId(user.getId())
-                .bookId(Integer.parseInt(req.getParameter("bookId")))
-                .issueDate(req.getParameter("issueDate"))
-                .dueDate(req.getParameter("dueDate"))
-                .loanType(req.getParameter("loanType"))
+                .bookId(Integer.parseInt(req.getParameter(BOOK_ID)))
+                .issueDate(req.getParameter(ISSUE_DATE))
+                .dueDate(req.getParameter(DUE_DATE))
+                .loanType(req.getParameter(LOAN_TYPE))
                 .status(OrderStatus.OPENED.getValue())
                 .build();
     }

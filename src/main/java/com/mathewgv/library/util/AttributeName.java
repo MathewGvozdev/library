@@ -16,6 +16,13 @@ public final class AttributeName {
     public static final String ORDER = "order";
 
     public static final String USERS = "users";
+    public static final String USER = "user";
+    public static final String ROLE = "role";
+    public static final String PAGES = "pages";
+    public static final String STATUSES = "statuses";
+    public static final String HAS_NEXT_BTN = "hasNextBtn";
+    public static final String USER_DTO = "userDto";
+    public static final String LOAN_TYPES = "loanTypes";
 
     private AttributeName(){
     }

@@ -26,6 +26,8 @@ public class Registration implements Command {
     private static final String TELEPHONE = "telephone";
     private static final String PASSPORT_NUMBER = "passportNumber";
 
+    private static final String REDIRECT_TO_LOGIN = "/home?cmd=login";
+
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
@@ -35,7 +37,7 @@ public class Registration implements Command {
             } else {
                 var userCreationDto = buildUserCreationDto(req);
                 userService.register(userCreationDto);
-                return new Router(req.getContextPath() + "/home?cmd=login", RoutingType.REDIRECT);
+                return new Router(req.getContextPath() + REDIRECT_TO_LOGIN, RoutingType.REDIRECT);
             }
         } catch (ServiceException e) {
             log.error("Failure to register a new user", e);

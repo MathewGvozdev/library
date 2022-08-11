@@ -24,6 +24,13 @@ public class UpdateUserInfo implements Command {
 
     private static final String CONFIRM = "cfm";
     private static final String ID = "id";
+    private static final String FIRST_NAME = "firstName";
+    private static final String SURNAME = "surname";
+    private static final String TELEPHONE = "telephone";
+    private static final String PASSPORT = "passport";
+    private static final String PASSWORD = "password";
+
+    private static final String REDIRECT_TO_USER_INFO = "/home?cmd=find_user_info&userId=";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -34,10 +41,10 @@ public class UpdateUserInfo implements Command {
             } else {
                 var userCreationDto = buildUserCreationDto(req);
                 userService.updateUserInfo(userCreationDto);
-                return new Router(req.getContextPath() + "/home?cmd=find_user_info&userId=" + userCreationDto.getId(),
+                return new Router(req.getContextPath() + REDIRECT_TO_USER_INFO + userCreationDto.getId(),
                         RoutingType.REDIRECT);
             }
-        } catch (ServiceException e) {
+        } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to update the user", e);
             req.setAttribute(AttributeName.ERROR, "Error in updating");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
@@ -46,12 +53,12 @@ public class UpdateUserInfo implements Command {
 
     private UserCreationDto buildUserCreationDto(HttpServletRequest req) {
         return UserCreationDto.builder()
-                .id(Integer.parseInt(req.getParameter("id")))
-                .firstName(req.getParameter("firstName"))
-                .surname(req.getParameter("surname"))
-                .telephone(req.getParameter("telephone"))
-                .passportNumber(req.getParameter("passport"))
-                .password(req.getParameter("password"))
+                .id(Integer.parseInt(req.getParameter(ID)))
+                .firstName(req.getParameter(FIRST_NAME))
+                .surname(req.getParameter(SURNAME))
+                .telephone(req.getParameter(TELEPHONE))
+                .passportNumber(req.getParameter(PASSPORT))
+                .password(req.getParameter(PASSWORD))
                 .build();
     }
 }

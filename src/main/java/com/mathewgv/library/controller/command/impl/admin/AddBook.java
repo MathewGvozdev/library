@@ -28,16 +28,16 @@ public class AddBook implements Command {
     private static final String PAGES = "pages";
     private static final String PUBLICATION_YEAR = "publicationYear";
 
-    private static final String EMPTY_CONFIRM_PARAM = "";
-    private static final String POSITIVE_CONFIRM_PARAM = "y";
+    private static final String EMPTY_CONFIRM_VALUE = "";
+    private static final String POSITIVE_CONFIRM_VALUE = "y";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            if (EMPTY_CONFIRM_PARAM.equals(req.getParameter(CONFIRM))) {
+            if (EMPTY_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 var bookDto = buildBookDto(req);
                 req.setAttribute(AttributeName.BOOK_DTO, bookDto);
-            } else if (POSITIVE_CONFIRM_PARAM.equals(req.getParameter(CONFIRM))) {
+            } else if (POSITIVE_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 var bookService = serviceFactory.getBookService();
                 var book = bookService.addBook(buildBookDto(req));
                 if (book.getId() != null) {
