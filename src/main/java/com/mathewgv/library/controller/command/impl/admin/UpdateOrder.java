@@ -31,7 +31,7 @@ public class UpdateOrder implements Command {
     private static final String LOAN_TYPE = "loanType";
     private static final String STATUS = "status";
 
-    private static final String REDIRECT_TO_ALL_ORDERS = "/home?cmd=find_all_orders";
+    private static final String REDIRECT_TO_ALL_ORDERS = "/home?cmd=find_all_orders&page=1&status=all";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {

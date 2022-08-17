@@ -2,7 +2,9 @@
 <html>
 <head>
     <%@ include file="header.jsp" %>
-    <title>Title</title>
+    <title>
+        <fmt:message key="head.find.all.users"/>
+    </title>
     <style>
         table {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -89,17 +91,17 @@
 <body>
 <table>
     <caption>
-        USERS
+        <fmt:message key="page.user.users"/>
     </caption>
     <tbody>
     <tr>
         <th>№</th>
-        <th>LOGIN</th>
-        <th>FIRST NAME</th>
-        <th>SURNAME</th>
-        <th>TELEPHONE</th>
-        <th>PASSPORT NUMBER</th>
-        <th>ROLE</th>
+        <th><fmt:message key="page.user.login"/></th>
+        <th><fmt:message key="page.user.name"/></th>
+        <th><fmt:message key="page.user.surname"/></th>
+        <th><fmt:message key="page.user.telephone"/></th>
+        <th><fmt:message key="page.user.passport.number"/></th>
+        <th><fmt:message key="page.user.role"/></th>
     </tr>
     <c:forEach var="user" items="${requestScope.users}">
         <tr>

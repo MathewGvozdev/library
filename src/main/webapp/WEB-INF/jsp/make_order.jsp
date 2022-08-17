@@ -100,6 +100,7 @@
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 32px;
         }
+
         h5 {
             color: black;
             height: 100%;
@@ -145,113 +146,104 @@
     </style>
 </head>
 <body>
-<c:if test="${not empty sessionScope.user}">
-    <c:if test="${param.cfm == null}">
-        <div class="centered-wrapper">
-            <div class="centered-content">
-                <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
-                      method="post">
-                    <h1>
-                        <fmt:message key="page.order.make.msg"/>:<br>
-                    </h1>
-                    <div style="display: none">
-                        <label>
-                            <input type="hidden"
-                                   name="bookId"
-                                   value="${requestScope.book.id}">
-                        </label><br>
-                    </div>
+<c:if test="${param.cfm == null}">
+    <div class="centered-wrapper">
+        <div class="centered-content">
+            <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
+                  method="post">
+                <h1>
+                    <fmt:message key="page.order.make.msg"/>:<br>
+                </h1>
+                <div style="display: none">
                     <label>
-                    <h5>
-                        TITLE<br>
-                    </h5>
-                        <input type="text"
-                               name="title"
-                               value="${requestScope.book.title}" readonly>
+                        <input type="hidden"
+                               name="bookId"
+                               value="${requestScope.book.id}">
                     </label><br>
-                    <label>
+                </div>
+                <label>
                     <h5>
-                        AUTHOR<br>
+                        <fmt:message key="page.book.title"/>:<br>
                     </h5>
-                        <input type="text"
-                               name="authors"
-                               value="${requestScope.book.authors}" readonly>
-                    </label><br>
-                    <label>
+                    <input type="text"
+                           name="title"
+                           value="${requestScope.book.title}" readonly>
+                </label><br>
+                <label>
                     <h5>
-                        GENRE<br>
+                        <fmt:message key="page.book.author"/>:<br>
                     </h5>
-                        <input type="text"
-                               name="genres"
-                               value="${requestScope.book.genres}" readonly>
-                    </label><br>
-                    <label>
+                    <input type="text"
+                           name="authors"
+                           value="${requestScope.book.authors}" readonly>
+                </label><br>
+                <label>
                     <h5>
-                        ISSUE DATE<br>
+                        <fmt:message key="page.book.genre"/>:<br>
                     </h5>
-                        <input type="date"
-                               name="issueDate"
-                               value="${param.issueDate}" required>
-                    </label><br>
-                    <label>
+                    <input type="text"
+                           name="genres"
+                           value="${requestScope.book.genres}" readonly>
+                </label><br>
+                <label>
                     <h5>
-                        DUE DATE<br>
+                        <fmt:message key="page.order.issue.date"/>:<br>
                     </h5>
-                        <input type="date"
-                               name="dueDate"
-                               value="${param.dueDate}" required>
-                    </label><br>
-                    <label for="loanType">
+                    <input type="date"
+                           name="issueDate"
+                           value="${param.issueDate}" required>
+                </label><br>
+                <label>
                     <h5>
-                        LOAN TYPE<br>
+                        <fmt:message key="page.order.due.date"/>:<br>
                     </h5>
-                        <select name="loanType"
-                                id="loanType">
-                            <c:forEach var="loanType" items="${requestScope.loanTypes}">
-                                <option value="${loanType}">${loanType}</option>
-                            </c:forEach>
-                        </select><br>
-                    </label>
-                    <button type="submit" class="aqua">
-                        <fmt:message key="page.button.send"/>
-                    </button>
-                    <br>
-                </form>
-            </div>
+                    <input type="date"
+                           name="dueDate"
+                           value="${param.dueDate}" required>
+                </label><br>
+                <label for="loanType">
+                    <h5>
+                        <fmt:message key="page.order.type"/>:<br>
+                    </h5>
+                    <select name="loanType"
+                            id="loanType">
+                        <c:forEach var="loanType" items="${requestScope.loanTypes}">
+                            <option value="${loanType}">${loanType}</option>
+                        </c:forEach>
+                    </select><br>
+                </label>
+                <button type="submit" class="aqua">
+                    <fmt:message key="page.button.send"/>
+                </button>
+                <br>
+            </form>
         </div>
-    </c:if>
+    </div>
 </c:if>
-<c:if test="${not empty requestScope.result}">
-    <c:if test="${requestScope.result == 'success'}">
+<c:if test="${not empty requestScope.order}">
         <span>
             <fmt:message key="page.order.success.msg"/>:<br>
         </span>
-        <table>
-            <tbody>
-            <tr>
-                <th><fmt:message key="page.login.login"/></th>
-                <th><fmt:message key="page.book.id"/></th>
-                <th><fmt:message key="page.book.metas.title"/></th>
-                <th><fmt:message key="page.order.issue.date"/></th>
-                <th><fmt:message key="page.order.due.date"/></th>
-                <th><fmt:message key="page.order.type"/></th>
-            </tr>
-            <tr>
-                <th>${requestScope.order.client.login}</th>
-                <th>${requestScope.order.book.id}</th>
-                <th>${requestScope.order.book.bookMeta.title}</th>
-                <th>${requestScope.order.issueDate}</th>
-                <th>${requestScope.order.dueDate}</th>
-                <th>${param.loanType}</th>
-            </tr>
-            </tbody>
-        </table>
-    </c:if>
-    <c:if test="${requestScope.result == 'failure'}">
-                <span>
-                    <fmt:message key="page.order.failure.msg"/>
-                </span>
-    </c:if>
+    <table>
+        <tbody>
+        <tr>
+            <th><fmt:message key="page.login.login"/></th>
+            <th><fmt:message key="page.book.id"/></th>
+            <th><fmt:message key="page.book.title"/></th>
+            <th><fmt:message key="page.order.issue.date"/></th>
+            <th><fmt:message key="page.order.due.date"/></th>
+            <th><fmt:message key="page.order.type"/></th>
+        </tr>
+        <tr>
+            <th>${requestScope.order.client.login}</th>
+            <th>${requestScope.order.book.id}</th>
+            <th>${requestScope.order.book.bookMeta.title}</th>
+            <th>${requestScope.order.issueDate}</th>
+            <th>${requestScope.order.dueDate}</th>
+            <th>${param.loanType}</th>
+        </tr>
+        </tbody>
+    </table>
 </c:if>
 <c:if test="${not empty requestScope.error}">
     <span>${requestScope.error}</span>
@@ -265,9 +257,9 @@
         <table>
             <tbody>
             <tr>
-                <th><fmt:message key="page.book.metas.title"/></th>
-                <th><fmt:message key="page.book.metas.author"/></th>
-                <th><fmt:message key="page.book.metas.genre"/></th>
+                <th><fmt:message key="page.book.title"/></th>
+                <th><fmt:message key="page.book.author"/></th>
+                <th><fmt:message key="page.book.genre"/></th>
                 <th><fmt:message key="page.order.issue.date"/></th>
                 <th><fmt:message key="page.order.due.date"/></th>
                 <th><fmt:message key="page.order.type"/></th>

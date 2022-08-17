@@ -3,7 +3,7 @@
 <head>
     <%@ include file="header.jsp" %>
     <title>
-        Title
+        <fmt:message key="head.admin.menu"/>
     </title>
     <style>
         .centered-wrapper {
@@ -50,7 +50,7 @@
                        value="add_book">
             </div>
             <button type="submit" class="aqua">
-                add book
+                <fmt:message key="page.admin.menu.add.book"/>
             </button>
         </form>
         <form action="${pageContext.request.contextPath}/home"
@@ -61,7 +61,7 @@
                        value="delete_book">
             </div>
             <button type="submit" class="aqua">
-                delete book
+                <fmt:message key="page.admin.menu.delete.book"/>
             </button>
         </form>
     </div>
@@ -77,7 +77,7 @@
                        value="1">
             </div>
             <button type="submit" class="aqua">
-                <fmt:message key="page.index.show.book.examples"/>
+                <fmt:message key="page.admin.menu.show.examples"/>
             </button>
         </form>
         <form action="${pageContext.request.contextPath}/home"
@@ -88,7 +88,7 @@
                        value="find_book_by_id">
             </div>
             <button type="submit" class="aqua">
-                Найти по id
+                <fmt:message key="page.admin.menu.show.by.id"/>
             </button>
         </form>
     </div>
@@ -107,7 +107,7 @@
                        value="all">
             </div>
             <button type="submit" class="aqua">
-                <fmt:message key="page.index.find.orders"/>
+                <fmt:message key="page.admin.menu.find.orders"/>
             </button>
         </form>
         <form action="${pageContext.request.contextPath}/home"
@@ -121,7 +121,7 @@
                        value="1">
             </div>
             <button type="submit" class="aqua">
-                <fmt:message key="page.button.find"/>
+                <fmt:message key="page.admin.menu.find.users"/>
             </button>
         </form>
     </div>

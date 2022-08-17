@@ -6,7 +6,6 @@
     <title>
         <fmt:message key="head.index"/>
     </title>
-    <link rel="stylesheet" href="<c:url value='${pageContext.request.contextPath}/css/style.css'/>">
     <style>
         .centered-wrapper {
             position: relative;
@@ -73,7 +72,7 @@
         <form action="${pageContext.request.contextPath}/home"
               method="get">
                 <span>
-                    Поиск по фильтру
+                    <fmt:message key="page.index.filter"/>
                 </span>
             <div style="display: none">
                 <input type="hidden"
@@ -86,25 +85,25 @@
             <label>
                 <input type="text"
                        name="title"
-                       placeholder="<fmt:message key="page.index.book.title"/>">
+                       placeholder="<fmt:message key="page.book.title"/>">
             </label><br>
             <label>
                 <input type="text"
                        name="authors"
-                       placeholder="<fmt:message key="page.index.book.authors"/>">
+                       placeholder="<fmt:message key="page.book.author"/>">
             </label><br>
             <label>
                 <input type="text"
                        name="genres"
-                       placeholder="<fmt:message key="page.index.book.genres"/>">
+                       placeholder="<fmt:message key="page.book.genre"/>">
             </label><br>
             <label>
                 <input type="text"
                        name="series"
-                       placeholder="<fmt:message key="page.index.book.series"/>">
+                       placeholder="<fmt:message key="page.book.series"/>">
             </label><br>
             <button type="submit" class="aqua">
-                <fmt:message key="page.index.find"/>
+                <fmt:message key="page.button.find"/>
             </button>
         </form>
     </div>
@@ -134,7 +133,7 @@
                            value="admin_menu">
                 </div>
                 <button type="submit" class="aqua">
-                    Меню админа
+                    <fmt:message key="page.index.admin.menu"/>
                 </button>
             </form>
         </div>

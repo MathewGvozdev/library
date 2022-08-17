@@ -47,7 +47,6 @@
         span {
             color: black;
             height: 100%;
-            /*display: table-cell;*/
             vertical-align: middle;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 24px;
@@ -89,7 +88,7 @@
                 <label>
                     <input type="text"
                            name="bookId"
-                           placeholder="bookId"
+                           placeholder="<fmt:message key="page.book.id"/>"
                            value="${param.bookId}">
                 </label><br>
                 <button type="submit" class="aqua">
@@ -104,11 +103,11 @@
             <span>
                 <fmt:message key="page.book.delete.confirm.msg"/><br>
                 ID: ${requestScope.book.id}<br>
-                <fmt:message key="page.book.metas.title"/>: ${requestScope.book.title}<br>
-                <fmt:message key="page.book.metas.author"/>: ${requestScope.book.authors}<br>
-                <fmt:message key="page.book.metas.genre"/>: ${requestScope.book.genres}<br>
+                <fmt:message key="page.book.title"/>: ${requestScope.book.title}<br>
+                <fmt:message key="page.book.author"/>: ${requestScope.book.authors}<br>
+                <fmt:message key="page.book.genre"/>: ${requestScope.book.genres}<br>
                 <c:if test="${not empty requestScope.book.series}">
-                    <fmt:message key="page.book.metas.series"/>:
+                    <fmt:message key="page.book.series"/>:
                     ${requestScope.book.series}<br>
                 </c:if>
                 <fmt:message key="page.book.publisher"/>: ${requestScope.book.publisher}<br>
@@ -145,6 +144,7 @@
         </c:if>
         <c:if test="${not empty requestScope.error}">
         <span>
+            <fmt:message key="page.book.delete.not.found"/>
             the book doesn't exist
         </span>
         </c:if>

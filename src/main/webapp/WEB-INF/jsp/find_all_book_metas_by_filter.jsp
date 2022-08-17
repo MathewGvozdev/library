@@ -100,7 +100,7 @@
 <div class="centered-wrapper">
     <div class="centered-content">
         <h1>
-            <fmt:message key="page.book.metas.books"/>:
+            <fmt:message key="page.book.books"/>:
         </h1>
         <ul class="first">
             <c:forEach var="bookMeta" items="${requestScope.bookMetas}">
@@ -108,10 +108,10 @@
                     <a href="${pageContext.request.contextPath}/home?cmd=make_order&bookMetaId=${bookMeta.id}">
                             ${bookMeta.title}<br>
                     </a>
-                    <fmt:message key="page.book.metas.author"/>: ${bookMeta.authors}<br>
-                    <fmt:message key="page.book.metas.genre"/>: ${bookMeta.genres}<br>
+                    <fmt:message key="page.book.author"/>: ${bookMeta.authors}<br>
+                    <fmt:message key="page.book.genre"/>: ${bookMeta.genres}<br>
                     <c:if test="${not empty bookMeta.series}">
-                        <fmt:message key="page.book.metas.series"/>:
+                        <fmt:message key="page.book.series"/>:
                         ${bookMeta.series}<br>
                     </c:if>
                 </li>

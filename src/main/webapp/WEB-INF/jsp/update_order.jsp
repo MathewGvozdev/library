@@ -81,7 +81,7 @@
             <th>№</th>
             <th><fmt:message key="page.order.client"/></th>
             <th><fmt:message key="page.order.book.id"/></th>
-            <th><fmt:message key="page.book.metas.title"/></th>
+            <th><fmt:message key="page.book.title"/></th>
             <th><fmt:message key="page.order.issue.date"/></th>
             <th><fmt:message key="page.order.due.date"/></th>
             <th><fmt:message key="page.order.fact.date"/></th>

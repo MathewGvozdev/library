@@ -121,7 +121,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=all"
           method="post">
         <button type="submit" class="status">
-            ALL
+            <fmt:message key="page.order.status.all"/>
         </button>
     </form>
 </div>
@@ -129,7 +129,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=opened"
           method="post">
         <button type="submit" class="status">
-            OPENED
+            <fmt:message key="page.order.status.opened"/>
         </button>
     </form>
 </div>
@@ -137,7 +137,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=closed"
           method="post">
         <button type="submit" class="status">
-            CLOSED
+            <fmt:message key="page.order.status.closed"/>
         </button>
     </form>
 </div>
@@ -145,7 +145,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=loaned"
           method="post">
         <button type="submit" class="status">
-            LOANED
+            <fmt:message key="page.order.status.loaned"/>
         </button>
     </form>
 </div>
@@ -153,7 +153,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=overdue"
           method="post">
         <button type="submit" class="status">
-            OVERDUE
+            <fmt:message key="page.order.status.overdue"/>
         </button>
     </form>
 </div>
@@ -161,7 +161,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&page=${param.page}&status=declined"
           method="post">
         <button type="submit" class="status">
-            DECLINED
+            <fmt:message key="page.order.status.declined"/>
         </button>
     </form>
 </div>
@@ -174,7 +174,7 @@
         <th>№</th>
         <th><fmt:message key="page.order.client"/></th>
         <th><fmt:message key="page.order.book.id"/></th>
-        <th><fmt:message key="page.book.metas.title"/></th>
+        <th><fmt:message key="page.book.title"/></th>
         <th><fmt:message key="page.order.issue.date"/></th>
         <th><fmt:message key="page.order.due.date"/></th>
         <th><fmt:message key="page.order.fact.date"/></th>

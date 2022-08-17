@@ -3,7 +3,7 @@
 <head>
     <%@ include file="header.jsp" %>
     <title>
-        Title
+        <fmt:message key="head.user.info"/>
     </title>
     <style>
         .centered-wrapper {
@@ -120,11 +120,11 @@
 <div class="centered-wrapper">
     <div class="centered-content">
         <span>
-            Login: ${requestScope.userDto.login}<br>
-            First name: ${requestScope.userDto.firstName}<br>
-            Surname: ${requestScope.userDto.surname}<br>
-            Telephone: ${requestScope.userDto.telephone}<br>
-            Passport: ${requestScope.userDto.passportNumber}<br>
+            <fmt:message key="page.user.login"/>: ${requestScope.userDto.login}<br>
+            <fmt:message key="page.user.name"/>: ${requestScope.userDto.firstName}<br>
+            <fmt:message key="page.user.surname"/>: ${requestScope.userDto.surname}<br>
+            <fmt:message key="page.user.telephone"/>: ${requestScope.userDto.telephone}<br>
+            <fmt:message key="page.user.passport.number"/>: ${requestScope.userDto.passportNumber}<br>
         </span>
         <form action="${pageContext.request.contextPath}/home"
               method="get">
@@ -137,7 +137,7 @@
             </div>
             <c:if test="${sessionScope.user.login == requestScope.userDto.login}">
                 <button type="submit" class="aqua">
-                    UPDATE
+                    <fmt:message key="page.button.change"/>
                 </button>
             </c:if>
         </form>
@@ -147,7 +147,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}"
           method="post">
         <button type="submit" class="status">
-            ALL
+            <fmt:message key="page.order.status.all"/>
         </button>
     </form>
 </div>
@@ -155,7 +155,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=opened"
           method="post">
         <button type="submit" class="status">
-            OPENED
+            <fmt:message key="page.order.status.opened"/>
         </button>
     </form>
 </div>
@@ -163,7 +163,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=closed"
           method="post">
         <button type="submit" class="status">
-            CLOSED
+            <fmt:message key="page.order.status.closed"/>
         </button>
     </form>
 </div>
@@ -171,7 +171,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=loaned"
           method="post">
         <button type="submit" class="status">
-            LOANED
+            <fmt:message key="page.order.status.loaned"/>
         </button>
     </form>
 </div>
@@ -179,7 +179,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=overdue"
           method="post">
         <button type="submit" class="status">
-            OVERDUE
+            <fmt:message key="page.order.status.overdue"/>
         </button>
     </form>
 </div>
@@ -187,7 +187,7 @@
     <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&userId=${param.userId}&status=declined"
           method="post">
         <button type="submit" class="status">
-            DECLINED
+            <fmt:message key="page.order.status.declined"/>
         </button>
     </form>
 </div>
@@ -199,7 +199,7 @@
         <th>№</th>
         <th><fmt:message key="page.order.client"/></th>
         <th><fmt:message key="page.order.book.id"/></th>
-        <th><fmt:message key="page.book.metas.title"/></th>
+        <th><fmt:message key="page.book.title"/></th>
         <th><fmt:message key="page.order.issue.date"/></th>
         <th><fmt:message key="page.order.due.date"/></th>
         <th><fmt:message key="page.order.fact.date"/></th>

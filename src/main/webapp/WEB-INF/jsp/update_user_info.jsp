@@ -83,23 +83,23 @@
               method="post">
             <div>
                 <label>
-                    <span>NAME: </span>
+                    <span><fmt:message key="page.user.name"/>: </span>
                     <input type="text" name="firstName" value="${param.firstName}">
                 </label><br>
                 <label>
-                    <span>SURNAME: </span>
+                    <span><fmt:message key="page.user.surname"/>: </span>
                     <input type="text" name="surname" value="${param.surname}">
                 </label><br>
                 <label>
-                    <span>TELEPHONE: </span>
+                    <span><fmt:message key="page.user.telephone"/>: </span>
                     <input type="text" name="telephone" value="${param.telephone}">
                 </label><br>
                 <label>
-                    <span>PASSPORT: </span>
+                    <span><fmt:message key="page.user.passport.number"/>: </span>
                     <input type="text" name="passport" value="${param.passportNumber}">
                 </label><br>
                 <label>
-                    <span>PASSWORD: </span>
+                    <span><fmt:message key="page.user.password"/>: </span>
                     <input type="password" name="password" value="${param.password}">
                 </label><br>
             </div>

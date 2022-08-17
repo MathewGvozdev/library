@@ -118,37 +118,37 @@
                 <label>
                     <input type="text"
                            name="title"
-                           placeholder="title"
+                           placeholder="<fmt:message key="page.book.title"/>"
                            value="${param.title}" required>
                 </label><br>
                 <label>
                     <input type="text"
                            name="authors"
-                           placeholder="authors"
+                           placeholder="<fmt:message key="page.book.author"/>"
                            value="${param.authors}" required>
                 </label><br>
                 <label>
                     <input type="text"
                            name="genres"
-                           placeholder="genres"
+                           placeholder="<fmt:message key="page.book.genre"/>"
                            value="${param.genres}" required>
                 </label><br>
                 <label>
                     <input type="text"
                            name="series"
-                           placeholder="series"
+                           placeholder="<fmt:message key="page.book.series"/>"
                            value="${param.series}">
                 </label><br>
                 <label>
                     <input type="text"
                            name="publisher"
-                           placeholder="publisher"
+                           placeholder="<fmt:message key="page.book.publisher"/>"
                            value="${param.publisher}" required>
                 </label><br>
                 <label>
                     <input type="text"
                            name="publisherCity"
-                           placeholder="publisherCity"
+                           placeholder="<fmt:message key="page.book.publisher.city"/>"
                            value="${param.publisherCity}" required>
                 </label><br>
                 <label>
@@ -174,12 +174,12 @@
             <c:if test="${not empty requestScope.bookDto}">
                 <span>
                     <fmt:message key="page.book.confirm.msg"/><br>
-                    <fmt:message key="page.book.metas.title"/>:${requestScope.bookDto.title}<br>
-                    <fmt:message key="page.book.metas.author"/>:${requestScope.bookDto.authors}<br>
-                    <fmt:message key="page.book.metas.genre"/>:${requestScope.bookDto.genres}<br>
-                    <fmt:message key="page.book.metas.series"/>:${requestScope.bookDto.series}<br>
+                    <fmt:message key="page.book.title"/>:${requestScope.bookDto.title}<br>
+                    <fmt:message key="page.book.author"/>:${requestScope.bookDto.authors}<br>
+                    <fmt:message key="page.book.genre"/>:${requestScope.bookDto.genres}<br>
+                    <fmt:message key="page.book.series"/>:${requestScope.bookDto.series}<br>
                     <fmt:message key="page.book.publisher"/>: ${requestScope.bookDto.publisher}<br>
-                    city: ${requestScope.bookDto.publisherCity}<br>
+                    <fmt:message key="page.book.publisher.city"/>: ${requestScope.bookDto.publisherCity}<br>
                     <fmt:message key="page.book.pages"/>: ${requestScope.bookDto.pages}<br>
                     <fmt:message key="page.book.publication.year"/>: ${requestScope.bookDto.publicationYear}<br>
                 </span>
@@ -222,15 +222,15 @@
 <c:if test="${not empty requestScope.book}">
     <table>
         <caption>
-            Книга добавлена
+            <fmt:message key="page.book.after.add.msg"/>
         </caption>
         <tbody>
         <tr>
             <th><fmt:message key="page.book.id"/></th>
-            <th><fmt:message key="page.book.metas.title"/></th>
-            <th><fmt:message key="page.book.metas.author"/></th>
-            <th><fmt:message key="page.book.metas.genre"/></th>
-            <th><fmt:message key="page.book.metas.series"/></th>
+            <th><fmt:message key="page.book.title"/></th>
+            <th><fmt:message key="page.book.author"/></th>
+            <th><fmt:message key="page.book.genre"/></th>
+            <th><fmt:message key="page.book.series"/></th>
             <th><fmt:message key="page.book.publisher"/></th>
             <th><fmt:message key="page.book.pages"/></th>
             <th><fmt:message key="page.book.publication.year"/></th>

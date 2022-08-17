@@ -82,7 +82,7 @@
     </div>
     <div class="inner_header">
         <div class="logo_container">
-            <h1>E-LIBRARY</h1>
+            <h1>LIBRARY</h1>
         </div>
         <ul class="navigation">
             <li>

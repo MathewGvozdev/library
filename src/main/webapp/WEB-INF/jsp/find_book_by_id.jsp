@@ -13,7 +13,6 @@
         }
 
         .centered-content {
-            /*display: inline-block;*/
             margin: 20px;
         }
 
@@ -93,7 +92,6 @@
         span {
             color: black;
             height: 100%;
-            /*display: table-cell;*/
             vertical-align: middle;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 24px;
@@ -130,10 +128,10 @@
         <tbody>
         <tr>
             <th><fmt:message key="page.book.id"/></th>
-            <th><fmt:message key="page.book.metas.title"/></th>
-            <th><fmt:message key="page.book.metas.author"/></th>
-            <th><fmt:message key="page.book.metas.genre"/></th>
-            <th><fmt:message key="page.book.metas.series"/></th>
+            <th><fmt:message key="page.book.title"/></th>
+            <th><fmt:message key="page.book.author"/></th>
+            <th><fmt:message key="page.book.genre"/></th>
+            <th><fmt:message key="page.book.series"/></th>
             <th><fmt:message key="page.book.publisher"/></th>
             <th><fmt:message key="page.book.pages"/></th>
             <th><fmt:message key="page.book.publication.year"/></th>
@@ -161,7 +159,7 @@
             <th>№</th>
             <th><fmt:message key="page.order.client"/></th>
             <th><fmt:message key="page.order.book.id"/></th>
-            <th><fmt:message key="page.book.metas.title"/></th>
+            <th><fmt:message key="page.book.title"/></th>
             <th><fmt:message key="page.order.issue.date"/></th>
             <th><fmt:message key="page.order.due.date"/></th>
             <th><fmt:message key="page.order.fact.date"/></th>
