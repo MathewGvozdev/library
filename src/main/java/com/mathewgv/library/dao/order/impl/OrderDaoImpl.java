@@ -4,6 +4,7 @@ import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.book.BookDao;
 import com.mathewgv.library.dao.book.impl.BookDaoImpl;
 import com.mathewgv.library.dao.filter.SelectFilter;
+import com.mathewgv.library.dao.filter.SortType;
 import com.mathewgv.library.dao.user.impl.UserDaoImpl;
 import com.mathewgv.library.dao.order.OrderDao;
 import com.mathewgv.library.dao.user.UserDao;
@@ -114,7 +115,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
     @Override
     public List<Order> findAll(Integer page, Integer limit) throws DaoException {
         var selectFilter = new SelectFilter(page, limit);
-        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
+        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL, SortType.ID_DESC);
         try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
             selectFilter.setParamsToQuery(preparedStatement);
             var resultSet = preparedStatement.executeQuery();
@@ -168,7 +169,8 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
 
     @Override
     public List<Order> findAll() throws DaoException {
-        try (var preparedStatement = connection.get().prepareStatement(FIND_ALL_SQL)) {
+        var sql = FIND_ALL_SQL + " ORDER BY id DESC";
+        try (var preparedStatement = connection.get().prepareStatement(sql)) {
             var resultSet = preparedStatement.executeQuery();
             List<Order> orders = new ArrayList<>();
             while (resultSet.next()) {

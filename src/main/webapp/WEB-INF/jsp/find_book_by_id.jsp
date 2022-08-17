@@ -152,7 +152,7 @@
 <c:if test="${not empty requestScope.order}">
     <table>
         <caption>
-            <fmt:message key="page.order.orders"/>
+            <fmt:message key="page.order.order"/>
         </caption>
         <tbody>
         <tr>

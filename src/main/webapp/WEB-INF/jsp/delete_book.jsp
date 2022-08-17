@@ -29,16 +29,6 @@
             resize: vertical;
         }
 
-        input[type=password] {
-            width: 300px;
-            height: 50px;
-            font-size: 16px;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: vertical;
-        }
-
         label {
             padding: 12px 12px 12px 0;
             display: inline-block;
@@ -74,12 +64,47 @@
         button.aqua:hover {
             background-color: #158ea2;
         }
+
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 14px;
+            background: white;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin: 0 auto 20px;
+        }
+
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        th {
+            font-size: 14px;
+            font-weight: normal;
+            color: black;
+            border-bottom: 2px solid #158ea2;
+            padding: 10px 8px;
+        }
+
+        td {
+            color: black;
+            padding: 9px 8px;
+        }
     </style>
 </head>
 <body>
 <div class="centered-wrapper">
     <div class="centered-content">
-        <c:if test="${param.cfm == null}">
+        <c:if test="${param.cfm == null || not empty requestScope.result}">
             <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
                   method="post">
                 <span>
@@ -97,39 +122,6 @@
                 <br>
             </form>
         </c:if>
-        <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
-              method="post">
-            <c:if test="${not empty requestScope.book}">
-            <span>
-                <fmt:message key="page.book.delete.confirm.msg"/><br>
-                ID: ${requestScope.book.id}<br>
-                <fmt:message key="page.book.title"/>: ${requestScope.book.title}<br>
-                <fmt:message key="page.book.author"/>: ${requestScope.book.authors}<br>
-                <fmt:message key="page.book.genre"/>: ${requestScope.book.genres}<br>
-                <c:if test="${not empty requestScope.book.series}">
-                    <fmt:message key="page.book.series"/>:
-                    ${requestScope.book.series}<br>
-                </c:if>
-                <fmt:message key="page.book.publisher"/>: ${requestScope.book.publisher}<br>
-                <fmt:message key="page.book.pages"/>: ${requestScope.book.pages}<br>
-                <fmt:message key="page.book.publication.year"/>: ${requestScope.book.publicationYear}<br>
-            </span>
-                <div style="display: none">
-                    <input type="hidden"
-                           name="cfm"
-                           value="y"><br>
-                    <input type="hidden"
-                           name="bookId"
-                           value="${param.bookId}"><br>
-                </div>
-                <button type="submit" class="aqua">
-                    <fmt:message key="page.button.confirm"/>
-                </button>
-                <br>
-            </c:if>
-        </form>
-    </div>
-    <div class="centered-content">
         <c:if test="${not empty requestScope.result}">
             <c:if test="${requestScope.result == 'success'}">
             <span>
@@ -145,10 +137,53 @@
         <c:if test="${not empty requestScope.error}">
         <span>
             <fmt:message key="page.book.delete.not.found"/>
-            the book doesn't exist
         </span>
         </c:if>
     </div>
 </div>
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="post">
+    <c:if test="${not empty requestScope.book}">
+        <span>
+            <fmt:message key="page.book.delete.confirm.msg"/><br>
+        </span>
+        <table>
+            <tbody>
+            <tr>
+                <th><fmt:message key="page.book.id"/></th>
+                <th><fmt:message key="page.book.title"/></th>
+                <th><fmt:message key="page.book.author"/></th>
+                <th><fmt:message key="page.book.genre"/></th>
+                <th><fmt:message key="page.book.series"/></th>
+                <th><fmt:message key="page.book.publisher"/></th>
+                <th><fmt:message key="page.book.pages"/></th>
+                <th><fmt:message key="page.book.publication.year"/></th>
+            </tr>
+            <tr>
+                <td>${requestScope.book.id}</td>
+                <td>${requestScope.book.title}</td>
+                <td>${requestScope.book.authors}</td>
+                <td>${requestScope.book.genres}</td>
+                <td>${requestScope.book.series}</td>
+                <td>${requestScope.book.publisher}</td>
+                <td>${requestScope.book.pages}</td>
+                <td>${requestScope.book.publicationYear}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="display: none">
+            <input type="hidden"
+                   name="cfm"
+                   value="y"><br>
+            <input type="hidden"
+                   name="bookId"
+                   value="${param.bookId}"><br>
+        </div>
+        <button type="submit" class="aqua">
+            <fmt:message key="page.button.confirm"/>
+        </button>
+        <br>
+    </c:if>
+</form>
 </body>
 </html>

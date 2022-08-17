@@ -2,6 +2,7 @@ package com.mathewgv.library.dao.user.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.filter.SelectFilter;
+import com.mathewgv.library.dao.filter.SortType;
 import com.mathewgv.library.dao.user.UserDao;
 import com.mathewgv.library.dao.user.UserInfoDao;
 import com.mathewgv.library.dao.exception.DaoException;
@@ -72,7 +73,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
     @Override
     public List<UserInfo> findAll(Integer page, Integer limit) throws DaoException {
         var selectFilter = new SelectFilter(page, limit);
-        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
+        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL, SortType.ID);
         try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
             selectFilter.setParamsToQuery(preparedStatement);
             var resultSet = preparedStatement.executeQuery();

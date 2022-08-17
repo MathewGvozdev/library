@@ -92,7 +92,7 @@
             text-align: center;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
-            padding: 12px 20px;
+            padding: 12px 12px;
             margin: 30px auto;
             text-decoration: none;
         }
@@ -208,16 +208,7 @@
     </tr>
     <c:forEach var="order" items="${requestScope.orders}">
         <tr>
-            <c:if test="${sessionScope.user.role == 'Админ' || sessionScope.user.role == 'Библиотекарь'}">
-                <td>
-                    <a href="${pageContext.request.contextPath}/home?cmd=update_order&id=${order.id}">
-                            ${order.id}<br>
-                    </a>
-                </td>
-            </c:if>
-            <c:if test="${sessionScope.user.role == 'Пользователь'}">
-                <td>${order.id}</td>
-            </c:if>
+            <td>${order.id}</td>
             <td>${order.client}</td>
             <td>${order.bookId}</td>
             <td>${order.bookTitle}</td>
@@ -225,7 +216,16 @@
             <td>${order.dueDate}</td>
             <td>${order.factDate}</td>
             <td>${order.loanType}</td>
-            <td>${order.status}</td>
+            <c:if test="${sessionScope.user.role == 'Админ' || sessionScope.user.role == 'Библиотекарь'}">
+                <td>
+                    <a href="${pageContext.request.contextPath}/home?cmd=update_order&id=${order.id}">
+                            ${order.status}<br>
+                    </a>
+                </td>
+            </c:if>
+            <c:if test="${sessionScope.user.role == 'Пользователь'}">
+                <td>${order.status}</td>
+            </c:if>
         </tr>
     </c:forEach>
 </table>

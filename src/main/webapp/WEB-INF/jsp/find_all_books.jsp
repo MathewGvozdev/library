@@ -82,6 +82,7 @@
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 22px;
         }
+
         .centered-content {
             position: relative;
             text-align: center;
@@ -107,7 +108,11 @@
     </tr>
     <c:forEach var="book" items="${requestScope.books}">
         <tr>
-            <td>${book.id}</td>
+            <td>
+                <a href="${pageContext.request.contextPath}/home?cmd=find_book_by_id&bookId=${book.id}">
+                        ${book.id}
+                </a>
+            </td>
             <td>${book.title}</td>
             <td>${book.authors}</td>
             <td>${book.genres}</td>

@@ -59,7 +59,7 @@
             text-align: center;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
-            padding: 12px 20px;
+            padding: 12px 12px;
             margin: 30px auto;
             text-decoration: none;
         }

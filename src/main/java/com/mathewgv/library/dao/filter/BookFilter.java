@@ -32,7 +32,7 @@ public class BookFilter extends SelectFilter {
     }
 
     @Override
-    public String getSqlRequest(String selectSql) {
+    public String getSqlRequest(String selectSql, SortType type) {
         initConditions();
         String sqlRequest;
         if (getConditions().size() == 0) {

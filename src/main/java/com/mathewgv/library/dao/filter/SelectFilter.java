@@ -24,9 +24,9 @@ public class SelectFilter {
         }
     }
 
-    public String getSqlRequest(String selectSql) {
+    public String getSqlRequest(String selectSql, SortType type) {
         initConditions();
-        return selectSql + " LIMIT ? OFFSET ?";
+        return selectSql + type.getCondition() + " LIMIT ? OFFSET ?";
     }
 
     protected void initConditions() {

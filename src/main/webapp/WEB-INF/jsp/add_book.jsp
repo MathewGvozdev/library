@@ -169,56 +169,72 @@
                 <br>
             </form>
         </c:if>
-        <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
-              method="post">
-            <c:if test="${not empty requestScope.bookDto}">
-                <span>
-                    <fmt:message key="page.book.confirm.msg"/><br>
-                    <fmt:message key="page.book.title"/>:${requestScope.bookDto.title}<br>
-                    <fmt:message key="page.book.author"/>:${requestScope.bookDto.authors}<br>
-                    <fmt:message key="page.book.genre"/>:${requestScope.bookDto.genres}<br>
-                    <fmt:message key="page.book.series"/>:${requestScope.bookDto.series}<br>
-                    <fmt:message key="page.book.publisher"/>: ${requestScope.bookDto.publisher}<br>
-                    <fmt:message key="page.book.publisher.city"/>: ${requestScope.bookDto.publisherCity}<br>
-                    <fmt:message key="page.book.pages"/>: ${requestScope.bookDto.pages}<br>
-                    <fmt:message key="page.book.publication.year"/>: ${requestScope.bookDto.publicationYear}<br>
-                </span>
-                <div style="display: none">
-                    <input type="hidden"
-                           name="cfm"
-                           value="y"><br>
-                    <input type="hidden"
-                           name="title"
-                           value="${param.title}"><br>
-                    <input type="hidden"
-                           name="authors"
-                           value="${param.authors}"><br>
-                    <input type="hidden"
-                           name="genres"
-                           value="${param.genres}"><br>
-                    <input type="hidden"
-                           name="series"
-                           value="${param.series}"><br>
-                    <input type="hidden"
-                           name="publisher"
-                           value="${param.publisher}"><br>
-                    <input type="hidden"
-                           name="publisherCity"
-                           value="${param.publisherCity}"><br>
-                    <input type="hidden"
-                           name="pages"
-                           value="${param.pages}"><br>
-                    <input type="hidden"
-                           name="publicationYear"
-                           value="${param.publicationYear}"><br>
-                </div>
-                <button type="submit" class="aqua">
-                    <fmt:message key="page.button.confirm"/>
-                </button>
-            </c:if>
-        </form>
     </div>
 </div>
+<form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
+      method="post">
+    <c:if test="${not empty requestScope.bookDto}">
+        <span>
+            <fmt:message key="page.book.confirm.msg"/><br>
+        </span>
+        <table>
+            <tbody>
+            <tr>
+                <th><fmt:message key="page.book.title"/></th>
+                <th><fmt:message key="page.book.author"/></th>
+                <th><fmt:message key="page.book.genre"/></th>
+                <th><fmt:message key="page.book.series"/></th>
+                <th><fmt:message key="page.book.publisher"/></th>
+                <th><fmt:message key="page.book.publisher.city"/></th>
+                <th><fmt:message key="page.book.pages"/></th>
+                <th><fmt:message key="page.book.publication.year"/></th>
+            </tr>
+            <tr>
+                <td>${requestScope.bookDto.title}</td>
+                <td>${requestScope.bookDto.authors}</td>
+                <td>${requestScope.bookDto.genres}</td>
+                <td>${requestScope.bookDto.series}</td>
+                <td>${requestScope.bookDto.publisher}</td>
+                <td>${requestScope.bookDto.publisherCity}</td>
+                <td>${requestScope.bookDto.pages}</td>
+                <td>${requestScope.bookDto.publicationYear}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="display: none">
+            <input type="hidden"
+                   name="cfm"
+                   value="y"><br>
+            <input type="hidden"
+                   name="title"
+                   value="${param.title}"><br>
+            <input type="hidden"
+                   name="authors"
+                   value="${param.authors}"><br>
+            <input type="hidden"
+                   name="genres"
+                   value="${param.genres}"><br>
+            <input type="hidden"
+                   name="series"
+                   value="${param.series}"><br>
+            <input type="hidden"
+                   name="publisher"
+                   value="${param.publisher}"><br>
+            <input type="hidden"
+                   name="publisherCity"
+                   value="${param.publisherCity}"><br>
+            <input type="hidden"
+                   name="pages"
+                   value="${param.pages}"><br>
+            <input type="hidden"
+                   name="publicationYear"
+                   value="${param.publicationYear}"><br>
+        </div>
+        <button type="submit" class="aqua">
+            <fmt:message key="page.button.confirm"/>
+        </button>
+    </c:if>
+</form>
 <c:if test="${not empty requestScope.book}">
     <table>
         <caption>

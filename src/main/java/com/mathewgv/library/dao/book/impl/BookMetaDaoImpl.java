@@ -7,6 +7,7 @@ import com.mathewgv.library.dao.book.GenreDao;
 import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.dao.filter.SelectFilter;
+import com.mathewgv.library.dao.filter.SortType;
 import com.mathewgv.library.entity.book.Author;
 import com.mathewgv.library.entity.book.BookMeta;
 import com.mathewgv.library.entity.book.Genre;
@@ -103,7 +104,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
 
     @Override
     public List<BookMeta> findAllByFilter(BookFilter filter) {
-        var filterSqlRequest = filter.getSqlRequest(FIND_ALL_BY_FILTER_SQL);
+        var filterSqlRequest = filter.getSqlRequest(FIND_ALL_BY_FILTER_SQL, SortType.ID);
         try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
             for (int i = 0; i < filter.getConditionsSize(); i++) {
                 preparedStatement.setObject(i + 1, filter.getParameterValue(i));
@@ -123,7 +124,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
     @Override
     public List<BookMeta> findAll(Integer page, Integer limit) throws DaoException {
         var selectFilter = new SelectFilter(page, limit);
-        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL);
+        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL, SortType.ID);
         try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
             selectFilter.setParamsToQuery(preparedStatement);
             var resultSet = preparedStatement.executeQuery();
