@@ -109,6 +109,7 @@
         button.page:hover {
             background-color: #158ea2;
         }
+
         .centered-content {
             position: relative;
             text-align: center;
@@ -183,11 +184,7 @@
     </tr>
     <c:forEach var="order" items="${requestScope.orders}">
         <tr>
-            <td>
-                <a href="${pageContext.request.contextPath}/home?cmd=update_order&id=${order.id}">
-                        ${order.id}<br>
-                </a>
-            </td>
+            <td>${order.id}<br></td>
             <td>
                 <a href="${pageContext.request.contextPath}/home?cmd=find_user_info&userId=${order.clientId}">
                         ${order.client}<br>
@@ -199,7 +196,11 @@
             <td>${order.dueDate}</td>
             <td>${order.factDate}</td>
             <td>${order.loanType}</td>
-            <td>${order.status}</td>
+            <td>
+                <a href="${pageContext.request.contextPath}/home?cmd=update_order&id=${order.id}">
+                        ${order.status}<br>
+                </a>
+            </td>
         </tr>
     </c:forEach>
     </tbody>

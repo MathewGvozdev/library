@@ -113,9 +113,15 @@ public class TransactionImpl implements Transaction {
     public OrderCreationMapper getOrderCreationMapper() {
         return setConnection(mapperFactory.getOrderCreationMapper());
     }
+
     @Override
     public OrderMapper getOrderMapper() {
         return setConnection(mapperFactory.getOrderMapper());
+    }
+
+    @Override
+    public UserRoleMapper getUserRoleMapper() {
+        return setConnection(mapperFactory.getUserRoleMapper());
     }
 
     public  <A extends Dao> A setConnection(A dao) {

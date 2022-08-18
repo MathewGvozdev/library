@@ -47,7 +47,27 @@ public class RoleDaoImpl extends DaoConnection implements RoleDao {
             WHERE id = ?
             """;
 
+    private static final String FIND_BY_TITLE_SQL = FIND_ALL_SQL + """
+            WHERE title = ?
+            """;
+
     private RoleDaoImpl() {
+    }
+
+    @Override
+    public Optional<Role> findByTitle(String title) throws DaoException {
+        try (var preparedStatement = connection.get().prepareStatement(FIND_BY_TITLE_SQL)) {
+            preparedStatement.setObject(1, title);
+            var resultSet = preparedStatement.executeQuery();
+            Role role = null;
+            if (resultSet.next()) {
+                role = buildRole(resultSet);
+            }
+            return Optional.ofNullable(role);
+        } catch (SQLException e) {
+            log.error("Error occurred while searching the role by title", e);
+            throw new DaoException(e);
+        }
     }
 
     @Override

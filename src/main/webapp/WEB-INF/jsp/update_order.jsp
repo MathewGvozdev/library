@@ -70,7 +70,6 @@
     </style>
 </head>
 <body>
-
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
       method="post">
     <table>

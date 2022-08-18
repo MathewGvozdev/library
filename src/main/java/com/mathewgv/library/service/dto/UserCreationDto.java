@@ -14,4 +14,5 @@ public class UserCreationDto {
     String surname;
     String telephone;
     String passportNumber;
+    String role;
 }

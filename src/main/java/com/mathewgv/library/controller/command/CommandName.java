@@ -7,6 +7,7 @@ public enum CommandName {
     REGISTRATION,
     FIND_USER_INFO,
     CHANGE_LOCALE,
+    CHANGE_USER_ROLE,
 
     FIND_ALL_ORDERS,
     MAKE_ORDER,

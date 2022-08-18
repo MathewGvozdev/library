@@ -4,6 +4,7 @@ import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.user.RoleDao;
 import com.mathewgv.library.dao.user.UserDao;
 import com.mathewgv.library.dao.exception.DaoException;
+import com.mathewgv.library.entity.user.Role;
 import com.mathewgv.library.entity.user.User;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,6 +45,12 @@ public class UserDaoImpl extends DaoConnection implements UserDao {
             WHERE id = ?
             """;
 
+    private static final String UPDATE_ROLE_SQL = """
+            UPDATE users
+                SET role_id = ?
+            WHERE id = ?
+            """;
+
     private static final String FIND_ALL_SQL = """
             SELECT u.id, login, password, role_id, r.title
             FROM users u
@@ -59,6 +66,18 @@ public class UserDaoImpl extends DaoConnection implements UserDao {
             """;
 
     private UserDaoImpl() {
+    }
+
+    @Override
+    public void updateRole(User user) throws DaoException {
+        try (var preparedStatement = connection.get().prepareStatement(UPDATE_ROLE_SQL)) {
+            preparedStatement.setObject(1, user.getRole().getId());
+            preparedStatement.setObject(2, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("Error occurred while updating the user", e);
+            throw new DaoException(e);
+        }
     }
 
     @Override

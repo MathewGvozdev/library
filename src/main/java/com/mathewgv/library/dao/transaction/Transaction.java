@@ -46,6 +46,8 @@ public interface Transaction extends AutoCloseable {
 
     OrderMapper getOrderMapper();
 
+    UserRoleMapper getUserRoleMapper();
+
     void commit() throws DaoException;
 
     void rollback() throws DaoException;

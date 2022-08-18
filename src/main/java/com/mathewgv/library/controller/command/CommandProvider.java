@@ -35,6 +35,7 @@ public class CommandProvider {
         repository.put(CommandName.UPDATE_USER_INFO, new UpdateUserInfo());
         repository.put(CommandName.ADMIN_MENU, new OpenAdminMenu());
         repository.put(CommandName.FIND_ALL_USERS, new FindAllUsers());
+        repository.put(CommandName.CHANGE_USER_ROLE, new ChangeUserRole());
 //        repository.put(CommandName.WRONG_REQUEST, new WrongRequest());
     }
 

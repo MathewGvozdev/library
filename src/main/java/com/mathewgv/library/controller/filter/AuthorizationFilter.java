@@ -26,7 +26,12 @@ public class AuthorizationFilter implements Filter {
             LOGOUT.convertToString(),
             FIND_USER_INFO.convertToString(),
             UPDATE_USER_INFO.convertToString(),
-            WRONG_REQUEST.convertToString());
+            WRONG_REQUEST.convertToString()
+    );
+
+    private static final Set<String> ADMIN_CMD = Set.of(
+            CHANGE_USER_ROLE.convertToString()
+    );
 
     private static final String REFERER = "referer";
     private static final String REDIRECT_TO_HOME = "/home";

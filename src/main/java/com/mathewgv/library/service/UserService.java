@@ -1,5 +1,6 @@
 package com.mathewgv.library.service;
 
+import com.mathewgv.library.service.dto.RoleDto;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.service.exception.ServiceException;
@@ -17,5 +18,9 @@ public interface UserService {
 
     void updateUserInfo(UserCreationDto userCreationDto) throws ServiceException;
 
+    void updateUserRole(UserCreationDto userCreationDto) throws ServiceException;
+
     List<UserDto> findAllUsers(Integer page, Integer limit) throws ServiceException;
+
+    List<RoleDto> findAllRoles() throws ServiceException;
 }

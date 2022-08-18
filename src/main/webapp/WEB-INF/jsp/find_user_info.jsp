@@ -141,6 +141,16 @@
                 </button>
             </c:if>
         </form>
+        <form action="${pageContext.request.contextPath}/home"
+              method="get">
+            <c:if test="${sessionScope.user.role == 'Админ'}">
+                <input type="hidden" name="cmd" value="change_user_role">
+                <input type="hidden" name="id" value="${requestScope.userDto.id}">
+                <button type="submit" class="aqua">
+                    CHANGE STATUS
+                </button>
+            </c:if>
+        </form>
     </div>
 </div>
 <div class="status-content">

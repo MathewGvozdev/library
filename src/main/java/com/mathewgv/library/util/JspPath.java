@@ -20,6 +20,7 @@ public final class JspPath {
     public static final String MAKE_ORDER = "make_order";
     public static final String FIND_USER_INFO = "find_user_info";
     public static final String UPDATE_USER_INFO = "update_user_info";
+    public static final String CHANGE_USER_ROLE = "change_user_role";
 
     private JspPath() {
     }
