@@ -95,7 +95,7 @@
                         id="role">
                     <c:forEach var="role" items="${requestScope.roles}">
                         <option value="${role}">
-                                ${role.title}
+                                ${role}
                         </option>
                     </c:forEach>
                 </select>

@@ -1,6 +1,7 @@
 package com.mathewgv.library.service.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
+import com.mathewgv.library.service.dto.BookCreationDto;
 import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.entity.book.Genre;
 import com.mathewgv.library.service.mapper.Mapper;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GenreCreationMapper extends DaoConnection implements Mapper<BookDto, List<Genre>> {
+public class GenreCreationMapper extends DaoConnection implements Mapper<BookCreationDto, List<Genre>> {
 
     private static final GenreCreationMapper INSTANCE = new GenreCreationMapper();
 
@@ -17,7 +18,7 @@ public class GenreCreationMapper extends DaoConnection implements Mapper<BookDto
     }
 
     @Override
-    public List<Genre> mapFrom(BookDto object) {
+    public List<Genre> mapFrom(BookCreationDto object) {
         var genresString = Arrays.stream(object.getGenres().split(", ")).toList();
         List<Genre> genres = new ArrayList<>();
         for (String genre : genresString) {

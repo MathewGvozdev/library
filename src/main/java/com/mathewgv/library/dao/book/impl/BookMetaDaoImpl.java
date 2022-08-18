@@ -30,10 +30,11 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
     private static final String ID = "id";
     private static final String TITLE = "title";
     private static final String SERIES = "series";
+    private static final String IMAGE = "image";
 
     private static final String SAVE_SQL = """
-            INSERT INTO book_metas (title, series)
-            VALUES (?, ?)
+            INSERT INTO book_metas (title, series, image)
+            VALUES (?, ?, ?)
             """;
 
     private static final String SAVE_AUTHORS_AND_BOOKS_SQL = """
@@ -69,7 +70,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             """;
 
     private static final String FIND_ALL_SQL = """
-            SELECT id, title, series
+            SELECT id, title, series, image
             FROM book_metas
             """;
 
@@ -85,6 +86,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             SELECT bm.id,
                    bm.title,
                    bm.series,
+                   bm.image,
                    string_agg(g.title, ', '),
                    author_req.author
             FROM book_metas bm
@@ -95,7 +97,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
                                     JOIN book_metas_authors abm ON bm.id = abm.book_meta_id
                                     JOIN authors a ON a.id = abm.author_id
                            GROUP BY bm.id, bm.title, bm.series) author_req ON author_req.id = bm.id
-            GROUP BY bm.id, bm.title, bm.series, author_req.author
+            GROUP BY bm.id, bm.title, bm.series, author_req.author, bm.image
             """;
 
     private BookMetaDaoImpl() {
@@ -163,6 +165,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
 
             preparedStatement.setObject(1, entity.getTitle());
             preparedStatement.setObject(2, entity.getSeries());
+            preparedStatement.setObject(3, entity.getImage());
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -256,6 +259,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
                 resultSet.getInt(ID),
                 resultSet.getString(TITLE),
                 resultSet.getString(SERIES),
+                resultSet.getString(IMAGE),
                 authorDao.findAllAuthorsOfTheBook(resultSet.getInt(ID)),
                 genreDao.findAllGenresOfTheBook(resultSet.getInt(ID))
         );

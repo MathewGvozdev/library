@@ -32,6 +32,7 @@ public class BookMetaMapper extends DaoConnection implements Mapper<BookMeta, Bo
                 .authors(authorString)
                 .genres(genreString)
                 .series(object.getSeries())
+                .image(object.getImage())
                 .build();
     }
 

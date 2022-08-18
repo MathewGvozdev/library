@@ -42,6 +42,7 @@ public class BookMapper extends DaoConnection implements Mapper<Book, BookDto> {
                 .publisher(object.getPublisher().getTitle())
                 .pages(object.getPages())
                 .publicationYear(object.getPublicationYear())
+                .image(object.getBookMeta().getImage())
                 .build();
     }
 

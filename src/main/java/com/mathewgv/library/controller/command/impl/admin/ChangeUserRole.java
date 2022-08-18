@@ -36,7 +36,9 @@ public class ChangeUserRole implements Command {
 //                    "Библиотекарь",
 //                    "Пользователь"));
             var userService = serviceFactory.getUserService();
-            var allRoles = userService.findAllRoles();
+            var allRoles = userService.findAllRoles().stream()
+                    .map(RoleDto::getTitle)
+                    .toList();
             req.setAttribute(AttributeName.ROLES, allRoles);
             if (req.getParameter(CONFIRM) == null) {
                 var userInfoById = userService.findUserInfoById(Integer.parseInt(req.getParameter(ID)));

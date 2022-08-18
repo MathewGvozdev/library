@@ -11,6 +11,7 @@ import com.mathewgv.library.service.BookService;
 import com.mathewgv.library.service.dto.*;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.validation.FilterValidator;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -26,8 +27,10 @@ public class BookServiceImpl implements BookService {
 
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
 
+    private static final String IMAGE_FOLDER = "/covers/";
+
     @Override
-    public BookDto addBook(BookDto bookDto) {
+    public BookDto addBook(BookCreationDto bookDto) {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookMeta = addBookMetaIfNotExist(transaction, bookDto);
             var publisher = addPublisherIfNotExist(transaction, bookDto);
@@ -46,7 +49,7 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    private Publisher addPublisherIfNotExist(Transaction transaction, BookDto bookDto) {
+    private Publisher addPublisherIfNotExist(Transaction transaction, BookCreationDto bookDto) {
         var publisherDao = transaction.getPublisherDao();
         var publisherFromDto = bookDto.getPublisher();
         var cityFromDto = bookDto.getPublisherCity();
@@ -61,14 +64,22 @@ public class BookServiceImpl implements BookService {
         return publisher;
     }
 
-    private BookMeta addBookMetaIfNotExist(Transaction transaction, BookDto bookDto) {
+    @SneakyThrows
+    private BookMeta addBookMetaIfNotExist(Transaction transaction, BookCreationDto bookDto) {
         var authors = addAuthorsIfNotExist(transaction, bookDto);
         var genres = addGenresIfNotExist(transaction, bookDto);
         var bookMetaDao = transaction.getBookMetaDao();
         var searchedBookMeta = bookMetaDao.findByTitle(bookDto.getTitle());
         BookMeta bookMeta;
         if (searchedBookMeta.isEmpty()) {
-            bookMeta = bookMetaDao.create(new BookMeta(bookDto.getTitle(), bookDto.getSeries(), authors, genres));
+            var imageService = ImageServiceImpl.getInstance();
+            imageService.upload(IMAGE_FOLDER + bookDto.getImage().getSubmittedFileName(),
+                    bookDto.getImage().getInputStream());
+            bookMeta = bookMetaDao.create(new BookMeta(bookDto.getTitle(),
+                    bookDto.getSeries(),
+                    IMAGE_FOLDER + bookDto.getImage().getSubmittedFileName(),
+                    authors,
+                    genres));
             log.info("New bookMeta is added to database: {}", bookMeta);
         } else {
             bookMeta = searchedBookMeta.get();
@@ -76,7 +87,7 @@ public class BookServiceImpl implements BookService {
         return bookMeta;
     }
 
-    private List<Author> addAuthorsIfNotExist(Transaction transaction, BookDto bookDto) {
+    private List<Author> addAuthorsIfNotExist(Transaction transaction, BookCreationDto bookDto) {
         var authors = transaction.getAuthorCreationMapper().mapFrom(bookDto);
         var authorDao = transaction.getAuthorDao();
         List<Author> authorList = new ArrayList<>();
@@ -93,7 +104,7 @@ public class BookServiceImpl implements BookService {
         return authorList;
     }
 
-    private List<Genre> addGenresIfNotExist(Transaction transaction, BookDto bookDto) {
+    private List<Genre> addGenresIfNotExist(Transaction transaction, BookCreationDto bookDto) {
         var genres = transaction.getGenreCreationMapper().mapFrom(bookDto);
         var genreDao = transaction.getGenreDao();
         List<Genre> genreList = new ArrayList<>();

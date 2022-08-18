@@ -111,7 +111,8 @@
     <div class="centered-content">
         <c:if test="${param.cfm == null}">
             <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
-                  method="post">
+                  method="post"
+                  enctype="multipart/form-data">
                 <span>
                     <fmt:message key="page.book.msg"/>:<br>
                 </span>
@@ -172,7 +173,8 @@
     </div>
 </div>
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
-      method="post">
+      method="post"
+      enctype="multipart/form-data">
     <c:if test="${not empty requestScope.bookDto}">
         <span>
             <fmt:message key="page.book.confirm.msg"/><br>
@@ -201,6 +203,14 @@
             </tr>
             </tbody>
         </table>
+        <c:if test="${requestScope.isBookExist == false}">
+            <label>
+                <input type="file"
+                       name="image"
+                       placeholder="book image"
+                       value="${param.image}" required>
+            </label><br>
+        </c:if>
         <div style="display: none">
             <input type="hidden"
                    name="cfm"
@@ -263,6 +273,10 @@
         </tr>
         </tbody>
     </table>
+    <img src="${pageContext.request.contextPath}/images/${requestScope.book.image}"
+         width="250"
+         height="350"
+         alt="image">
 </c:if>
 <c:if test="${not empty requestScope.error}">
     <span>${requestScope.error}</span>

@@ -13,9 +13,11 @@ import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Slf4j
@@ -33,6 +35,7 @@ public class FindAllBookMetas implements Command {
             var bookService = serviceFactory.getBookService();
             var showedBookMetas = bookService.findAllBookMetas(page, SHOWED_BOOK_METAS_LIMIT);
             var totalBookMetas = bookService.findAllBookMetas();
+
             req.setAttribute(AttributeName.PAGES, countPages(totalBookMetas));
             req.setAttribute(AttributeName.BOOK_METAS, showedBookMetas);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOK_METAS), RoutingType.FORWARD);
@@ -40,6 +43,16 @@ public class FindAllBookMetas implements Command {
             log.error("Failure to find all book-metas", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching book metas");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
+        }
+    }
+
+    @SneakyThrows
+    private void writeImage(InputStream image, HttpServletResponse resp) {
+        try (image; var outputStream = resp.getOutputStream()) {
+            int currentByte;
+            while ((currentByte = image.read()) != -1) {
+                outputStream.write(currentByte);
+            }
         }
     }
 

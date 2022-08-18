@@ -105,6 +105,10 @@
         <ul class="first">
             <c:forEach var="bookMeta" items="${requestScope.bookMetas}">
                 <li>
+                    <img src="${pageContext.request.contextPath}/images/${bookMeta.image}"
+                         alt="image"
+                         width="250"
+                         height="350"><br>
                     <a href="${pageContext.request.contextPath}/home?cmd=make_order&bookMetaId=${bookMeta.id}">
                             ${bookMeta.title}<br>
                     </a>

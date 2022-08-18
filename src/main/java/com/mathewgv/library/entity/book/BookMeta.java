@@ -12,17 +12,32 @@ public class BookMeta implements Serializable {
     private Integer id;
     private String title;
     private String series;
+    private String image;
     private List<Author> authors;
     private List<Genre> genres;
 
     public BookMeta(Integer id,
                     String title,
                     String series,
+                    String image,
                     List<Author> authors,
                     List<Genre> genres) {
         this.id = id;
         this.title = title;
+        this.image = image;
         this.series = series;
+        this.authors = authors;
+        this.genres = genres;
+    }
+
+    public BookMeta(String title,
+                    String series,
+                    String image,
+                    List<Author> authors,
+                    List<Genre> genres) {
+        this.title = title;
+        this.series = series;
+        this.image = image;
         this.authors = authors;
         this.genres = genres;
     }
@@ -82,6 +97,14 @@ public class BookMeta implements Serializable {
         this.genres = genres;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,6 +124,7 @@ public class BookMeta implements Serializable {
                "id=" + id +
                ", title='" + title + '\'' +
                ", series='" + series + '\'' +
+               ", image='" + image + '\'' +
                ", authors=" + authors +
                ", genres=" + genres +
                '}';

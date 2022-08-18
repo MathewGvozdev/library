@@ -36,7 +36,7 @@
         }
 
         .first li {
-            width: 500px;
+            width: 700px;
             padding: 10px 30px;
             background: #2b6068;
             border-bottom: 1px solid grey;
@@ -104,6 +104,10 @@
         <c:forEach var="bookMeta" items="${requestScope.bookMetas}">
             <ul class="first">
                 <li>
+                    <img src="${pageContext.request.contextPath}/images/${bookMeta.image}"
+                         alt="image"
+                         width="250"
+                         height="350"><br>
                     <a href="${pageContext.request.contextPath}/home?cmd=make_order&bookMetaId=${bookMeta.id}">
                             ${bookMeta.title}<br>
                     </a>

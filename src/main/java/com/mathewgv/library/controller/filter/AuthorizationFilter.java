@@ -13,7 +13,7 @@ import java.util.Set;
 
 import static com.mathewgv.library.controller.command.CommandName.*;
 
-@WebFilter("/*")
+@WebFilter("/home")
 public class AuthorizationFilter implements Filter {
 
     private static final Set<String> PUBLIC_CMD = Set.of(

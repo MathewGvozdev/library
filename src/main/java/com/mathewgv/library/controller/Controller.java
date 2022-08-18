@@ -5,6 +5,7 @@ import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.dao.exception.ConnectionPoolException;
 import com.mathewgv.library.dao.transaction.ConnectionPool;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 @WebServlet("/home")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024)
 @Slf4j
 public class Controller extends HttpServlet {
 

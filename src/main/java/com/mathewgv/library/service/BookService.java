@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface BookService {
 
-    BookDto addBook(BookDto bookDto);
+    BookDto addBook(BookCreationDto bookDto);
 
     List<BookDto> findAllBooks(Integer page, Integer limit) throws ServiceException;
 

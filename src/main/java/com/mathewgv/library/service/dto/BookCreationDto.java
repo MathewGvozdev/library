@@ -6,9 +6,8 @@ import lombok.Value;
 
 @Value
 @Builder
-public class BookDto {
+public class BookCreationDto {
 
-    Integer id;
     String title;
     String authors;
     String genres;
@@ -17,6 +16,5 @@ public class BookDto {
     String publisherCity;
     Integer pages;
     Integer publicationYear;
-    String image;
+    Part image;
 }
-
