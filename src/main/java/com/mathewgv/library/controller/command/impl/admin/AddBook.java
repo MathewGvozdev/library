@@ -5,21 +5,17 @@ import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.service.dto.BookCreationDto;
-import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 public class AddBook implements Command {
@@ -35,6 +31,7 @@ public class AddBook implements Command {
     private static final String PUBLISHER_CITY = "publisherCity";
     private static final String PAGES = "pages";
     private static final String PUBLICATION_YEAR = "publicationYear";
+    private static final String IMAGE = "image";
 
     private static final String EMPTY_CONFIRM_VALUE = "";
     private static final String POSITIVE_CONFIRM_VALUE = "y";
@@ -42,21 +39,15 @@ public class AddBook implements Command {
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            var bookService = serviceFactory.getBookService();
             if (EMPTY_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 var bookDto = buildBookDto(req);
-                var isBookExist = serviceFactory.getBookService().findAllBookMetasByFilter(BookFilter.builder()
-                        .limit(1)
-                        .page(1)
-                        .title(req.getParameter(TITLE))
-                        .author(req.getParameter(AUTHORS))
-                        .genre(req.getParameter(GENRES))
-                        .build());
+                var isBookExist = bookService.findAllBookMetasByFilter(buildBookFilter(req));
                 if (isBookExist.isEmpty()) {
-                    req.setAttribute("isBookExist", false);
+                    req.setAttribute(AttributeName.IS_BOOK_EXIST, false);
                 }
                 req.setAttribute(AttributeName.BOOK_DTO, bookDto);
             } else if (POSITIVE_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
-                var bookService = serviceFactory.getBookService();
                 var book = bookService.addBook(buildBookDto(req));
                 if (book.getId() != null) {
                     req.setAttribute(AttributeName.BOOK, book);
@@ -74,6 +65,16 @@ public class AddBook implements Command {
         }
     }
 
+    private BookFilter buildBookFilter(HttpServletRequest req) {
+        return BookFilter.builder()
+                .limit(1)
+                .page(1)
+                .title(req.getParameter(TITLE))
+                .author(req.getParameter(AUTHORS))
+                .genre(req.getParameter(GENRES))
+                .build();
+    }
+
     private BookCreationDto buildBookDto(HttpServletRequest req) throws IOException, ServletException {
         return BookCreationDto.builder()
                 .title(req.getParameter(TITLE))
@@ -84,7 +85,7 @@ public class AddBook implements Command {
                 .publisherCity(req.getParameter(PUBLISHER_CITY))
                 .pages(Integer.parseInt(req.getParameter(PAGES)))
                 .publicationYear(Integer.parseInt(req.getParameter(PUBLICATION_YEAR)))
-                .image(req.getPart("image"))
+                .image(req.getPart(IMAGE))
                 .build();
     }
 }

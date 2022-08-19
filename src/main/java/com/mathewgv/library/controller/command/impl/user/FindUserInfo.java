@@ -36,17 +36,20 @@ public class FindUserInfo implements Command {
             var status = req.getParameter(STATUS);
             var orderService = serviceFactory.getOrderService();
             var allOrdersByClientId = orderService.findAllOrdersByClientId(userId);
-            if (status == null) {
-                req.setAttribute(AttributeName.ORDERS, allOrdersByClientId);
-            } else {
+            if (status != null) {
                 List<OrderDto> ordersByStatus = filterOrdersByStatus(allOrdersByClientId, status);
                 req.setAttribute(AttributeName.ORDERS, ordersByStatus);
+            } else {
+                req.setAttribute(AttributeName.ORDERS, allOrdersByClientId);
             }
-
             return new Router(JspHelper.getPath(JspPath.FIND_USER_INFO), RoutingType.FORWARD);
-        } catch (ServiceException | NumberFormatException e) {
-            log.error("Failure to find any book", e);
-            req.setAttribute(AttributeName.ERROR, "Error in searching book");
+        } catch (ServiceException  e) {
+            log.error("Failure to find user info", e);
+            req.setAttribute(AttributeName.ERROR, "Error in searching user info");
+            return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
+        } catch (NumberFormatException e) {
+            log.error("Failure to process parameter 'userId', it should be a number", e);
+            req.setAttribute(AttributeName.ERROR, "UserId is not a number");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }

@@ -31,14 +31,12 @@ public class Registration implements Command {
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var userService = serviceFactory.getUserService();
-            if (req.getParameter(CONFIRM) == null) {
-                return new Router(JspHelper.getPath(JspPath.REGISTRATION), RoutingType.FORWARD);
-            } else {
-                var userCreationDto = buildUserCreationDto(req);
-                userService.register(userCreationDto);
+            if (req.getParameter(CONFIRM) != null) {
+                var userService = serviceFactory.getUserService();
+                userService.register(buildUserCreationDto(req));
                 return new Router(req.getContextPath() + REDIRECT_TO_LOGIN, RoutingType.REDIRECT);
             }
+            return new Router(JspHelper.getPath(JspPath.REGISTRATION), RoutingType.FORWARD);
         } catch (ServiceException e) {
             log.error("Failure to register a new user", e);
             req.setAttribute(AttributeName.ERROR, "Error in registration");

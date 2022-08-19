@@ -42,34 +42,38 @@ public class MakeOrder implements Command {
                 return new Router(req.getContextPath() + REDIRECT_TO_LOGIN, RoutingType.REDIRECT);
             }
             req.setAttribute(AttributeName.LOAN_TYPES, getListOfLoanTypes());
-            var orderService = serviceFactory.getOrderService();
             var bookService = serviceFactory.getBookService();
             if (req.getParameter(CONFIRM) == null) {
                 var bookMetaId = Integer.parseInt(req.getParameter(BOOK_META_ID));
                 bookService.findAnyBookByBookMetaId(bookMetaId)
                         .ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
-                return new Router(JspHelper.getPath(JspPath.MAKE_ORDER), RoutingType.FORWARD);
             } else if (EMPTY_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 bookService.findBookById(Integer.parseInt(req.getParameter(BOOK_ID)))
                         .ifPresent(bookDto -> req.setAttribute(AttributeName.BOOK, bookDto));
                 var orderCreationDto = buildOrderDto(req);
                 req.setAttribute(AttributeName.ORDER_DTO, orderCreationDto);
             } else if (POSITIVE_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
+                var orderService = serviceFactory.getOrderService();
                 var order = orderService.makeOrder(buildOrderDto(req));
                 if (order.getId() != null) {
                     req.setAttribute(AttributeName.ORDER, order);
                 }
             }
             return new Router(JspHelper.getPath(JspPath.MAKE_ORDER), RoutingType.FORWARD);
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException e) {
             log.error("Failure to make the order", e);
             req.setAttribute(AttributeName.ERROR, "Error in making an order");
+            return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
+        } catch (NumberFormatException e) {
+            log.error("Failure to process parameter 'bookId' or/and 'bookMetaId', they should be a number", e);
+            req.setAttribute(AttributeName.ERROR, "Book ID or/and book-meta ID are not a number");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }
 
     private List<String> getListOfLoanTypes() {
-        return List.of(LoanType.TO_HOME.getValue(), LoanType.READING_ROOM.getValue());
+        return List.of(LoanType.TO_HOME.getValue(),
+                LoanType.READING_ROOM.getValue());
     }
 
     private OrderCreationDto buildOrderDto(HttpServletRequest req) {

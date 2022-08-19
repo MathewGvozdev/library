@@ -30,13 +30,17 @@ public class FindBookById implements Command {
                     req.setAttribute(AttributeName.BOOK, bookDto.get());
                     var orderService = serviceFactory.getOrderService();
                     var order = orderService.findOrderIfBookIsLoaned(bookId);
-                    order.ifPresent(orderDto -> req.setAttribute("order", orderDto));
+                    order.ifPresent(orderDto -> req.setAttribute(AttributeName.ORDER, orderDto));
                 }
             }
             return new Router(JspHelper.getPath(JspPath.FIND_BOOK_BY_ID), RoutingType.FORWARD);
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException e) {
             log.error("Failure to find book by ID", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching book with id");
+            return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
+        } catch (NumberFormatException e) {
+            log.error("Failure to process parameter 'bookId', it should be a number", e);
+            req.setAttribute(AttributeName.ERROR, "BookId is not a number");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }

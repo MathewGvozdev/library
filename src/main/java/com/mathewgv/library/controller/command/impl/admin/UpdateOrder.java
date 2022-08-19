@@ -38,14 +38,13 @@ public class UpdateOrder implements Command {
         try {
             req.setAttribute(AttributeName.STATUSES, getListOfStatuses());
             var orderService = serviceFactory.getOrderService();
-            if (req.getParameter(CONFIRM) == null) {
-                var order = orderService.findOrderById(Long.parseLong(req.getParameter(ID)));
-                order.ifPresent(orderDto -> req.setAttribute(AttributeName.ORDER, orderDto));
-                return new Router(JspHelper.getPath(JspPath.UPDATE_ORDER), RoutingType.FORWARD);
-            } else {
+            var order = orderService.findOrderById(Long.parseLong(req.getParameter(ID)));
+            order.ifPresent(orderDto -> req.setAttribute(AttributeName.ORDER, orderDto));
+            if (req.getParameter(CONFIRM) != null) {
                 orderService.updateOrder(buildOrderDto(req));
                 return new Router(req.getContextPath() + REDIRECT_TO_ALL_ORDERS, RoutingType.REDIRECT);
             }
+            return new Router(JspHelper.getPath(JspPath.UPDATE_ORDER), RoutingType.FORWARD);
         } catch (ServiceException | NumberFormatException e) {
             log.error("Failure to update the order", e);
             req.setAttribute(AttributeName.ERROR, "Error in updating");

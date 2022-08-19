@@ -25,7 +25,7 @@ public class Logout implements Command {
             return new Router(req.getContextPath() + REDIRECT_TO_HOME, RoutingType.REDIRECT);
         } catch (ServiceException e) {
             log.error("Failure to logout", e);
-            req.setAttribute(AttributeName.ERROR, "Error in login");
+            req.setAttribute(AttributeName.ERROR, "Error in logout");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }

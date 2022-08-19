@@ -3,8 +3,6 @@ package com.mathewgv.library.controller.command.impl.user;
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
-import com.mathewgv.library.entity.order.OrderStatus;
-import com.mathewgv.library.service.dto.OrderCreationDto;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
@@ -14,8 +12,6 @@ import com.mathewgv.library.util.JspPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 @Slf4j
 public class UpdateUserInfo implements Command {
@@ -36,17 +32,20 @@ public class UpdateUserInfo implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var userService = serviceFactory.getUserService();
-            if (req.getParameter(CONFIRM) == null) {
-                return new Router(JspHelper.getPath(JspPath.UPDATE_USER_INFO), RoutingType.FORWARD);
-            } else {
+            if (req.getParameter(CONFIRM) != null) {
                 var userCreationDto = buildUserCreationDto(req);
                 userService.updateUserInfo(userCreationDto);
-                return new Router(req.getContextPath() + REDIRECT_TO_USER_INFO + userCreationDto.getId(),
-                        RoutingType.REDIRECT);
+                var redirectionWebPage = req.getContextPath() + REDIRECT_TO_USER_INFO + userCreationDto.getId();
+                return new Router(redirectionWebPage, RoutingType.REDIRECT);
             }
-        } catch (ServiceException | NumberFormatException e) {
+            return new Router(JspHelper.getPath(JspPath.UPDATE_USER_INFO), RoutingType.FORWARD);
+        } catch (ServiceException e) {
             log.error("Failure to update the user", e);
-            req.setAttribute(AttributeName.ERROR, "Error in updating");
+            req.setAttribute(AttributeName.ERROR, "Error in updating user");
+            return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
+        } catch (NumberFormatException e) {
+            log.error("Failure to process parameter 'id', it should be a number", e);
+            req.setAttribute(AttributeName.ERROR, "ID is not a number");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }
