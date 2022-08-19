@@ -21,29 +21,29 @@ public class OrderServiceImpl implements OrderService {
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
 
     @Override
-    public Optional<OrderDto> findOrderIfBookIsLoaned(Integer bookId) throws ServiceException {
+    public List<OrderDto> findAllOrders() throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var orderDao = transaction.getOrderDao();
             var orderMapper = transaction.getOrderMapper();
-            return orderDao.findIfLoaned(bookId)
-                    .map(orderMapper::mapFrom);
+            return orderDao.findAll().stream()
+                    .map(orderMapper::mapFrom)
+                    .collect(toList());
         } catch (Exception e) {
-            log.error("Failure to find the order by ID", e);
+            log.error("Failure to find all orders", e);
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void updateOrder(OrderCreationDto orderCreationDto) throws ServiceException {
+    public List<OrderDto> findAllOrders(Integer page, Integer limit) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var orderDao = transaction.getOrderDao();
-            var orderCreationMapper = transaction.getOrderCreationMapper();
-            orderDao.update(orderCreationMapper.mapFrom(orderCreationDto));
-            var updatedOrder = orderDao.findById(orderCreationDto.getId());
-            transaction.commit();
-            log.info("The order with id[{}] was updated, current order: {}", orderCreationDto.getId(), updatedOrder);
+            var orderMapper = transaction.getOrderMapper();
+            return orderDao.findAllWithLimit(page, limit).stream()
+                    .map(orderMapper::mapFrom)
+                    .collect(toList());
         } catch (Exception e) {
-            log.error("Failure to update the order", e);
+            log.error("Failure to find all orders with limit", e);
             throw new ServiceException(e);
         }
     }
@@ -58,6 +58,32 @@ public class OrderServiceImpl implements OrderService {
                     .collect(toList());
         } catch (Exception e) {
             log.error("Failure to find all orders by client ID", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<OrderDto> findOrderById(Long id) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var orderDao = transaction.getOrderDao();
+            var orderMapper = transaction.getOrderMapper();
+            return orderDao.findById(id)
+                    .map(orderMapper::mapFrom);
+        } catch (Exception e) {
+            log.error("Failure to find the order by ID", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<OrderDto> findOrderIfBookIsLoaned(Integer bookId) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var orderDao = transaction.getOrderDao();
+            var orderMapper = transaction.getOrderMapper();
+            return orderDao.findIfLoaned(bookId)
+                    .map(orderMapper::mapFrom);
+        } catch (Exception e) {
+            log.error("Failure to find if the order is loaned", e);
             throw new ServiceException(e);
         }
     }
@@ -79,42 +105,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> findAllOrders(Integer page, Integer limit) throws ServiceException {
+    public void updateOrder(OrderCreationDto orderCreationDto) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var orderDao = transaction.getOrderDao();
-            var orderMapper = transaction.getOrderMapper();
-            return orderDao.findAllWithLimit(page, limit).stream()
-                    .map(orderMapper::mapFrom)
-                    .collect(toList());
+            var orderCreationMapper = transaction.getOrderCreationMapper();
+            orderDao.update(orderCreationMapper.mapFrom(orderCreationDto));
+            var updatedOrder = orderDao.findById(orderCreationDto.getId());
+            transaction.commit();
+            log.info("The order with id[{}] was updated, current order: {}", orderCreationDto.getId(), updatedOrder);
         } catch (Exception e) {
-            log.error("Failure to find all orders", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public List<OrderDto> findAllOrders() throws ServiceException {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var orderDao = transaction.getOrderDao();
-            var orderMapper = transaction.getOrderMapper();
-            return orderDao.findAll().stream()
-                    .map(orderMapper::mapFrom)
-                    .collect(toList());
-        } catch (Exception e) {
-            log.error("Failure to find all orders", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public Optional<OrderDto> findOrderById(Long id) throws ServiceException {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var orderDao = transaction.getOrderDao();
-            var orderMapper = transaction.getOrderMapper();
-            return orderDao.findById(id)
-                    .map(orderMapper::mapFrom);
-        } catch (Exception e) {
-            log.error("Failure to find the order by ID", e);
+            log.error("Failure to update the order", e);
             throw new ServiceException(e);
         }
     }

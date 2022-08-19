@@ -26,33 +26,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<RoleDto> findAllRoles() throws ServiceException {
+    public Optional<UserDto> login(String login, String password) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
-            var roleDao = transaction.getRoleDao();
-            var roles = roleDao.findAll();
-            List<RoleDto> roleList = new ArrayList<>();
-            for (Role role : roles) {
-                roleList.add(RoleDto.builder()
-                        .title(role.getTitle())
-                        .build());
-            }
-            return roleList;
+            var userDao = transaction.getUserDao();
+            var user = userDao.findByEmailAndPassword(login, password);
+            var userMapper = transaction.getUserMapper();
+            return user.flatMap(userIfPresent -> transaction.getUserInfoDao().findInfoByUserId(userIfPresent.getId()))
+                    .map(userMapper::mapFrom);
         } catch (Exception e) {
-            log.error("Failure to find all books", e);
+            log.error("Failure to login", e);
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void updateUserRole(UserCreationDto userCreationDto) throws ServiceException {
+    public void register(UserCreationDto userDto) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
+            var userInfo = transaction.getUserRegistrationMapper().mapFrom(userDto);
             var userDao = transaction.getUserDao();
-            var userRoleMapper = transaction.getUserRoleMapper();
-            userDao.updateRole(userRoleMapper.mapFrom(userCreationDto));
+            var userInfoDao = transaction.getUserInfoDao();
+            var createdUser = userDao.create(userInfo.getUser());
+            var createdUserInfo = userInfoDao.create(userInfo);
             transaction.commit();
-            log.info("The role of user with id[{}] was updated", userCreationDto.getId());
+            log.info("New user registered. User=[{}], Info=[{}]", createdUser, createdUserInfo);
         } catch (Exception e) {
-            log.error("Failure to update the order", e);
+            log.error("Failure to register new user", e);
             throw new ServiceException(e);
         }
     }
@@ -67,6 +65,19 @@ public class UserServiceImpl implements UserService {
                     .collect(toList());
         } catch (Exception e) {
             log.error("Failure to find all books", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<UserDto> findUserInfoById(Integer id) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var userInfoDao = transaction.getUserInfoDao();
+            var userMapper = transaction.getUserMapper();
+            return userInfoDao.findInfoByUserId(id)
+                    .map(userMapper::mapFrom);
+        } catch (Exception e) {
+            log.error("Failure to register new user", e);
             throw new ServiceException(e);
         }
     }
@@ -90,45 +101,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> login(String login, String password) throws ServiceException {
+    public void updateUserRole(UserCreationDto userCreationDto) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var userDao = transaction.getUserDao();
-            var user = userDao.findByEmailAndPassword(login, password);
-            var userMapper = transaction.getUserMapper();
-            return user.flatMap(userIfPresent -> transaction.getUserInfoDao().findInfoByUserId(userIfPresent.getId()))
-                    .map(userMapper::mapFrom);
-        } catch (Exception e) {
-            log.error("Failure to login", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public Integer register(UserCreationDto userDto) throws ServiceException {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var userInfo = transaction.getUserRegistrationMapper().mapFrom(userDto);
-            var userDao = transaction.getUserDao();
-            var userInfoDao = transaction.getUserInfoDao();
-            var createdUser = userDao.create(userInfo.getUser());
-            var createdUserInfo = userInfoDao.create(userInfo);
+            var userRoleMapper = transaction.getUserRoleMapper();
+            userDao.updateRole(userRoleMapper.mapFrom(userCreationDto));
             transaction.commit();
-            log.info("New user registered. User=[{}], Info=[{}]", createdUser, createdUserInfo);
-            return userInfo.getUser().getId();
+            log.info("The role of user with id[{}] was updated", userCreationDto.getId());
         } catch (Exception e) {
-            log.error("Failure to register new user", e);
+            log.error("Failure to update the order", e);
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public Optional<UserDto> findUserInfoById(Integer id) throws ServiceException {
+    public List<RoleDto> findAllRoles() throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
-            var userInfoDao = transaction.getUserInfoDao();
-            var userMapper = transaction.getUserMapper();
-            return userInfoDao.findInfoByUserId(id)
-                    .map(userMapper::mapFrom);
+            var roleDao = transaction.getRoleDao();
+            var roles = roleDao.findAll();
+            List<RoleDto> roleList = new ArrayList<>();
+            for (Role role : roles) {
+                roleList.add(RoleDto.builder()
+                        .title(role.getTitle())
+                        .build());
+            }
+            return roleList;
         } catch (Exception e) {
-            log.error("Failure to register new user", e);
+            log.error("Failure to find all books", e);
             throw new ServiceException(e);
         }
     }

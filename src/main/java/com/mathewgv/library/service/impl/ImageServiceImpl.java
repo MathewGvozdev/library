@@ -1,6 +1,5 @@
 package com.mathewgv.library.service.impl;
 
-import com.mathewgv.library.dao.transaction.TransactionFactory;
 import com.mathewgv.library.service.ImageService;
 import com.mathewgv.library.util.PropertiesUtil;
 import lombok.SneakyThrows;
@@ -8,9 +7,7 @@ import lombok.SneakyThrows;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Optional;
-import java.util.Properties;
 
 import static java.nio.file.StandardOpenOption.*;
 

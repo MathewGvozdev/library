@@ -12,15 +12,15 @@ public interface UserService {
 
     Optional<UserDto> login(String login, String password) throws ServiceException;
 
-    Integer register(UserCreationDto userDto) throws ServiceException;
+    void register(UserCreationDto userDto) throws ServiceException;
+
+    List<UserDto> findAllUsers(Integer page, Integer limit) throws ServiceException;
 
     Optional<UserDto> findUserInfoById(Integer id) throws ServiceException;
 
     void updateUserInfo(UserCreationDto userCreationDto) throws ServiceException;
 
     void updateUserRole(UserCreationDto userCreationDto) throws ServiceException;
-
-    List<UserDto> findAllUsers(Integer page, Integer limit) throws ServiceException;
 
     List<RoleDto> findAllRoles() throws ServiceException;
 }

@@ -1,8 +1,6 @@
 package com.mathewgv.library.service.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
-import com.mathewgv.library.dao.book.impl.AuthorDaoImpl;
-import com.mathewgv.library.dao.book.impl.GenreDaoImpl;
 import com.mathewgv.library.dao.factory.DaoFactory;
 import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.entity.book.BookMeta;
@@ -15,6 +13,9 @@ public class BookMetaMapper extends DaoConnection implements Mapper<BookMeta, Bo
 
     private static final BookMetaMapper INSTANCE = new BookMetaMapper();
 
+    private static final String ELEMENTS_SEPARATOR = ", ";
+    private static final String AUTHOR_NAME_SEPARATOR = " ";
+
     private final DaoFactory daoFactory = DaoFactory.getInstance();
 
     private BookMetaMapper() {
@@ -22,39 +23,30 @@ public class BookMetaMapper extends DaoConnection implements Mapper<BookMeta, Bo
 
     @Override
     public BookDto mapFrom(BookMeta object) {
-        setConnectionForDependencies();
-        String authorString = getAuthorsToString(object);
-        String genreString = getGenresToString(object);
-
         return BookDto.builder()
                 .id(object.getId())
                 .title(object.getTitle())
-                .authors(authorString)
-                .genres(genreString)
+                .authors(getAuthorsAsString(object))
+                .genres(getGenresAsString(object))
                 .series(object.getSeries())
                 .image(object.getImage())
                 .build();
     }
 
-    private String getAuthorsToString(BookMeta object) {
+    private String getAuthorsAsString(BookMeta object) {
         var authorDao = daoFactory.getAuthorDao();
         return authorDao.findAllAuthorsOfTheBook(object.getId())
                 .stream()
-                .map(author -> author.getFirstName() + " " + author.getSurname())
-                .collect(joining(", "));
+                .map(author -> author.getFirstName() + AUTHOR_NAME_SEPARATOR + author.getSurname())
+                .collect(joining(ELEMENTS_SEPARATOR));
     }
 
-    private String getGenresToString(BookMeta object) {
+    private String getGenresAsString(BookMeta object) {
         var genreDao = daoFactory.getGenreDao();
         return genreDao.findAllGenresOfTheBook(object.getId())
                 .stream()
                 .map(Genre::getTitle)
-                .collect(joining(", "));
-    }
-
-    private void setConnectionForDependencies() {
-        AuthorDaoImpl.getInstance().setConnection(connection.get());
-        GenreDaoImpl.getInstance().setConnection(connection.get());
+                .collect(joining(ELEMENTS_SEPARATOR));
     }
 
     public static BookMetaMapper getInstance() {

@@ -1,9 +1,7 @@
 package com.mathewgv.library.service.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
-import com.mathewgv.library.dao.book.impl.BookDaoImpl;
 import com.mathewgv.library.dao.factory.DaoFactory;
-import com.mathewgv.library.dao.user.impl.UserDaoImpl;
 import com.mathewgv.library.entity.order.LoanType;
 import com.mathewgv.library.entity.order.Order;
 import com.mathewgv.library.entity.order.OrderStatus;
@@ -22,7 +20,6 @@ public class OrderCreationMapper extends DaoConnection implements Mapper<OrderCr
 
     @Override
     public Order mapFrom(OrderCreationDto object) {
-        setConnectionForDependencies();
         var userDao = daoFactory.getUserDao();
         var bookDao = daoFactory.getBookDao();
         return new Order(object.getId(),
@@ -34,11 +31,6 @@ public class OrderCreationMapper extends DaoConnection implements Mapper<OrderCr
                 LoanType.findByName(object.getLoanType()),
                 OrderStatus.findByName(object.getStatus())
                 );
-    }
-
-    private void setConnectionForDependencies() {
-        UserDaoImpl.getInstance().setConnection(connection.get());
-        BookDaoImpl.getInstance().setConnection(connection.get());
     }
 
     public static OrderCreationMapper getInstance() {

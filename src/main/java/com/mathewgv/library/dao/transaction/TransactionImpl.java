@@ -41,15 +41,15 @@ public class TransactionImpl implements Transaction {
 
     @Override
     public BookDao getBookDao() {
-        setConnection(daoFactory.getPublisherDao());
-        setConnection(daoFactory.getBookMetaDao());
+        getPublisherDao();
+        getBookMetaDao();
         return setConnection(daoFactory.getBookDao());
     }
 
     @Override
     public BookMetaDao getBookMetaDao() {
-        setConnection(daoFactory.getAuthorDao());
-        setConnection(daoFactory.getGenreDao());
+        getAuthorDao();
+        getGenreDao();
         return setConnection(daoFactory.getBookMetaDao());
     }
 
@@ -65,8 +65,8 @@ public class TransactionImpl implements Transaction {
 
     @Override
     public OrderDao getOrderDao() {
-        setConnection(daoFactory.getUserDao());
-        setConnection(daoFactory.getBookDao());
+        getUserDao();
+        getBookDao();
         return setConnection(daoFactory.getOrderDao());
     }
 
@@ -77,13 +77,13 @@ public class TransactionImpl implements Transaction {
 
     @Override
     public UserDao getUserDao() {
-        setConnection(daoFactory.getRoleDao());
+        getRoleDao();
         return setConnection(daoFactory.getUserDao());
     }
 
     @Override
     public UserInfoDao getUserInfoDao() {
-        setConnection(daoFactory.getUserDao());
+        getUserDao();
         return setConnection(daoFactory.getUserInfoDao());
     }
 
@@ -94,11 +94,15 @@ public class TransactionImpl implements Transaction {
 
     @Override
     public BookMapper getBookMapper() {
+        getAuthorDao();
+        getGenreDao();
         return setConnection(mapperFactory.getBookMapper());
     }
 
     @Override
     public BookMetaMapper getBookMetaMapper() {
+        getAuthorDao();
+        getGenreDao();
         return setConnection(mapperFactory.getBookMetaMapper());
     }
 
@@ -114,21 +118,27 @@ public class TransactionImpl implements Transaction {
 
     @Override
     public UserRegistrationMapper getUserRegistrationMapper() {
+        getUserDao();
+        getRoleDao();
         return setConnection(mapperFactory.getUserRegistrationMapper());
     }
 
     @Override
     public OrderCreationMapper getOrderCreationMapper() {
+        getUserDao();
+        getBookDao();
         return setConnection(mapperFactory.getOrderCreationMapper());
     }
 
     @Override
     public OrderMapper getOrderMapper() {
+        getUserInfoDao();
         return setConnection(mapperFactory.getOrderMapper());
     }
 
     @Override
     public UserRoleMapper getUserRoleMapper() {
+        getRoleDao();
         return setConnection(mapperFactory.getUserRoleMapper());
     }
 

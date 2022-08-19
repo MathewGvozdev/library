@@ -1,6 +1,5 @@
 package com.mathewgv.library.service.dto;
 
-import jakarta.servlet.http.Part;
 import lombok.Builder;
 import lombok.Value;
 
@@ -14,7 +13,6 @@ public class BookDto {
     String genres;
     String series;
     String publisher;
-    String publisherCity;
     Integer pages;
     Integer publicationYear;
     String image;

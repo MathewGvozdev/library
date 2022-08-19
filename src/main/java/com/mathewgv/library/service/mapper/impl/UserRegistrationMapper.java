@@ -2,8 +2,6 @@ package com.mathewgv.library.service.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.factory.DaoFactory;
-import com.mathewgv.library.dao.user.impl.RoleDaoImpl;
-import com.mathewgv.library.dao.user.impl.UserDaoImpl;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.entity.user.User;
 import com.mathewgv.library.entity.user.UserInfo;
@@ -13,16 +11,15 @@ public class UserRegistrationMapper extends DaoConnection implements Mapper<User
 
     private static final UserRegistrationMapper INSTANCE = new UserRegistrationMapper();
 
-    private final DaoFactory daoFactory = DaoFactory.getInstance();
+    private static final Integer NEW_USER_ROLE_ID = 3;
 
-    private static final Integer USER_ROLE_ID = 3;
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
 
     private UserRegistrationMapper() {
     }
 
     @Override
     public UserInfo mapFrom(UserCreationDto object) {
-        setConnectionForDependencies();
         var user = daoFactory.getUserDao().findById(object.getId());
         if (user.isPresent()) {
             user.get().setPassword(object.getPassword());
@@ -40,18 +37,13 @@ public class UserRegistrationMapper extends DaoConnection implements Mapper<User
                    new User(object.getId(),
                            object.getLogin(),
                            object.getPassword(),
-                           daoFactory.getRoleDao().findById(USER_ROLE_ID).orElse(null)),
+                           daoFactory.getRoleDao().findById(NEW_USER_ROLE_ID).orElse(null)),
                     object.getFirstName(),
                     object.getSurname(),
                     object.getTelephone(),
                     object.getPassportNumber()
             );
         }
-    }
-
-    private void setConnectionForDependencies() {
-        RoleDaoImpl.getInstance().setConnection(connection.get());
-        UserDaoImpl.getInstance().setConnection(connection.get());
     }
 
     public static UserRegistrationMapper getInstance() {

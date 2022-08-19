@@ -12,6 +12,8 @@ public class OrderMapper extends DaoConnection implements Mapper<Order, OrderDto
 
     private static final OrderMapper INSTANCE = new OrderMapper();
 
+    private static final String USER_NAME_SEPARATOR = " ";
+
     private final DaoFactory daoFactory = DaoFactory.getInstance();
 
     private OrderMapper() {
@@ -19,13 +21,12 @@ public class OrderMapper extends DaoConnection implements Mapper<Order, OrderDto
 
     @Override
     public OrderDto mapFrom(Order object) {
-        setConnectionForDependencies();
         var userInfoDao = daoFactory.getUserInfoDao();
         var userInfo = userInfoDao.findInfoByUserId(object.getClient().getId());
         return userInfo.map(info -> OrderDto.builder()
                 .id(object.getId())
                 .clientId(object.getClient().getId())
-                .client(info.getFirstName() + " " + info.getSurname())
+                .client(info.getFirstName() + USER_NAME_SEPARATOR + info.getSurname())
                 .bookId(object.getBook().getId())
                 .bookTitle(object.getBook().getBookMeta().getTitle())
                 .issueDate(LocalDateFormatter.format(object.getIssueDate()))
@@ -34,10 +35,6 @@ public class OrderMapper extends DaoConnection implements Mapper<Order, OrderDto
                 .loanType(object.getType().getValue())
                 .status(object.getStatus().getValue())
                 .build()).orElse(null);
-    }
-
-    private void setConnectionForDependencies() {
-        UserInfoDaoImpl.getInstance().setConnection(connection.get());
     }
 
     public static OrderMapper getInstance() {

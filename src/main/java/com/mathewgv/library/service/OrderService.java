@@ -10,17 +10,17 @@ import java.util.Optional;
 
 public interface OrderService {
 
-    List<OrderDto> findAllOrdersByClientId(Integer clientId) throws ServiceException;
-
-    Order makeOrder(OrderCreationDto orderCreationDto) throws ServiceException;
+    List<OrderDto> findAllOrders() throws ServiceException;
 
     List<OrderDto> findAllOrders(Integer page, Integer limit) throws ServiceException;
 
-    List<OrderDto> findAllOrders() throws ServiceException;
+    List<OrderDto> findAllOrdersByClientId(Integer clientId) throws ServiceException;
 
     Optional<OrderDto> findOrderById(Long id) throws ServiceException;
 
     Optional<OrderDto> findOrderIfBookIsLoaned(Integer bookId) throws ServiceException;
+
+    Order makeOrder(OrderCreationDto orderCreationDto) throws ServiceException;
 
     void updateOrder(OrderCreationDto orderCreationDto) throws ServiceException;
 }

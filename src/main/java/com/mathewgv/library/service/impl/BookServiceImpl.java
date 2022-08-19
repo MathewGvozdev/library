@@ -5,6 +5,7 @@ import com.mathewgv.library.dao.transaction.TransactionFactory;
 import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.entity.book.*;
 import com.mathewgv.library.service.BookService;
+import com.mathewgv.library.service.ImageService;
 import com.mathewgv.library.service.dto.*;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.validation.FilterValidator;
@@ -23,14 +24,15 @@ public class BookServiceImpl implements BookService {
     private static final BookServiceImpl INSTANCE = new BookServiceImpl();
 
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
+    private final ImageService imageService = ImageServiceImpl.getInstance();
 
     private static final String IMAGE_FOLDER = "/covers/";
 
     @Override
     public BookDto addBook(BookCreationDto bookDto) {
         try (var transaction = transactionFactory.getTransaction()) {
-            var bookMeta = addBookMetaIfNotExist(transaction, bookDto);
             var publisher = addPublisherIfNotExist(transaction, bookDto);
+            var bookMeta = addBookMetaIfNotExist(transaction, bookDto);
 
             var bookDao = transaction.getBookDao();
             var pages = bookDto.getPages();
@@ -69,7 +71,6 @@ public class BookServiceImpl implements BookService {
         var searchedBookMeta = bookMetaDao.findByTitle(bookDto.getTitle());
         BookMeta bookMeta;
         if (searchedBookMeta.isEmpty()) {
-            var imageService = ImageServiceImpl.getInstance();
             imageService.upload(IMAGE_FOLDER + bookDto.getImage().getSubmittedFileName(),
                     bookDto.getImage().getInputStream());
             bookMeta = bookMetaDao.create(new BookMeta(bookDto.getTitle(),
@@ -119,6 +120,49 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<BookDto> findAllBookMetas() throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var bookDao = transaction.getBookMetaDao();
+            var bookMetaMapper = transaction.getBookMetaMapper();
+            return bookDao.findAll().stream()
+                    .map(bookMetaMapper::mapFrom)
+                    .collect(toList());
+        } catch (Exception e) {
+            log.error("Failure to find all book-metas", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<BookDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException {
+        try (var transaction = transactionFactory.getTransaction()) {
+            var bookDao = transaction.getBookMetaDao();
+            var bookMetaMapper = transaction.getBookMetaMapper();
+            return bookDao.findAllWithLimit(page, limit).stream()
+                    .map(bookMetaMapper::mapFrom)
+                    .collect(toList());
+        } catch (Exception e) {
+            log.error("Failure to find all book-metas with limit", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<BookDto> findAllBookMetasByFilter(BookFilter filter) throws ServiceException {
+        FilterValidator.validate(filter);
+        try (var transaction = transactionFactory.getTransaction()) {
+            var bookDao = transaction.getBookMetaDao();
+            var bookMetaMapper = transaction.getBookMetaMapper();
+            return bookDao.findAllByFilter(filter).stream()
+                    .map(bookMetaMapper::mapFrom)
+                    .collect(toList());
+        } catch (Exception e) {
+            log.error("Failure to find all book-metas by filter", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public List<BookDto> findAllBooks() throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookDao();
@@ -142,49 +186,6 @@ public class BookServiceImpl implements BookService {
                     .collect(toList());
         } catch (Exception e) {
             log.error("Failure to find all books", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public List<BookDto> findAllBookMetas() throws ServiceException {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var bookDao = transaction.getBookMetaDao();
-            var bookMetaMapper = transaction.getBookMetaMapper();
-            return bookDao.findAll().stream()
-                    .map(bookMetaMapper::mapFrom)
-                    .collect(toList());
-        } catch (Exception e) {
-            log.error("Failure to find all book-metas", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public List<BookDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException {
-        try (var transaction = transactionFactory.getTransaction()) {
-            var bookDao = transaction.getBookMetaDao();
-            var bookMetaMapper = transaction.getBookMetaMapper();
-            return bookDao.findAllWithLimit(page, limit).stream()
-                    .map(bookMetaMapper::mapFrom)
-                    .collect(toList());
-        } catch (Exception e) {
-            log.error("Failure to find all book-metas", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public List<BookDto> findAllBookMetasByFilter(BookFilter filter) throws ServiceException {
-        FilterValidator.validate(filter);
-        try (var transaction = transactionFactory.getTransaction()) {
-            var bookDao = transaction.getBookMetaDao();
-            var bookMetaMapper = transaction.getBookMetaMapper();
-            return bookDao.findAllByFilter(filter).stream()
-                    .map(bookMetaMapper::mapFrom)
-                    .collect(toList());
-        } catch (Exception e) {
-            log.error("Failure to find all book-metas by filter", e);
             throw new ServiceException(e);
         }
     }
