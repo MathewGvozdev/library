@@ -9,6 +9,7 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
+import com.mathewgv.library.util.UrlPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +27,6 @@ public class UpdateUserInfo implements Command {
     private static final String PASSPORT = "passport";
     private static final String PASSWORD = "password";
 
-    private static final String REDIRECT_TO_USER_INFO = "/home?cmd=find_user_info&userId=";
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
@@ -35,7 +34,7 @@ public class UpdateUserInfo implements Command {
             if (req.getParameter(CONFIRM) != null) {
                 var userCreationDto = buildUserCreationDto(req);
                 userService.updateUserInfo(userCreationDto);
-                var redirectionWebPage = req.getContextPath() + REDIRECT_TO_USER_INFO + userCreationDto.getId();
+                var redirectionWebPage = req.getContextPath() + UrlPath.FIND_USER_INFO + userCreationDto.getId();
                 return new Router(redirectionWebPage, RoutingType.REDIRECT);
             }
             return new Router(JspHelper.getPath(JspPath.UPDATE_USER_INFO), RoutingType.FORWARD);

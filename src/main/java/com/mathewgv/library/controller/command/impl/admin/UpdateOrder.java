@@ -10,6 +10,7 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
+import com.mathewgv.library.util.UrlPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +32,6 @@ public class UpdateOrder implements Command {
     private static final String LOAN_TYPE = "loanType";
     private static final String STATUS = "status";
 
-    private static final String REDIRECT_TO_ALL_ORDERS = "/home?cmd=find_all_orders&page=1&status=all";
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
@@ -42,12 +41,16 @@ public class UpdateOrder implements Command {
             order.ifPresent(orderDto -> req.setAttribute(AttributeName.ORDER, orderDto));
             if (req.getParameter(CONFIRM) != null) {
                 orderService.updateOrder(buildOrderDto(req));
-                return new Router(req.getContextPath() + REDIRECT_TO_ALL_ORDERS, RoutingType.REDIRECT);
+                return new Router(req.getContextPath() + UrlPath.FIND_ALL_ORDERS, RoutingType.REDIRECT);
             }
             return new Router(JspHelper.getPath(JspPath.UPDATE_ORDER), RoutingType.FORWARD);
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException e) {
             log.error("Failure to update the order", e);
             req.setAttribute(AttributeName.ERROR, "Error in updating");
+            return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
+        } catch (NumberFormatException e) {
+            log.error("Failure to process parameter 'id'/'bookId'/'clientId', they should be a number", e);
+            req.setAttribute(AttributeName.ERROR, "Some ID is not a number");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }

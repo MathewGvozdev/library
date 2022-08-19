@@ -9,6 +9,7 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
+import com.mathewgv.library.util.UrlPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,7 @@ public class Login implements Command {
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
 
-    private static final String REDIRECT_TO_HOME = "/home";
-    private static final String REDIRECT_TO_LOGIN_WITH_ERROR = "/home?cmd=login&error";
+    private static final String REDIRECT_TO_LOGIN_WITH_ERROR = UrlPath.LOGIN + "&error";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -36,8 +36,8 @@ public class Login implements Command {
             }
             return new Router(JspHelper.getPath(JspPath.LOGIN), RoutingType.FORWARD);
         } catch (ServiceException e) {
-            log.error("Failure to login", e);
-            req.setAttribute(AttributeName.ERROR, "Error in login");
+            log.error("Failure to sign in", e);
+            req.setAttribute(AttributeName.ERROR, "Error in signing in");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         }
     }
@@ -45,7 +45,7 @@ public class Login implements Command {
     private Router onLoginSuccess(UserDto userDto, HttpServletRequest req) {
         req.getSession().setAttribute(AttributeName.USER, userDto);
         req.getSession().setAttribute(AttributeName.ROLE, userDto.getRole());
-        return new Router(req.getContextPath() + REDIRECT_TO_HOME, RoutingType.REDIRECT);
+        return new Router(req.getContextPath() + UrlPath.HOME, RoutingType.REDIRECT);
     }
 
     private Router onLoginFail(HttpServletRequest req) {

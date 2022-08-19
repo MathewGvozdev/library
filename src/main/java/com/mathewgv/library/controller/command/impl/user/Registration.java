@@ -9,6 +9,7 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
+import com.mathewgv.library.util.UrlPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -26,15 +27,13 @@ public class Registration implements Command {
     private static final String TELEPHONE = "telephone";
     private static final String PASSPORT_NUMBER = "passportNumber";
 
-    private static final String REDIRECT_TO_LOGIN = "/home?cmd=login";
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             if (req.getParameter(CONFIRM) != null) {
                 var userService = serviceFactory.getUserService();
                 userService.register(buildUserCreationDto(req));
-                return new Router(req.getContextPath() + REDIRECT_TO_LOGIN, RoutingType.REDIRECT);
+                return new Router(req.getContextPath() + UrlPath.LOGIN, RoutingType.REDIRECT);
             }
             return new Router(JspHelper.getPath(JspPath.REGISTRATION), RoutingType.FORWARD);
         } catch (ServiceException e) {

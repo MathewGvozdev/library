@@ -4,6 +4,7 @@ import com.mathewgv.library.controller.command.CommandProvider;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.dao.exception.ConnectionPoolException;
 import com.mathewgv.library.dao.transaction.ConnectionPool;
+import com.mathewgv.library.util.UrlPath;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,10 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
-@WebServlet("/home")
+@WebServlet(UrlPath.HOME)
 @MultipartConfig(fileSizeThreshold = 1024 * 1024)
 @Slf4j
-public class Controller extends HttpServlet {
+public class CommandServlet extends HttpServlet {
 
     private final CommandProvider provider = CommandProvider.getInstance();
 

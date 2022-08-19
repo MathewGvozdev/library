@@ -27,7 +27,7 @@ public enum CommandName {
 
     CHANGE_USER_ROLE;
 
-    public String convertToString() {
+    public String convertToParam() {
         return this.name().toLowerCase();
     }
 }

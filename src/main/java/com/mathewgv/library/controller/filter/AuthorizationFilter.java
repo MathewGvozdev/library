@@ -1,8 +1,8 @@
 package com.mathewgv.library.controller.filter;
 
-import com.mathewgv.library.controller.command.CommandName;
 import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.util.AttributeName;
+import com.mathewgv.library.util.UrlPath;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,43 +13,31 @@ import java.util.Set;
 
 import static com.mathewgv.library.controller.command.CommandName.*;
 
-@WebFilter("/home")
+@WebFilter(UrlPath.HOME)
 public class AuthorizationFilter implements Filter {
 
     private static final Set<String> PUBLIC_CMD = Set.of(
-            CHANGE_LOCALE.convertToString(),
-            MAKE_ORDER.convertToString(),
-            FIND_ALL_BOOK_METAS.convertToString(),
-            FIND_ALL_BOOK_METAS_BY_FILTER.convertToString(),
-            REGISTRATION.convertToString(),
-            LOGIN.convertToString(),
-            LOGOUT.convertToString(),
-            FIND_USER_INFO.convertToString(),
-            UPDATE_USER_INFO.convertToString(),
-            WRONG_REQUEST.convertToString()
-    );
-
-    private static final Set<String> ADMIN_CMD = Set.of(
-            CHANGE_USER_ROLE.convertToString()
+            LOGIN.convertToParam(),
+            LOGOUT.convertToParam(),
+            REGISTRATION.convertToParam(),
+            CHANGE_LOCALE.convertToParam(),
+            FIND_ALL_BOOK_METAS.convertToParam(),
+            FIND_ALL_BOOK_METAS_BY_FILTER.convertToParam(),
+            MAKE_ORDER.convertToParam(),
+            FIND_USER_INFO.convertToParam(),
+            UPDATE_USER_INFO.convertToParam(),
+            WRONG_REQUEST.convertToParam()
     );
 
     private static final String REFERER = "referer";
-    private static final String REDIRECT_TO_HOME = "/home";
     private static final String ADMIN = "Админ";
     private static final String LIBRARIAN = "Библиотекарь";
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        var uri = ((HttpServletRequest) servletRequest).getRequestURI();
-        var params = ((HttpServletRequest) servletRequest).getQueryString();
-        String addressString;
-        if (params != null) {
-            addressString = uri + "?" + params;
-        } else {
-            addressString = uri;
-        }
-        var homePage = (((HttpServletRequest) servletRequest).getContextPath()) + REDIRECT_TO_HOME;
-        if (addressString.equals(homePage) || isPublicCmd(addressString) || isUserLoggedInAndAdmin(servletRequest)) {
+        String requestedWebPage = getWebPageFromRequest((HttpServletRequest) servletRequest);
+        var homePage = (((HttpServletRequest) servletRequest).getContextPath()) + UrlPath.HOME;
+        if (filterCondition(servletRequest, requestedWebPage, homePage)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             var prevPage = ((HttpServletRequest) servletRequest).getHeader(REFERER);
@@ -57,9 +45,36 @@ public class AuthorizationFilter implements Filter {
         }
     }
 
-    private boolean isUserLoggedInAndAdmin(ServletRequest servletRequest) {
+    private String getWebPageFromRequest(HttpServletRequest servletRequest) {
+        var uri = servletRequest.getRequestURI();
+        var params = servletRequest.getQueryString();
+        String requestedWebPage;
+        if (params != null) {
+            requestedWebPage = uri + "?" + params;
+        } else {
+            requestedWebPage = uri;
+        }
+        return requestedWebPage;
+    }
+
+    private boolean filterCondition(ServletRequest servletRequest, String requestedWebPage, String homePage) {
+        return homePage.equals(requestedWebPage) ||
+               isPublicCmd(requestedWebPage) ||
+               (isUserLoggedIn(servletRequest) && hasRight(servletRequest));
+    }
+
+    private boolean isPublicCmd(String addressString) {
+        return PUBLIC_CMD.stream().anyMatch(addressString::contains);
+    }
+
+    private boolean isUserLoggedIn(ServletRequest servletRequest) {
         var user = (UserDto) ((HttpServletRequest) servletRequest).getSession().getAttribute(AttributeName.USER);
-        return user != null && (isAdmin(user) || isLibrarian(user));
+        return user != null;
+    }
+
+    private boolean hasRight(ServletRequest servletRequest) {
+        var user = (UserDto) ((HttpServletRequest) servletRequest).getSession().getAttribute(AttributeName.USER);
+        return isAdmin(user) || isLibrarian(user);
     }
 
     private boolean isAdmin(UserDto user) {
@@ -68,9 +83,5 @@ public class AuthorizationFilter implements Filter {
 
     private boolean isLibrarian(UserDto user) {
         return LIBRARIAN.equals(user.getRole());
-    }
-
-    private boolean isPublicCmd(String addressString) {
-        return PUBLIC_CMD.stream().anyMatch(addressString::contains);
     }
 }

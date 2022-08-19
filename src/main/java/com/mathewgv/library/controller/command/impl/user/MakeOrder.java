@@ -12,6 +12,7 @@ import com.mathewgv.library.service.factory.ServiceFactory;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
+import com.mathewgv.library.util.UrlPath;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +34,11 @@ public class MakeOrder implements Command {
     private static final String EMPTY_CONFIRM_VALUE = "";
     private static final String POSITIVE_CONFIRM_VALUE = "y";
 
-    private static final String REDIRECT_TO_LOGIN = "/home?cmd=login";
-
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             if (req.getSession().getAttribute(AttributeName.USER) == null) {
-                return new Router(req.getContextPath() + REDIRECT_TO_LOGIN, RoutingType.REDIRECT);
+                return new Router(req.getContextPath() + UrlPath.LOGIN, RoutingType.REDIRECT);
             }
             req.setAttribute(AttributeName.LOAN_TYPES, getListOfLoanTypes());
             var bookService = serviceFactory.getBookService();
