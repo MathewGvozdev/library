@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 @WebServlet(UrlPath.IMAGES + "/*")
@@ -28,7 +27,7 @@ public class ImageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         var requestUri = req.getRequestURI();
         var imagePath = requestUri.replace(UrlPath.IMAGES, "");
         var imageService = serviceFactory.getImageService();

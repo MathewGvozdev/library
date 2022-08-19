@@ -24,6 +24,7 @@ public final class AttributeName {
 
     public static final String PAGES = "pages";
     public static final String STATUSES = "statuses";
+
     public static final String HAS_NEXT_BTN = "hasNextBtn";
     public static final String IS_BOOK_EXIST = "isBookExist";
 

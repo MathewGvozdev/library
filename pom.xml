@@ -14,14 +14,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <junit.version>5.8.2</junit.version>
+        <junit.version>5.9.0</junit.version>
+        <servlet-api.version>5.0.0</servlet-api.version>
+        <assertj-core.version>3.23.1</assertj-core.version>
+        <postgresql.version>42.3.6</postgresql.version>
+        <jsp.jstl.version>2.0.0</jsp.jstl.version>
+        <lombok.version>1.18.24</lombok.version>
+        <slf4j-log4j12.version>1.7.36</slf4j-log4j12.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
+            <version>${servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -39,29 +45,29 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
+            <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.3.6</version>
+            <version>${postgresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-            <version>2.0.0</version>
+            <version>${jsp.jstl.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
+            <version>${lombok.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.36</version>
+            <version>${slf4j-log4j12.version}</version>
         </dependency>
     </dependencies>
 

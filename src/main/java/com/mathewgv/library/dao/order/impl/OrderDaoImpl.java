@@ -84,7 +84,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             """;
 
     private static final String FIND_IF_LOANED_SQL = FIND_ALL_SQL + """
-            WHERE book_id = ? 
+            WHERE book_id = ?
                 AND fact_date IS NULL
                 AND (status = 'На выдаче' OR status = 'Просрочен');
             """;

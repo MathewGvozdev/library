@@ -107,14 +107,16 @@
             </td>
             <td>${requestScope.order.loanType}</td>
             <td>
-                <select name="status"
-                        id="status">
-                    <c:forEach var="status" items="${requestScope.statuses}">
-                        <option value="${status}">
-                                ${status}
-                        </option>
-                    </c:forEach>
-                </select>
+                <label for="status">
+                    <select name="status"
+                            id="status">
+                        <c:forEach var="status" items="${requestScope.statuses}">
+                            <option value="${status}">
+                                    ${status}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </label>
             </td>
         </tr>
     </table>

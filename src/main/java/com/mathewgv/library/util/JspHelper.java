@@ -5,11 +5,10 @@ public final class JspHelper {
     private static final String JSP_FORMAT = "/WEB-INF/jsp/%s.jsp";
 
     private JspHelper() {
-        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
     public static String getErrorPath() {
-        return getPath("error");
+        return getPath(JspPath.ERROR_400);
     }
 
     public static String getPath(String jspName) {

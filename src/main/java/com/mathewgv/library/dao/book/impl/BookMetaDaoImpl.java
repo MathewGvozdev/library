@@ -8,8 +8,6 @@ import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.dao.filter.SelectFilter;
 import com.mathewgv.library.dao.filter.SortType;
-import com.mathewgv.library.dao.transaction.TransactionFactory;
-import com.mathewgv.library.dao.transaction.TransactionImpl;
 import com.mathewgv.library.entity.book.Author;
 import com.mathewgv.library.entity.book.BookMeta;
 import com.mathewgv.library.entity.book.Genre;
@@ -154,7 +152,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             }
             return Optional.ofNullable(bookMeta);
         } catch (SQLException e) {
-            log.error("Error occurred while searching the book-meta by ID", e);
+            log.error("Error occurred while searching the book-meta by title", e);
             throw new DaoException(e);
         }
     }

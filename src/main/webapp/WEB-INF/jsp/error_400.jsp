@@ -17,8 +17,10 @@
     </style>
 </head>
 <body>
-    <span>
-        Wrong request, status code 400
-    </span>
+<c:if test="${not empty requestScope.error}">
+        <span>
+                ${requestScope.error}
+        </span>
+</c:if>
 </body>
 </html>
