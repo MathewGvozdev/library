@@ -8,6 +8,8 @@ import com.mathewgv.library.dao.exception.DaoException;
 import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.dao.filter.SelectFilter;
 import com.mathewgv.library.dao.filter.SortType;
+import com.mathewgv.library.dao.transaction.TransactionFactory;
+import com.mathewgv.library.dao.transaction.TransactionImpl;
 import com.mathewgv.library.entity.book.Author;
 import com.mathewgv.library.entity.book.BookMeta;
 import com.mathewgv.library.entity.book.Genre;
@@ -124,7 +126,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
     }
 
     @Override
-    public List<BookMeta> findAll(Integer page, Integer limit) throws DaoException {
+    public List<BookMeta> findAllWithLimit(Integer page, Integer limit) throws DaoException {
         var selectFilter = new SelectFilter(page, limit);
         var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL, SortType.ID);
         try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
@@ -136,7 +138,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
             }
             return bookMetas;
         } catch (SQLException e) {
-            log.error("Error occurred while searching all book-metas", e);
+            log.error("Error occurred while searching all book-metas with limit", e);
             throw new DaoException(e);
         }
     }
@@ -253,8 +255,6 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
     }
 
     private BookMeta buildBookMeta(ResultSet resultSet) throws SQLException {
-        AuthorDaoImpl.getInstance().setConnection(connection.get());
-        GenreDaoImpl.getInstance().setConnection(connection.get());
         return new BookMeta(
                 resultSet.getInt(ID),
                 resultSet.getString(TITLE),

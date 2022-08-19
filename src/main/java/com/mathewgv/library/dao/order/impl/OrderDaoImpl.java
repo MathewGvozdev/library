@@ -113,7 +113,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
     }
 
     @Override
-    public List<Order> findAll(Integer page, Integer limit) throws DaoException {
+    public List<Order> findAllWithLimit(Integer page, Integer limit) throws DaoException {
         var selectFilter = new SelectFilter(page, limit);
         var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL, SortType.ID_DESC);
         try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
@@ -125,7 +125,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             }
             return orders;
         } catch (SQLException e) {
-            log.error("Error occurred while searching all orders", e);
+            log.error("Error occurred while searching all orders with limit", e);
             throw new DaoException(e);
         }
     }
@@ -141,7 +141,7 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
             }
             return Optional.ofNullable(order);
         } catch (SQLException e) {
-            log.error("Error occurred while searching the order by ID", e);
+            log.error("Error occurred while searching the order if it is loaned", e);
             throw new DaoException(e);
         }
     }
@@ -229,8 +229,6 @@ public class OrderDaoImpl extends DaoConnection implements OrderDao {
     }
 
     private Order buildOrder(ResultSet resultSet) throws SQLException {
-        UserDaoImpl.getInstance().setConnection(connection.get());
-        BookDaoImpl.getInstance().setConnection(connection.get());
         LocalDate factDate = null;
         if (resultSet.getDate(FACT_DATE) != null) {
             factDate = resultSet.getDate(FACT_DATE).toLocalDate();

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface BookDao extends Dao<Integer, Book> {
 
-    Optional<Book> findAnyByBookMetaId(Integer bookMetaId) throws DaoException;
+    List<Book> findAllWithLimit(Integer page, Integer limit) throws DaoException;
 
-    List<Book> findAll(Integer page, Integer limit) throws DaoException;
+    Optional<Book> findAnyByBookMetaId(Integer bookMetaId) throws DaoException;
 }

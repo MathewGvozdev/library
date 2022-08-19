@@ -1,20 +1,12 @@
 package com.mathewgv.library.service.impl;
 
 import com.mathewgv.library.dao.transaction.TransactionFactory;
-import com.mathewgv.library.dao.user.UserDao;
-import com.mathewgv.library.dao.user.UserInfoDao;
 import com.mathewgv.library.entity.user.Role;
-import com.mathewgv.library.entity.user.User;
-import com.mathewgv.library.entity.user.UserInfo;
 import com.mathewgv.library.service.dto.RoleDto;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.dto.UserDto;
-import com.mathewgv.library.service.mapper.factory.MapperFactory;
 import com.mathewgv.library.service.UserService;
 import com.mathewgv.library.service.exception.ServiceException;
-import com.mathewgv.library.service.mapper.impl.UserMapper;
-import com.mathewgv.library.service.mapper.impl.UserRegistrationMapper;
-import com.mathewgv.library.service.mapper.impl.UserRoleMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -70,7 +62,7 @@ public class UserServiceImpl implements UserService {
         try (var transaction = transactionFactory.getTransaction()) {
             var userInfoDao = transaction.getUserInfoDao();
             var userMapper = transaction.getUserMapper();
-            return userInfoDao.findAll(page, limit).stream()
+            return userInfoDao.findAllWithLimit(page, limit).stream()
                     .map(userMapper::mapFrom)
                     .collect(toList());
         } catch (Exception e) {

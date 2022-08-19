@@ -83,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
         try (var transaction = transactionFactory.getTransaction()) {
             var orderDao = transaction.getOrderDao();
             var orderMapper = transaction.getOrderMapper();
-            return orderDao.findAll(page, limit).stream()
+            return orderDao.findAllWithLimit(page, limit).stream()
                     .map(orderMapper::mapFrom)
                     .collect(toList());
         } catch (Exception e) {

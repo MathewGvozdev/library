@@ -68,7 +68,7 @@ public class PublisherDaoImpl extends DaoConnection implements PublisherDao {
             }
             return Optional.ofNullable(publisher);
         } catch (SQLException e) {
-            log.error("Error occurred while searching the publisher by ID", e);
+            log.error("Error occurred while searching the publisher by title and city", e);
             throw new DaoException(e);
         }
     }

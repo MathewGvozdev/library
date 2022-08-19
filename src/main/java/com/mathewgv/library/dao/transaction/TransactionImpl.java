@@ -41,11 +41,15 @@ public class TransactionImpl implements Transaction {
 
     @Override
     public BookDao getBookDao() {
+        setConnection(daoFactory.getPublisherDao());
+        setConnection(daoFactory.getBookMetaDao());
         return setConnection(daoFactory.getBookDao());
     }
 
     @Override
     public BookMetaDao getBookMetaDao() {
+        setConnection(daoFactory.getAuthorDao());
+        setConnection(daoFactory.getGenreDao());
         return setConnection(daoFactory.getBookMetaDao());
     }
 
@@ -61,6 +65,8 @@ public class TransactionImpl implements Transaction {
 
     @Override
     public OrderDao getOrderDao() {
+        setConnection(daoFactory.getUserDao());
+        setConnection(daoFactory.getBookDao());
         return setConnection(daoFactory.getOrderDao());
     }
 
@@ -71,11 +77,13 @@ public class TransactionImpl implements Transaction {
 
     @Override
     public UserDao getUserDao() {
+        setConnection(daoFactory.getRoleDao());
         return setConnection(daoFactory.getUserDao());
     }
 
     @Override
     public UserInfoDao getUserInfoDao() {
+        setConnection(daoFactory.getUserDao());
         return setConnection(daoFactory.getUserInfoDao());
     }
 

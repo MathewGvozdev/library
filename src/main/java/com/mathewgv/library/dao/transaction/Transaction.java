@@ -38,13 +38,13 @@ public interface Transaction extends AutoCloseable {
 
     GenreCreationMapper getGenreCreationMapper();
 
-    UserMapper getUserMapper();
-
-    UserRegistrationMapper getUserRegistrationMapper();
-
     OrderCreationMapper getOrderCreationMapper();
 
     OrderMapper getOrderMapper();
+
+    UserMapper getUserMapper();
+
+    UserRegistrationMapper getUserRegistrationMapper();
 
     UserRoleMapper getUserRoleMapper();
 

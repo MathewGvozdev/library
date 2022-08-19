@@ -61,11 +61,32 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
     private static final String FIND_BY_BOOK_META_ID_SQL = """
             SELECT b.id, b.publisher_id, b.book_meta_id, b.pages, b.publication_year
             FROM books b
-                   LEFT JOIN orders o ON b.id = o.book_id
-            WHERE fact_date IS NULL AND b.book_meta_id = ?
+                LEFT JOIN orders o ON b.id = o.book_id
+            WHERE b.book_meta_id = ?
+            AND ((fact_date IS NULL AND status IS NULL)
+            OR (fact_date IS NOT NULL AND status IS NOT NULL)
+            OR (fact_date IS NULL AND status != 'На выдаче'))
             """;
 
     private BookDaoImpl() {
+    }
+
+    @Override
+    public List<Book> findAllWithLimit(Integer page, Integer limit) throws DaoException {
+        var selectFilter = new SelectFilter(page, limit);
+        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL, SortType.ID);
+        try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
+            selectFilter.setParamsToQuery(preparedStatement);
+            var resultSet = preparedStatement.executeQuery();
+            List<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                books.add(buildBook(resultSet));
+            }
+            return books;
+        } catch (SQLException e) {
+            log.error("Error occurred while searching all books with limit", e);
+            throw new DaoException(e);
+        }
     }
 
     @Override
@@ -80,24 +101,6 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
             return Optional.ofNullable(book);
         } catch (SQLException e) {
             log.error("Error occurred while searching some book by book-meta ID", e);
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public List<Book> findAll(Integer page, Integer limit) throws DaoException {
-        var selectFilter = new SelectFilter(page, limit);
-        var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL, SortType.ID);
-        try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
-            selectFilter.setParamsToQuery(preparedStatement);
-            var resultSet = preparedStatement.executeQuery();
-            List<Book> books = new ArrayList<>();
-            while (resultSet.next()) {
-                books.add(buildBook(resultSet));
-            }
-            return books;
-        } catch (SQLException e) {
-            log.error("Error occurred while searching all books", e);
             throw new DaoException(e);
         }
     }
@@ -179,8 +182,6 @@ public class BookDaoImpl extends DaoConnection implements BookDao {
     }
 
     private Book buildBook(ResultSet resultSet) throws SQLException {
-        PublisherDaoImpl.getInstance().setConnection(connection.get());
-        BookMetaDaoImpl.getInstance().setConnection(connection.get());
         return new Book(
                 resultSet.getInt(ID),
                 publisherDao.findById(resultSet.getInt(PUBLISHER_ID)).orElse(null),

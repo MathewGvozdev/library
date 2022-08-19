@@ -1,8 +1,5 @@
 package com.mathewgv.library.service.impl;
 
-import com.mathewgv.library.dao.book.AuthorDao;
-import com.mathewgv.library.dao.book.BookMetaDao;
-import com.mathewgv.library.dao.book.GenreDao;
 import com.mathewgv.library.dao.transaction.Transaction;
 import com.mathewgv.library.dao.transaction.TransactionFactory;
 import com.mathewgv.library.dao.filter.BookFilter;
@@ -140,7 +137,7 @@ public class BookServiceImpl implements BookService {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookDao();
             var bookMapper = transaction.getBookMapper();
-            return bookDao.findAll(page, limit).stream()
+            return bookDao.findAllWithLimit(page, limit).stream()
                     .map(bookMapper::mapFrom)
                     .collect(toList());
         } catch (Exception e) {
@@ -168,7 +165,7 @@ public class BookServiceImpl implements BookService {
         try (var transaction = transactionFactory.getTransaction()) {
             var bookDao = transaction.getBookMetaDao();
             var bookMetaMapper = transaction.getBookMetaMapper();
-            return bookDao.findAll(page, limit).stream()
+            return bookDao.findAllWithLimit(page, limit).stream()
                     .map(bookMetaMapper::mapFrom)
                     .collect(toList());
         } catch (Exception e) {

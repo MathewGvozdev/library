@@ -6,7 +6,6 @@ import com.mathewgv.library.dao.filter.SortType;
 import com.mathewgv.library.dao.user.UserDao;
 import com.mathewgv.library.dao.user.UserInfoDao;
 import com.mathewgv.library.dao.exception.DaoException;
-import com.mathewgv.library.entity.book.Book;
 import com.mathewgv.library.entity.user.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -63,7 +62,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
 
     private static final String FIND_PERSONAL_INFO_OF_THE_USER_SQL = """
             SELECT id, user_id, first_name, surname, telephone, passport_number
-            FROM users_info
+                FROM users_info
             WHERE user_id = ?
             """;
 
@@ -71,7 +70,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
     }
 
     @Override
-    public List<UserInfo> findAll(Integer page, Integer limit) throws DaoException {
+    public List<UserInfo> findAllWithLimit(Integer page, Integer limit) throws DaoException {
         var selectFilter = new SelectFilter(page, limit);
         var filterSqlRequest = selectFilter.getSqlRequest(FIND_ALL_SQL, SortType.ID);
         try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
@@ -83,7 +82,7 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
             }
             return userInfos;
         } catch (SQLException e) {
-            log.error("Error occurred while searching all books", e);
+            log.error("Error occurred while searching all user infos with limit", e);
             throw new DaoException(e);
         }
     }
@@ -183,7 +182,6 @@ public class UserInfoDaoImpl extends DaoConnection implements UserInfoDao {
     }
 
     private UserInfo buildUserInfo(ResultSet resultSet) throws SQLException {
-        UserDaoImpl.getInstance().setConnection(connection.get());
         return new UserInfo(
                 resultSet.getInt(ID),
                 userDao.findById(resultSet.getInt(USER_ID)).orElse(null),
