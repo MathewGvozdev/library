@@ -6,6 +6,7 @@ public final class JspPath {
     public static final String ADMIN_MENU = "admin_menu";
     public static final String LOGIN = "login";
     public static final String REGISTRATION = "registration";
+    public static final String ERROR_400 = "error_400";
 
     public static final String ADD_BOOK = "add_book";
     public static final String DELETE_BOOK = "delete_book";
