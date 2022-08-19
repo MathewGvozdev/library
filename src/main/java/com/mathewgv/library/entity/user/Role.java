@@ -8,15 +8,12 @@ public class Role implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -7589335193018044978L;
+
     private Integer id;
     private String title;
 
     public Role(Integer id, String title) {
         this.id = id;
-        this.title = title;
-    }
-
-    public Role(String title) {
         this.title = title;
     }
 

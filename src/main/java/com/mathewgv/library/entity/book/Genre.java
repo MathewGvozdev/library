@@ -8,6 +8,7 @@ public class Genre implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 6219428989632783645L;
+
     private Integer id;
     private String title;
 

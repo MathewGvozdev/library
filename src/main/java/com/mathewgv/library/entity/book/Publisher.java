@@ -8,6 +8,7 @@ public class Publisher implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 2833821267534495144L;
+
     private Integer id;
     private String title;
     private String city;

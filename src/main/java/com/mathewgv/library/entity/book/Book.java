@@ -8,6 +8,7 @@ public class Book implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 8152204104108857418L;
+
     private Integer id;
     private Publisher publisher;
     private BookMeta bookMeta;

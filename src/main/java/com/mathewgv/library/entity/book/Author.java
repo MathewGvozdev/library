@@ -8,6 +8,7 @@ public class Author implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1741986172323358987L;
+
     private Integer id;
     private String firstName;
     private String surname;

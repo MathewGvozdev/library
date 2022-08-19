@@ -9,6 +9,7 @@ public class BookMeta implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -6651609552804623199L;
+
     private Integer id;
     private String title;
     private String series;
@@ -38,13 +39,6 @@ public class BookMeta implements Serializable {
         this.title = title;
         this.series = series;
         this.image = image;
-        this.authors = authors;
-        this.genres = genres;
-    }
-
-    public BookMeta(String title, String series, List<Author> authors, List<Genre> genres) {
-        this.title = title;
-        this.series = series;
         this.authors = authors;
         this.genres = genres;
     }

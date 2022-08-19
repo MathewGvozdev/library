@@ -8,6 +8,7 @@ public class UserInfo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 2397967700130622206L;
+
     private Integer id;
     private User user;
     private String firstName;
@@ -22,18 +23,6 @@ public class UserInfo implements Serializable {
                     String telephone,
                     String passportNumber) {
         this.id = id;
-        this.user = user;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.telephone = telephone;
-        this.passportNumber = passportNumber;
-    }
-
-    public UserInfo(User user,
-                    String firstName,
-                    String surname,
-                    String telephone,
-                    String passportNumber) {
         this.user = user;
         this.firstName = firstName;
         this.surname = surname;

@@ -12,6 +12,7 @@ public class Order implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 6286423933793015070L;
+
     private Long id;
     private User client;
     private Book book;
@@ -36,50 +37,6 @@ public class Order implements Serializable {
         this.dueDate = dueDate;
         this.factDate = factDate;
         this.type = type;
-        this.status = status;
-    }
-
-    public Order(Long id,
-                 User client,
-                 Book book,
-                 LocalDate issueDate,
-                 LocalDate dueDate,
-                 LoanType type,
-                 OrderStatus status) {
-        this.id = id;
-        this.client = client;
-        this.book = book;
-        this.issueDate = issueDate;
-        this.dueDate = dueDate;
-        this.type = type;
-        this.status = status;
-    }
-
-    public Order(User client,
-                 Book book,
-                 LocalDate issueDate,
-                 LocalDate dueDate,
-                 LoanType type,
-                 OrderStatus status) {
-        this.client = client;
-        this.book = book;
-        this.issueDate = issueDate;
-        this.dueDate = dueDate;
-        this.type = type;
-        this.status = status;
-    }
-
-    public Order(Long id,
-                 OrderStatus status) {
-        this.id = id;
-        this.status = status;
-    }
-
-    public Order(Long id,
-                 LocalDate factDate,
-                 OrderStatus status) {
-        this.id = id;
-        this.factDate = factDate;
         this.status = status;
     }
 
