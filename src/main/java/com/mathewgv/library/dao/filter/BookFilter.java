@@ -4,15 +4,16 @@ import static java.util.stream.Collectors.joining;
 
 public class BookFilter extends SelectFilter {
 
+    private static final String TITLE = "upper(bm.title) LIKE upper(?)";
+    private static final String AUTHOR = "upper(author_req.author) LIKE upper(?)";
+    private static final String GENRE = "upper(string_agg(g.title, ', ')) LIKE upper(?)";
+    private static final String SERIES = "upper(bm.series) LIKE upper(?)";
+
     private String title;
     private String author;
     private String genre;
     private String series;
 
-    private static final String TITLE = "upper(bm.title) LIKE upper(?)";
-    private static final String AUTHOR = "upper(author_req.author) LIKE upper(?)";
-    private static final String GENRE = "upper(string_agg(g.title, ', ')) LIKE upper(?)";
-    private static final String SERIES = "upper(bm.series) LIKE upper(?)";
 
     public BookFilter(Integer page,
                       Integer limit,
@@ -36,10 +37,10 @@ public class BookFilter extends SelectFilter {
         initConditions();
         String sqlRequest;
         if (getConditions().size() == 0) {
-            sqlRequest = selectSql + " LIMIT ? OFFSET ?";
+            sqlRequest = selectSql + LIMIT_AND_OFFSET_FOR_QUERY;
         } else {
             String havingSqlCondition = getConditions().stream()
-                    .collect(joining(" AND ", "HAVING ", " LIMIT ? OFFSET ?"));
+                    .collect(joining(AND_FOR_QUERY, HAVING_FOR_QUERY, LIMIT_AND_OFFSET_FOR_QUERY));
             sqlRequest = selectSql + havingSqlCondition;
         }
         return sqlRequest;

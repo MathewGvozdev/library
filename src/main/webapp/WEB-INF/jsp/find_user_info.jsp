@@ -69,7 +69,7 @@
             text-align: center;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 16px;
-            padding: 12px 20px;
+            padding: 6px 12px;
             margin: 30px auto;
             text-decoration: none;
         }
@@ -147,7 +147,7 @@
                 <input type="hidden" name="cmd" value="change_user_role">
                 <input type="hidden" name="id" value="${requestScope.userDto.id}">
                 <button type="submit" class="aqua">
-                    CHANGE STATUS
+                    <fmt:message key="page.button.set.status"/>
                 </button>
             </c:if>
         </form>

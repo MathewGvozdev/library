@@ -7,6 +7,10 @@ import java.util.List;
 
 public class SelectFilter {
 
+    protected static final String LIMIT_AND_OFFSET_FOR_QUERY = " LIMIT ? OFFSET ?";
+    protected static final String AND_FOR_QUERY = " AND ";
+    protected static final String HAVING_FOR_QUERY = "HAVING ";
+
     private final Integer limit;
     private final Integer offset;
 
@@ -26,7 +30,7 @@ public class SelectFilter {
 
     public String getSqlRequest(String selectSql, SortType type) {
         initConditions();
-        return selectSql + type.getCondition() + " LIMIT ? OFFSET ?";
+        return selectSql + type.getCondition() + LIMIT_AND_OFFSET_FOR_QUERY;
     }
 
     protected void initConditions() {

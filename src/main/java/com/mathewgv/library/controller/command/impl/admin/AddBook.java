@@ -3,7 +3,6 @@ package com.mathewgv.library.controller.command.impl.admin;
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
-import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.service.dto.BookCreationDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
@@ -21,8 +20,6 @@ import java.io.IOException;
 @Slf4j
 public class AddBook implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     private static final String CONFIRM = "cfm";
     private static final String TITLE = "title";
     private static final String AUTHORS = "authors";
@@ -37,24 +34,28 @@ public class AddBook implements Command {
     private static final String EMPTY_CONFIRM_VALUE = "";
     private static final String POSITIVE_CONFIRM_VALUE = "y";
 
+    private static final Integer PAGE_FOR_FILTER = 1;
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
-            req.setAttribute("showInput", true);
+            req.setAttribute(AttributeName.SHOW_INPUT, true);
             if (EMPTY_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 var bookDto = buildBookCreationDto(req);
-                var isBookExist = bookService.findAllBookMetasByFilter(bookDto, 1);
+                var isBookExist = bookService.findAllBookMetasByFilter(bookDto, PAGE_FOR_FILTER);
                 if (isBookExist.isEmpty()) {
                     req.setAttribute(AttributeName.IS_BOOK_EXIST, false);
                 }
                 req.setAttribute(AttributeName.BOOK_DTO, bookDto);
-                req.setAttribute("showInput", false);
+                req.setAttribute(AttributeName.SHOW_INPUT, false);
             } else if (POSITIVE_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 var book = bookService.addBook(buildBookCreationDto(req));
                 if (book.getId() != null) {
                     req.setAttribute(AttributeName.BOOK, book);
-                    req.setAttribute("showInput", false);
+                    req.setAttribute(AttributeName.SHOW_INPUT, false);
                 }
             }
             return new Router(JspHelper.getPath(JspPath.ADD_BOOK), RoutingType.FORWARD);

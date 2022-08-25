@@ -28,6 +28,7 @@ public final class AttributeName {
 
     public static final String HAS_NEXT_BTN = "hasNextBtn";
     public static final String IS_BOOK_EXIST = "isBookExist";
+    public static final String SHOW_INPUT = "showInput";
 
     private AttributeName(){
     }

@@ -15,9 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FindBookById implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     private static final String BOOK_ID = "bookId";
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {

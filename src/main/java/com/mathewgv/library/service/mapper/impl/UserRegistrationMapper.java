@@ -3,8 +3,8 @@ package com.mathewgv.library.service.mapper.impl;
 import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.factory.DaoFactory;
 import com.mathewgv.library.service.dto.UserCreationDto;
-import com.mathewgv.library.entity.user.User;
-import com.mathewgv.library.entity.user.UserInfo;
+import com.mathewgv.library.entity.User;
+import com.mathewgv.library.entity.UserInfo;
 import com.mathewgv.library.service.mapper.Mapper;
 
 public class UserRegistrationMapper extends DaoConnection implements Mapper<UserCreationDto, UserInfo> {

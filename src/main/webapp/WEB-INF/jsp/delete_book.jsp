@@ -146,9 +146,6 @@
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
       method="post">
     <c:if test="${not empty requestScope.book}">
-<%--        <span>--%>
-<%--            <fmt:message key="page.book.delete.confirm.msg"/><br>--%>
-<%--        </span>--%>
         <table>
             <caption>
                 <fmt:message key="page.book.delete.confirm.msg"/>
@@ -176,6 +173,14 @@
             </tr>
             </tbody>
         </table>
+        <div class="centered-wrapper">
+            <div class="centered-content">
+                <img src="${pageContext.request.contextPath}/images/${requestScope.book.image}"
+                     alt="image"
+                     width="250"
+                     height="350"><br>
+            </div>
+        </div>
         <div style="display: none">
             <input type="hidden"
                    name="cfm"

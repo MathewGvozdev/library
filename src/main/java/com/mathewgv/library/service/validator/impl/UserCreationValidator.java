@@ -17,26 +17,33 @@ public class UserCreationValidator implements Validator<UserCreationDto> {
     private static final String PASSPORT_REGEX = "[A-Z0-9]{9}";
     private static final String PASSWORD_REGEX = "\\w{5,}";
 
+    private static final String ERROR_NAME_KEY = "invalid.registration.name";
+    private static final String ERROR_SURNAME_KEY = "invalid.registration.surname";
+    private static final String ERROR_LOGIN_KEY = "invalid.registration.login";
+    private static final String ERROR_TELEPHONE_KEY = "invalid.registration.telephone";
+    private static final String ERROR_PASSPORT_KEY = "invalid.registration.passport";
+    private static final String ERROR_PASSWORD_KEY = "invalid.registration.password";
+
     @Override
     public ValidationResult isValid(UserCreationDto object) {
         var validationResult = new ValidationResult();
         if (object.getFirstName() != null && !Pattern.matches(NAME_REGEX, object.getFirstName())) {
-            validationResult.add(new Error("invalid.registration.name"));
+            validationResult.add(new Error(ERROR_NAME_KEY));
         }
         if (object.getSurname() != null && !Pattern.matches(NAME_REGEX, object.getSurname())) {
-            validationResult.add(new Error("invalid.registration.surname"));
+            validationResult.add(new Error(ERROR_SURNAME_KEY));
         }
         if (object.getLogin() != null && !Pattern.matches(LOGIN_REGEX, object.getLogin())) {
-            validationResult.add(new Error("invalid.registration.login"));
+            validationResult.add(new Error(ERROR_LOGIN_KEY));
         }
         if (object.getTelephone() != null && !Pattern.matches(TELEPHONE_REGEX, object.getTelephone())) {
-            validationResult.add(new Error("invalid.registration.telephone"));
+            validationResult.add(new Error(ERROR_TELEPHONE_KEY));
         }
         if (object.getPassportNumber() != null && !Pattern.matches(PASSPORT_REGEX, object.getPassportNumber())) {
-            validationResult.add(new Error("invalid.registration.passport"));
+            validationResult.add(new Error(ERROR_PASSPORT_KEY));
         }
         if (object.getPassword() != null && !Pattern.matches(PASSWORD_REGEX, object.getPassword())) {
-            validationResult.add(new Error("invalid.registration.password"));
+            validationResult.add(new Error(ERROR_PASSWORD_KEY));
         }
         return validationResult;
     }

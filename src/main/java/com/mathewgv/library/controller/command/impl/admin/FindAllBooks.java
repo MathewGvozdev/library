@@ -18,10 +18,11 @@ import java.util.List;
 @Slf4j
 public class FindAllBooks implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private static final String PAGE = "page";
 
     private static final Integer SHOWED_BOOK_LIMIT = 20;
-    private static final String PAGE = "page";
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp)  {

@@ -6,7 +6,6 @@
     <title>
         <fmt:message key="head.add.book"/>
     </title>
-    <script src="${pageContext.request.contextPath}/js/script.js"></script>
     <style>
         .centered-wrapper {
             position: relative;
@@ -302,11 +301,11 @@
          width="250"
          height="350"
          alt="image">
+        <c:if test="${not empty requestScope.error}">
+            <span>${requestScope.error}</span>
+        </c:if>
     </div>
 </div>
-</c:if>
-<c:if test="${not empty requestScope.error}">
-    <span>${requestScope.error}</span>
 </c:if>
 </body>
 </html>

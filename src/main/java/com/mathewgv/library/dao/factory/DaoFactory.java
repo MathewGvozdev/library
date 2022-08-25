@@ -1,13 +1,12 @@
 package com.mathewgv.library.dao.factory;
 
-import com.mathewgv.library.dao.book.*;
-import com.mathewgv.library.dao.book.impl.*;
-import com.mathewgv.library.dao.order.OrderDao;
-import com.mathewgv.library.dao.order.impl.OrderDaoImpl;
-import com.mathewgv.library.dao.user.*;
-import com.mathewgv.library.dao.user.impl.RoleDaoImpl;
-import com.mathewgv.library.dao.user.impl.UserDaoImpl;
-import com.mathewgv.library.dao.user.impl.UserInfoDaoImpl;
+import com.mathewgv.library.dao.*;
+import com.mathewgv.library.dao.impl.*;
+import com.mathewgv.library.dao.OrderDao;
+import com.mathewgv.library.dao.impl.OrderDaoImpl;
+import com.mathewgv.library.dao.impl.RoleDaoImpl;
+import com.mathewgv.library.dao.impl.UserDaoImpl;
+import com.mathewgv.library.dao.impl.UserInfoDaoImpl;
 
 public class DaoFactory {
 

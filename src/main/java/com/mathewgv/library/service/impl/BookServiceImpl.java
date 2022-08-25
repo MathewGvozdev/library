@@ -3,7 +3,7 @@ package com.mathewgv.library.service.impl;
 import com.mathewgv.library.dao.transaction.Transaction;
 import com.mathewgv.library.dao.transaction.TransactionFactory;
 import com.mathewgv.library.dao.filter.BookFilter;
-import com.mathewgv.library.entity.book.*;
+import com.mathewgv.library.entity.*;
 import com.mathewgv.library.service.BookService;
 import com.mathewgv.library.service.ImageService;
 import com.mathewgv.library.service.dto.*;
@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto addBook(BookCreationDto bookDto) {
         var validationResult = bookDtoValidator.isValid(bookDto);
-        if (!validationResult.isValid()) {
+        if (validationResult.hasErrors()) {
             throw new ValidationException(validationResult.getErrors());
         }
         try (var transaction = transactionFactory.getTransaction()) {
@@ -158,7 +158,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> findAllBookMetasByFilter(BookCreationDto dto, Integer page) throws ServiceException {
         var validationResult = bookDtoValidator.isValid(dto);
-        if (!validationResult.isValid()) {
+        if (validationResult.hasErrors()) {
             throw new ValidationException(validationResult.getErrors());
         }
         try (var transaction = transactionFactory.getTransaction()) {

@@ -2,7 +2,7 @@ package com.mathewgv.library.service.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.factory.DaoFactory;
-import com.mathewgv.library.entity.order.Order;
+import com.mathewgv.library.entity.Order;
 import com.mathewgv.library.service.mapper.Mapper;
 import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.util.LocalDateFormatter;

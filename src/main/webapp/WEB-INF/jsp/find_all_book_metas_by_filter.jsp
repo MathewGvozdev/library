@@ -98,7 +98,6 @@
         span {
             color: black;
             height: 100%;
-            display: table-cell;
             vertical-align: middle;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 24px;
@@ -110,7 +109,7 @@
     <div class="centered-content">
         <c:if test="${not empty requestScope.bookMetas}">
         <h1>
-            <fmt:message key="page.book.books"/>:
+            <fmt:message key="page.book.books"/>
         </h1>
         <ul class="first">
             <c:forEach var="bookMeta" items="${requestScope.bookMetas}">
@@ -188,7 +187,7 @@
         </c:if>
         <c:if test="${empty requestScope.bookMetas}">
             <span>
-                Oops sorry
+                <fmt:message key="page.book.not.found"/>
             </span>
         </c:if>
     </div>

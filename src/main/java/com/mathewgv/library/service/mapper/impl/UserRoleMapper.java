@@ -2,7 +2,7 @@ package com.mathewgv.library.service.mapper.impl;
 
 import com.mathewgv.library.dao.DaoConnection;
 import com.mathewgv.library.dao.factory.DaoFactory;
-import com.mathewgv.library.entity.user.User;
+import com.mathewgv.library.entity.User;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.mapper.Mapper;
 

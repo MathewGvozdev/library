@@ -3,7 +3,7 @@ package com.mathewgv.library.controller.command.impl.admin;
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
-import com.mathewgv.library.entity.order.OrderStatus;
+import com.mathewgv.library.entity.OrderStatus;
 import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
@@ -20,13 +20,13 @@ import java.util.List;
 @Slf4j
 public class FindAllOrders implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     private static final String PAGE = "page";
     private static final String STATUS = "status";
     private static final String ALL_STATUS_VALUE = "all";
 
     private static final Integer SHOWED_ORDERS_LIMIT = 20;
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {

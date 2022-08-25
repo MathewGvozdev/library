@@ -18,11 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ChangeUserRole implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     private static final String CONFIRM = "cfm";
     private static final String ID = "id";
     private static final String ROLE = "role";
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {

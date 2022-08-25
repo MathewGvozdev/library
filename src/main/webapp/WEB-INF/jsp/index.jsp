@@ -59,7 +59,7 @@
         span {
             color: black;
             height: 100%;
-            display: table-cell;
+            display: contents;
             vertical-align: middle;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 24px;
@@ -80,7 +80,7 @@
         <form action="${pageContext.request.contextPath}/home"
               method="get">
                 <span>
-                    <fmt:message key="page.index.filter"/>
+                    <fmt:message key="page.index.filter"/><br>
                 </span>
             <div style="display: none">
                 <input type="hidden"

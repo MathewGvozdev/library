@@ -1,7 +1,7 @@
 package com.mathewgv.library.service.impl;
 
 import com.mathewgv.library.dao.transaction.TransactionFactory;
-import com.mathewgv.library.entity.user.Role;
+import com.mathewgv.library.entity.Role;
 import com.mathewgv.library.service.dto.RoleDto;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.dto.UserDto;
@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
     private static final UserServiceImpl INSTANCE = new UserServiceImpl();
 
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
-
     private final UserCreationValidator userCreationValidator = UserCreationValidator.getInstance();
 
     private UserServiceImpl() {
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(UserCreationDto userDto) throws ServiceException, ValidationException {
         var validationResult = userCreationValidator.isValid(userDto);
-        if (!validationResult.isValid()) {
+        if (validationResult.hasErrors()) {
             throw new ValidationException(validationResult.getErrors());
         }
         try (var transaction = transactionFactory.getTransaction()) {
@@ -93,7 +92,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserInfo(UserCreationDto userCreationDto) throws ServiceException {
         var validationResult = userCreationValidator.isValid(userCreationDto);
-        if (!validationResult.isValid()) {
+        if (validationResult.hasErrors()) {
             throw new ValidationException(validationResult.getErrors());
         }
         try (var transaction = transactionFactory.getTransaction()) {

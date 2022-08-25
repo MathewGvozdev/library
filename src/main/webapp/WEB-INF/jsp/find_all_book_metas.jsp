@@ -99,7 +99,7 @@
 <div class="centered-wrapper">
     <div class="centered-content">
         <h1>
-            <fmt:message key="page.book.books"/>:
+            <fmt:message key="page.book.books"/>
         </h1>
         <c:forEach var="bookMeta" items="${requestScope.bookMetas}">
             <ul class="first">
@@ -132,9 +132,9 @@
         </c:if>
     </div>
     <div class="pagination-content">
-    <span>
-        [${param.page}]
-    </span>
+        <span>
+            [${param.page}]
+        </span>
     </div>
     <div class="pagination-content">
         <c:if test="${param.page < requestScope.pages}">

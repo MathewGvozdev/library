@@ -3,7 +3,7 @@ package com.mathewgv.library.controller.command.impl.admin;
 import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
-import com.mathewgv.library.entity.order.OrderStatus;
+import com.mathewgv.library.entity.OrderStatus;
 import com.mathewgv.library.service.dto.OrderCreationDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
@@ -20,8 +20,6 @@ import java.util.List;
 @Slf4j
 public class UpdateOrder implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     private static final String CONFIRM = "cfm";
     private static final String ID = "id";
     private static final String CLIENT_ID = "clientId";
@@ -31,6 +29,8 @@ public class UpdateOrder implements Command {
     private static final String FACT_DATE = "factDate";
     private static final String LOAN_TYPE = "loanType";
     private static final String STATUS = "status";
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {

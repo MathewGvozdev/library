@@ -15,11 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FindAllUsers implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     private static final String PAGE = "page";
 
     private static final Integer SHOWED_USERS_LIMIT = 20;
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp)  {

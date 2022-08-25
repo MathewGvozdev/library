@@ -1,6 +1,6 @@
 package com.mathewgv.library.service;
 
-import com.mathewgv.library.entity.order.Order;
+import com.mathewgv.library.entity.Order;
 import com.mathewgv.library.service.dto.OrderCreationDto;
 import com.mathewgv.library.service.dto.OrderDto;
 import com.mathewgv.library.service.exception.ServiceException;

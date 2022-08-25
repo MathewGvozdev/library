@@ -146,7 +146,7 @@
     </style>
 </head>
 <body>
-<c:if test="${param.cfm == null}">
+<c:if test="${param.cfm == null && not empty requestScope.book}">
     <div class="centered-wrapper">
         <div class="centered-content">
             <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
@@ -220,6 +220,17 @@
         </div>
     </div>
 </c:if>
+<c:if test="${empty requestScope.book}">
+    <div class="centered-wrapper">
+        <div class="centered-content">
+            <div class="error">
+                <h1>
+                    <fmt:message key="page.order.not.found"/><br>
+                </h1>
+            </div>
+        </div>
+    </div>
+</c:if>
 <c:if test="${not empty requestScope.order}">
         <span>
             <fmt:message key="page.order.success.msg"/>:<br>
@@ -235,19 +246,23 @@
             <th><fmt:message key="page.order.type"/></th>
         </tr>
         <tr>
-            <th>${requestScope.order.client.login}</th>
-            <th>${requestScope.order.book.id}</th>
-            <th>${requestScope.order.book.bookMeta.title}</th>
+            <th>${requestScope.order.client}</th>
+            <th>${requestScope.order.bookId}</th>
+            <th>${requestScope.order.bookTitle}</th>
             <th>${requestScope.order.issueDate}</th>
             <th>${requestScope.order.dueDate}</th>
-            <th>${param.loanType}</th>
+            <th>${requestScope.order.loanType}</th>
         </tr>
         </tbody>
     </table>
 </c:if>
-<c:if test="${not empty requestScope.error}">
-    <span>${requestScope.error}</span>
-</c:if>
+<div class="error">
+    <c:if test="${not empty requestScope.error}">
+    <span>
+            ${requestScope.error}
+    </span>
+    </c:if>
+</div>
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
       method="post">
     <c:if test="${not empty requestScope.orderDto}">

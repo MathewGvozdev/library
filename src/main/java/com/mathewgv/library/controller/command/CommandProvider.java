@@ -1,9 +1,7 @@
 package com.mathewgv.library.controller.command;
 
-import com.mathewgv.library.controller.command.impl.Home;
-import com.mathewgv.library.controller.command.impl.WrongRequest;
+import com.mathewgv.library.controller.command.impl.*;
 import com.mathewgv.library.controller.command.impl.admin.*;
-import com.mathewgv.library.controller.command.impl.user.*;
 
 import java.util.HashMap;
 import java.util.Map;

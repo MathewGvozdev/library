@@ -15,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DeleteBook implements Command {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     private static final String CONFIRM = "cfm";
     private static final String BOOK_ID = "bookId";
 
@@ -26,6 +24,8 @@ public class DeleteBook implements Command {
     private static final String NOT_FOUND_MSG = "The book doesn't exist";
     private static final String DELETING_SUCCESS = "success";
     private static final String DELETING_FAILURE = "failure";
+
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {

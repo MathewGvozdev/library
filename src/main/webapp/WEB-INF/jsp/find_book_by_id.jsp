@@ -129,6 +129,14 @@
     </div>
 </div>
 <c:if test="${not empty requestScope.book}">
+    <div class="centered-wrapper">
+        <div class="centered-content">
+            <img src="${pageContext.request.contextPath}/images/${requestScope.book.image}"
+                 alt="image"
+                 width="250"
+                 height="350"><br>
+        </div>
+    </div>
     <table>
         <tbody>
         <tr>
@@ -153,6 +161,7 @@
         </tr>
         </tbody>
     </table>
+    <
 </c:if>
 <c:if test="${not empty requestScope.order}">
     <table>
