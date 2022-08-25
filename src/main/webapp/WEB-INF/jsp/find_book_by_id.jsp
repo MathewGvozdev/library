@@ -121,6 +121,11 @@
                 <fmt:message key="page.button.find"/>
             </button>
         </form>
+        <c:if test="${empty requestScope.book and not empty param.bookId}">
+            <span>
+                <fmt:message key="page.book.delete.not.found"/><br>
+            </span>
+        </c:if>
     </div>
 </div>
 <c:if test="${not empty requestScope.book}">

@@ -7,6 +7,8 @@ import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.dto.UserDto;
 import com.mathewgv.library.service.UserService;
 import com.mathewgv.library.service.exception.ServiceException;
+import com.mathewgv.library.service.validator.ValidationException;
+import com.mathewgv.library.service.validator.impl.UserCreationValidator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class UserServiceImpl implements UserService {
     private static final UserServiceImpl INSTANCE = new UserServiceImpl();
 
     private final TransactionFactory transactionFactory = TransactionFactory.getInstance();
+
+    private final UserCreationValidator userCreationValidator = UserCreationValidator.getInstance();
 
     private UserServiceImpl() {
     }
@@ -40,7 +44,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(UserCreationDto userDto) throws ServiceException {
+    public void register(UserCreationDto userDto) throws ServiceException, ValidationException {
+        var validationResult = userCreationValidator.isValid(userDto);
+        if (!validationResult.isValid()) {
+            throw new ValidationException(validationResult.getErrors());
+        }
         try (var transaction = transactionFactory.getTransaction()) {
             var userInfo = transaction.getUserRegistrationMapper().mapFrom(userDto);
             var userDao = transaction.getUserDao();
@@ -84,6 +92,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserInfo(UserCreationDto userCreationDto) throws ServiceException {
+        var validationResult = userCreationValidator.isValid(userCreationDto);
+        if (!validationResult.isValid()) {
+            throw new ValidationException(validationResult.getErrors());
+        }
         try (var transaction = transactionFactory.getTransaction()) {
             var userInfoDao = transaction.getUserInfoDao();
             var userDao = transaction.getUserDao();

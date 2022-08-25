@@ -6,6 +6,7 @@ import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
+import com.mathewgv.library.service.validator.ValidationException;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
@@ -35,6 +36,9 @@ public class Registration implements Command {
                 userService.register(buildUserCreationDto(req));
                 return new Router(req.getContextPath() + UrlPath.LOGIN, RoutingType.REDIRECT);
             }
+            return new Router(JspHelper.getPath(JspPath.REGISTRATION), RoutingType.FORWARD);
+        } catch (ValidationException e) {
+            req.setAttribute(AttributeName.ERRORS, e.getErrors());
             return new Router(JspHelper.getPath(JspPath.REGISTRATION), RoutingType.FORWARD);
         } catch (ServiceException e) {
             log.error("Failure to register a new user", e);

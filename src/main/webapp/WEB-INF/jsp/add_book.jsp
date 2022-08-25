@@ -6,6 +6,7 @@
     <title>
         <fmt:message key="head.add.book"/>
     </title>
+    <script src="${pageContext.request.contextPath}/js/script.js"></script>
     <style>
         .centered-wrapper {
             position: relative;
@@ -52,7 +53,7 @@
             font-family: Arial, Helvetica, sans-serif;
             font-size: 16px;
             padding: 12px 20px;
-            margin: 30px auto;
+            margin: 10px auto;
             text-decoration: none;
         }
 
@@ -104,12 +105,26 @@
             font-size: 30px;
             line-height: 36px;
         }
+
+        input[type=file] {
+            display: block;
+            margin-left: 650px;
+        }
+
+        .error span {
+            color: darkred;
+            height: 100%;
+            display: contents;
+            vertical-align: middle;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
 <div class="centered-wrapper">
     <div class="centered-content">
-        <c:if test="${param.cfm == null}">
+        <c:if test="${requestScope.showInput == true}">
             <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}&cfm"
                   method="post"
                   enctype="multipart/form-data">
@@ -170,16 +185,26 @@
                 <br>
             </form>
         </c:if>
+        <c:if test="${not empty requestScope.errors}">
+            <div class="error">
+                <c:forEach var="error" items="${requestScope.errors}">
+                        <span>
+                                <fmt:message key="${error.code}"/><br>
+                        </span>
+                </c:forEach>
+            </div>
+        </c:if>
     </div>
 </div>
+
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
       method="post"
       enctype="multipart/form-data">
     <c:if test="${not empty requestScope.bookDto}">
-        <span>
-            <fmt:message key="page.book.confirm.msg"/><br>
-        </span>
         <table>
+            <caption>
+                <fmt:message key="page.book.confirm.msg"/>
+            </caption>
             <tbody>
             <tr>
                 <th><fmt:message key="page.book.title"/></th>
@@ -206,10 +231,8 @@
         <c:if test="${requestScope.isBookExist == false}">
             <label>
                 <input type="file"
-                       name="image"
-                       placeholder="book image"
-                       value="${param.image}" required>
-            </label><br>
+                       name="image" required>
+            </label>
         </c:if>
         <div style="display: none">
             <input type="hidden"
@@ -273,10 +296,14 @@
         </tr>
         </tbody>
     </table>
+<div class="centered-wrapper">
+    <div class="centered-content">
     <img src="${pageContext.request.contextPath}/images/${requestScope.book.image}"
          width="250"
          height="350"
          alt="image">
+    </div>
+</div>
 </c:if>
 <c:if test="${not empty requestScope.error}">
     <span>${requestScope.error}</span>

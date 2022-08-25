@@ -94,11 +94,21 @@
         button.page:hover {
             background-color: #158ea2;
         }
+
+        span {
+            color: black;
+            height: 100%;
+            display: table-cell;
+            vertical-align: middle;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 24px;
+        }
     </style>
 </head>
 <body>
 <div class="centered-wrapper">
     <div class="centered-content">
+        <c:if test="${not empty requestScope.bookMetas}">
         <h1>
             <fmt:message key="page.book.books"/>:
         </h1>
@@ -148,9 +158,9 @@
         </c:if>
     </div>
     <div class="pagination-content">
-    <span>
-        [${param.page}]
-    </span>
+        <span>
+            [${param.page}]
+        </span>
     </div>
     <div class="pagination-content">
         <c:if test="${requestScope.hasNextBtn == true}">
@@ -174,6 +184,12 @@
                     <fmt:message key="page.button.next"/>
                 </button>
             </form>
+        </c:if>
+        </c:if>
+        <c:if test="${empty requestScope.bookMetas}">
+            <span>
+                Oops sorry
+            </span>
         </c:if>
     </div>
 </div>

@@ -1,6 +1,5 @@
 package com.mathewgv.library.service;
 
-import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.service.dto.*;
 import com.mathewgv.library.service.exception.ServiceException;
 
@@ -15,7 +14,7 @@ public interface BookService {
 
     List<BookDto> findAllBookMetas(Integer page, Integer limit) throws ServiceException;
 
-    List<BookDto> findAllBookMetasByFilter(BookFilter filter) throws ServiceException;
+    List<BookDto> findAllBookMetasByFilter(BookCreationDto dto, Integer page) throws ServiceException;
 
     List<BookDto> findAllBooks() throws ServiceException;
 

@@ -4,6 +4,7 @@ public final class AttributeName {
 
     public static final String RESULT = "result";
     public static final String ERROR = "error";
+    public static final String ERRORS = "errors";
 
     public static final String BOOK_DTO = "bookDto";
     public static final String BOOK = "book";

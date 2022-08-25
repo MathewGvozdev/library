@@ -64,6 +64,14 @@
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 24px;
         }
+        .error span {
+            color: darkred;
+            height: 100%;
+            display: contents;
+            vertical-align: middle;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -105,6 +113,15 @@
             <button type="submit" class="aqua">
                 <fmt:message key="page.button.find"/>
             </button>
+            <c:if test="${not empty requestScope.errors}">
+                <div class="error">
+                    <c:forEach var="error" items="${requestScope.errors}">
+                        <span>
+                                <fmt:message key="${error.code}"/><br>
+                        </span>
+                    </c:forEach>
+                </div>
+            </c:if>
         </form>
     </div>
     <div class="centered-content">

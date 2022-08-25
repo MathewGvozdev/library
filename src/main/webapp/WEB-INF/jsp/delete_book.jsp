@@ -15,8 +15,6 @@
         .centered-content {
             display: inline-block;
             vertical-align: middle;
-            padding: 30px;
-            margin: 40px;
         }
 
         input[type=text] {
@@ -99,6 +97,10 @@
             color: black;
             padding: 9px 8px;
         }
+        caption {
+            font-size: 30px;
+            line-height: 36px;
+        }
     </style>
 </head>
 <body>
@@ -144,10 +146,13 @@
 <form action="${pageContext.request.contextPath}/home?cmd=${param.cmd}"
       method="post">
     <c:if test="${not empty requestScope.book}">
-        <span>
-            <fmt:message key="page.book.delete.confirm.msg"/><br>
-        </span>
+<%--        <span>--%>
+<%--            <fmt:message key="page.book.delete.confirm.msg"/><br>--%>
+<%--        </span>--%>
         <table>
+            <caption>
+                <fmt:message key="page.book.delete.confirm.msg"/>
+            </caption>
             <tbody>
             <tr>
                 <th><fmt:message key="page.book.id"/></th>

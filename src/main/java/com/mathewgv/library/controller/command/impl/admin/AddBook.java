@@ -7,6 +7,7 @@ import com.mathewgv.library.dao.filter.BookFilter;
 import com.mathewgv.library.service.dto.BookCreationDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
+import com.mathewgv.library.service.validator.ValidationException;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
@@ -40,22 +41,32 @@ public class AddBook implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var bookService = serviceFactory.getBookService();
+            req.setAttribute("showInput", true);
             if (EMPTY_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
-                var bookDto = buildBookDto(req);
-                var isBookExist = bookService.findAllBookMetasByFilter(buildBookFilter(req));
+                var bookDto = buildBookCreationDto(req);
+                var isBookExist = bookService.findAllBookMetasByFilter(bookDto, 1);
                 if (isBookExist.isEmpty()) {
                     req.setAttribute(AttributeName.IS_BOOK_EXIST, false);
                 }
                 req.setAttribute(AttributeName.BOOK_DTO, bookDto);
+                req.setAttribute("showInput", false);
             } else if (POSITIVE_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
-                var book = bookService.addBook(buildBookDto(req));
+                var book = bookService.addBook(buildBookCreationDto(req));
                 if (book.getId() != null) {
                     req.setAttribute(AttributeName.BOOK, book);
+                    req.setAttribute("showInput", false);
                 }
             }
             return new Router(JspHelper.getPath(JspPath.ADD_BOOK), RoutingType.FORWARD);
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ValidationException e) {
+            req.setAttribute(AttributeName.ERRORS, e.getErrors());
+            return new Router(JspHelper.getPath(JspPath.ADD_BOOK), RoutingType.FORWARD);
+        } catch (ServiceException e) {
             log.error("Failure to add a new book", e);
+            req.setAttribute(AttributeName.ERROR, "Error in adding new book");
+            return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
+        } catch (NumberFormatException e) {
+            log.error("Failure to parse integer values", e);
             req.setAttribute(AttributeName.ERROR, "Error in adding new book");
             return new Router(JspHelper.getErrorPath(), RoutingType.ERROR);
         } catch (IOException | ServletException e) {
@@ -65,17 +76,7 @@ public class AddBook implements Command {
         }
     }
 
-    private BookFilter buildBookFilter(HttpServletRequest req) {
-        return BookFilter.builder()
-                .limit(1)
-                .page(1)
-                .title(req.getParameter(TITLE))
-                .author(req.getParameter(AUTHORS))
-                .genre(req.getParameter(GENRES))
-                .build();
-    }
-
-    private BookCreationDto buildBookDto(HttpServletRequest req) throws IOException, ServletException {
+    private BookCreationDto buildBookCreationDto(HttpServletRequest req) throws IOException, ServletException {
         return BookCreationDto.builder()
                 .title(req.getParameter(TITLE))
                 .authors(req.getParameter(AUTHORS))

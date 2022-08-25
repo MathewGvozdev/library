@@ -6,6 +6,7 @@ import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.service.dto.UserCreationDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
+import com.mathewgv.library.service.validator.ValidationException;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
@@ -37,6 +38,9 @@ public class UpdateUserInfo implements Command {
                 var redirectionWebPage = req.getContextPath() + UrlPath.FIND_USER_INFO + userCreationDto.getId();
                 return new Router(redirectionWebPage, RoutingType.REDIRECT);
             }
+            return new Router(JspHelper.getPath(JspPath.UPDATE_USER_INFO), RoutingType.FORWARD);
+        } catch (ValidationException e) {
+            req.setAttribute(AttributeName.ERRORS, e.getErrors());
             return new Router(JspHelper.getPath(JspPath.UPDATE_USER_INFO), RoutingType.FORWARD);
         } catch (ServiceException e) {
             log.error("Failure to update the user", e);

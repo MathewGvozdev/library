@@ -17,8 +17,7 @@
         .centered-content {
             display: inline-block;
             vertical-align: middle;
-            padding: 30px;
-            margin: 40px;
+            margin: 20px;
         }
 
         input[type=text] {
@@ -154,6 +153,15 @@
         .navigation li a:hover {
             text-decoration: underline;
         }
+
+        .error span {
+            color: darkred;
+            height: 100%;
+            display: contents;
+            vertical-align: middle;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -189,7 +197,8 @@
                 </span>
                 <input type="text"
                        name="firstName"
-                       id="firstName" required>
+                       id="firstName"
+                       value="${param.firstName}" required>
             </label><br>
             <label for="surname">
                 <span>
@@ -197,7 +206,8 @@
                 </span>
                 <input type="text"
                        name="surname"
-                       id="surname" required>
+                       id="surname"
+                       value="${param.surname}" required>
             </label><br>
             <label for="telephone">
                 <span>
@@ -205,23 +215,26 @@
                 </span>
                 <input type="text"
                        name="telephone"
-                       id="telephone">
+                       id="telephone"
+                       value="${param.telephone}" required>
             </label><br>
             <label for="passportNumber">
                 <span>
-                    <fmt:message key="page.registration.name"/>:
+                    <fmt:message key="page.registration.passport"/>:
                 </span>
                 <input type="text"
                        name="passportNumber"
-                       id="passportNumber" required>
+                       id="passportNumber"
+                       value="${param.passportNumber}" required>
             </label><br>
             <label for="login">
                 <span>
-                    <fmt:message key="page.registration.name"/>:
+                    <fmt:message key="page.registration.login"/>:
                 </span>
                 <input type="text"
                        name="login"
-                       id="login" required>
+                       id="login"
+                       value="${param.login}" required>
             </label><br>
             <label for="password">
                 <span>
@@ -235,9 +248,11 @@
                 <fmt:message key="page.button.confirm"/>
             </button>
             <c:if test="${not empty requestScope.errors}">
-                <div style="color: red">
+                <div class="error">
                     <c:forEach var="error" items="${requestScope.errors}">
-                        <span>${error.message}</span>
+                        <span>
+                                <fmt:message key="${error.code}"/><br>
+                        </span>
                     </c:forEach>
                 </div>
             </c:if>

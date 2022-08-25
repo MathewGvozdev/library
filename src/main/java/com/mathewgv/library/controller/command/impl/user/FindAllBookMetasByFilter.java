@@ -4,9 +4,11 @@ import com.mathewgv.library.controller.command.Command;
 import com.mathewgv.library.controller.command.router.Router;
 import com.mathewgv.library.controller.command.router.RoutingType;
 import com.mathewgv.library.dao.filter.BookFilter;
+import com.mathewgv.library.service.dto.BookCreationDto;
 import com.mathewgv.library.service.dto.BookDto;
 import com.mathewgv.library.service.exception.ServiceException;
 import com.mathewgv.library.service.factory.ServiceFactory;
+import com.mathewgv.library.service.validator.ValidationException;
 import com.mathewgv.library.util.AttributeName;
 import com.mathewgv.library.util.JspHelper;
 import com.mathewgv.library.util.JspPath;
@@ -27,18 +29,21 @@ public class FindAllBookMetasByFilter implements Command {
     private static final String GENRES = "genres";
     private static final String SERIES = "series";
 
-    private static final Integer SHOWED_BOOK_METAS_LIMIT = 10;
+    private static final String EMPTY_PARAM_VALUE = "";
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var page = Integer.parseInt(req.getParameter(PAGE));
             var bookService = serviceFactory.getBookService();
-            var showedBooksByFilter = bookService.findAllBookMetasByFilter(buildBookFilter(req, page));
-            var booksOnNextPage = bookService.findAllBookMetasByFilter(buildBookFilter(req, page + 1));
+            var showedBooksByFilter = bookService.findAllBookMetasByFilter(buildBookCreationDto(req), page);
+            var booksOnNextPage = bookService.findAllBookMetasByFilter(buildBookCreationDto(req), page + 1);
             setNextButtonIfNextPageNotEmpty(req, booksOnNextPage);
             req.setAttribute(AttributeName.BOOK_METAS, showedBooksByFilter);
             return new Router(JspHelper.getPath(JspPath.FIND_ALL_BOOK_METAS_BY_FILTER), RoutingType.FORWARD);
+        } catch (ValidationException e) {
+            req.setAttribute(AttributeName.ERRORS, e.getErrors());
+            return new Router(JspHelper.getPath(JspPath.HOME), RoutingType.FORWARD);
         } catch (ServiceException e) {
             log.error("Failure to find all book-metas by filter", e);
             req.setAttribute(AttributeName.ERROR, "Error in searching books with filter");
@@ -58,14 +63,28 @@ public class FindAllBookMetasByFilter implements Command {
         }
     }
 
-    private BookFilter buildBookFilter(HttpServletRequest req, Integer page) {
-        return BookFilter.builder()
-                .page(page)
-                .limit(SHOWED_BOOK_METAS_LIMIT)
-                .title(req.getParameter(TITLE))
-                .author(req.getParameter(AUTHORS))
-                .genre(req.getParameter(GENRES))
-                .series(req.getParameter(SERIES))
+    private BookCreationDto buildBookCreationDto(HttpServletRequest req) {
+        String title = req.getParameter(TITLE);
+        String authors = req.getParameter(AUTHORS);
+        String genres = req.getParameter(GENRES);
+        String series = req.getParameter(SERIES);
+        if (EMPTY_PARAM_VALUE.equals(title)) {
+            title = null;
+        }
+        if (EMPTY_PARAM_VALUE.equals(authors)) {
+            authors = null;
+        }
+        if (EMPTY_PARAM_VALUE.equals(genres)) {
+            genres = null;
+        }
+        if (EMPTY_PARAM_VALUE.equals(series)) {
+            series = null;
+        }
+        return BookCreationDto.builder()
+                .title(title)
+                .authors(authors)
+                .genres(genres)
+                .series(series)
                 .build();
     }
 }
