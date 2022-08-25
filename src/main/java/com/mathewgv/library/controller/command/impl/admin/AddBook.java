@@ -45,8 +45,8 @@ public class AddBook implements Command {
             req.setAttribute(AttributeName.SHOW_INPUT, true);
             if (EMPTY_CONFIRM_VALUE.equals(req.getParameter(CONFIRM))) {
                 var bookDto = buildBookCreationDto(req);
-                var isBookExist = bookService.findAllBookMetasByFilter(bookDto, PAGE_FOR_FILTER);
-                if (isBookExist.isEmpty()) {
+                var book = bookService.findAllBookMetasByFilter(bookDto, PAGE_FOR_FILTER);
+                if (book.isEmpty()) {
                     req.setAttribute(AttributeName.IS_BOOK_EXIST, false);
                 }
                 req.setAttribute(AttributeName.BOOK_DTO, bookDto);
