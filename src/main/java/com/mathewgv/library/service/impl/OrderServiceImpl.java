@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> findAllOrdersByClientId(Integer clientId) {
+    public List<OrderDto> findAllOrdersByClientId(Integer clientId) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var orderDao = transaction.getOrderDao();
             var orderMapper = transaction.getOrderMapper();
@@ -89,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order makeOrder(OrderCreationDto orderCreationDto) {
+    public Order makeOrder(OrderCreationDto orderCreationDto) throws ServiceException {
         try (var transaction = transactionFactory.getTransaction()) {
             var orderDao = transaction.getOrderDao();
             var orderCreationMapper = transaction.getOrderCreationMapper();

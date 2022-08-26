@@ -105,7 +105,7 @@ public class BookMetaDaoImpl extends DaoConnection implements BookMetaDao {
 
 
     @Override
-    public List<BookMeta> findAllByFilter(BookFilter filter) {
+    public List<BookMeta> findAllByFilter(BookFilter filter) throws DaoException {
         var filterSqlRequest = filter.getSqlRequest(FIND_ALL_BY_FILTER_SQL, SortType.ID);
         try (var preparedStatement = connection.get().prepareStatement(filterSqlRequest)) {
             for (int i = 0; i < filter.getConditionsSize(); i++) {

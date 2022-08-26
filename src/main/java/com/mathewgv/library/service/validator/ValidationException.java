@@ -4,13 +4,13 @@ import java.util.List;
 
 public class ValidationException extends RuntimeException {
 
-    private final List<Error> errors;
+    private final List<ValidationError> validationErrors;
 
-    public ValidationException(List<Error> errors) {
-        this.errors = errors;
+    public ValidationException(List<ValidationError> validationErrors) {
+        this.validationErrors = validationErrors;
     }
 
-    public List<Error> getErrors() {
-        return errors;
+    public List<ValidationError> getErrors() {
+        return validationErrors;
     }
 }

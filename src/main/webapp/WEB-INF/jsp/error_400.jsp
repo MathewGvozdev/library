@@ -17,9 +17,9 @@
     </style>
 </head>
 <body>
-<c:if test="${not empty requestScope.error}">
+<c:if test="${not empty requestScope.validationError}">
         <span>
-                ${requestScope.error}
+                ${requestScope.validationError}
         </span>
 </c:if>
 </body>

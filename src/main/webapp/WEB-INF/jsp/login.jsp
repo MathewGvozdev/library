@@ -197,7 +197,7 @@
                     <fmt:message key="page.button.registration"/>
                 </button>
             </a>
-            <c:if test="${param.error != null}">
+            <c:if test="${param.validationError != null}">
                 <div style="color: red">
             <span>
                 <fmt:message key="page.login.incorrect"/>

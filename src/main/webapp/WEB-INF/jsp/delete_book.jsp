@@ -136,7 +136,7 @@
             </span>
             </c:if>
         </c:if>
-        <c:if test="${not empty requestScope.error}">
+        <c:if test="${not empty requestScope.validationError}">
         <span>
             <fmt:message key="page.book.delete.not.found"/>
         </span>

@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserInfo(UserCreationDto userCreationDto) throws ServiceException {
+    public void updateUserInfo(UserCreationDto userCreationDto) throws ServiceException, ValidationException {
         var validationResult = userCreationValidator.isValid(userCreationDto);
         if (validationResult.hasErrors()) {
             throw new ValidationException(validationResult.getErrors());

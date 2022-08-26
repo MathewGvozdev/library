@@ -60,7 +60,7 @@ public class AuthorDaoImpl extends DaoConnection implements AuthorDao {
     }
 
     @Override
-    public Optional<Author> findByNameAndSurname(String firstName, String surname) {
+    public Optional<Author> findByNameAndSurname(String firstName, String surname) throws DaoException {
         try (var preparedStatement = connection.get().prepareStatement(FIND_BY_NAME_AND_SURNAME_SQL)) {
             preparedStatement.setObject(1, firstName);
             preparedStatement.setObject(2, surname);

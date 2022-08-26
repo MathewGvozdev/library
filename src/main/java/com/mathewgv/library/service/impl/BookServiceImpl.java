@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public BookDto addBook(BookCreationDto bookDto) {
+    public BookDto addBook(BookCreationDto bookDto) throws ServiceException, ValidationException {
         var validationResult = bookDtoValidator.isValid(bookDto);
         if (validationResult.hasErrors()) {
             throw new ValidationException(validationResult.getErrors());
@@ -156,7 +156,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findAllBookMetasByFilter(BookCreationDto dto, Integer page) throws ServiceException {
+    public List<BookDto> findAllBookMetasByFilter(BookCreationDto dto, Integer page) throws ServiceException, ValidationException {
         var validationResult = bookDtoValidator.isValid(dto);
         if (validationResult.hasErrors()) {
             throw new ValidationException(validationResult.getErrors());

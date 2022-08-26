@@ -154,7 +154,7 @@
             text-decoration: underline;
         }
 
-        .error span {
+        .validationError span {
             color: darkred;
             height: 100%;
             display: contents;
@@ -247,11 +247,11 @@
             <button type="submit" class="aqua">
                 <fmt:message key="page.button.confirm"/>
             </button>
-            <c:if test="${not empty requestScope.errors}">
-                <div class="error">
-                    <c:forEach var="error" items="${requestScope.errors}">
+            <c:if test="${not empty requestScope.validationErrors}">
+                <div class="validationError">
+                    <c:forEach var="validationError" items="${requestScope.validationErrors}">
                         <span>
-                                <fmt:message key="${error.code}"/><br>
+                                <fmt:message key="${validationError.code}"/><br>
                         </span>
                     </c:forEach>
                 </div>

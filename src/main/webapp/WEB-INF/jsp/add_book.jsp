@@ -110,7 +110,7 @@
             margin-left: 650px;
         }
 
-        .error span {
+        .validationError span {
             color: darkred;
             height: 100%;
             display: contents;
@@ -184,11 +184,11 @@
                 <br>
             </form>
         </c:if>
-        <c:if test="${not empty requestScope.errors}">
-            <div class="error">
-                <c:forEach var="error" items="${requestScope.errors}">
+        <c:if test="${not empty requestScope.validationErrors}">
+            <div class="validationError">
+                <c:forEach var="validationError" items="${requestScope.validationErrors}">
                         <span>
-                                <fmt:message key="${error.code}"/><br>
+                                <fmt:message key="${validationError.code}"/><br>
                         </span>
                 </c:forEach>
             </div>
@@ -301,8 +301,8 @@
          width="250"
          height="350"
          alt="image">
-        <c:if test="${not empty requestScope.error}">
-            <span>${requestScope.error}</span>
+        <c:if test="${not empty requestScope.validationError}">
+            <span>${requestScope.validationError}</span>
         </c:if>
     </div>
 </div>

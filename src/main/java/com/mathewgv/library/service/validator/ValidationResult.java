@@ -5,17 +5,17 @@ import java.util.List;
 
 public class ValidationResult {
 
-    private final List<Error> errors = new ArrayList<>();
+    private final List<ValidationError> validationErrors = new ArrayList<>();
 
-    public void add(Error error) {
-        this.errors.add(error);
+    public void add(ValidationError validationError) {
+        this.validationErrors.add(validationError);
     }
 
     public boolean hasErrors() {
-        return !errors.isEmpty();
+        return !validationErrors.isEmpty();
     }
 
-    public List<Error> getErrors() {
-        return errors;
+    public List<ValidationError> getErrors() {
+        return validationErrors;
     }
 }

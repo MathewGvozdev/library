@@ -223,7 +223,7 @@
 <c:if test="${empty requestScope.book}">
     <div class="centered-wrapper">
         <div class="centered-content">
-            <div class="error">
+            <div class="validationError">
                 <h1>
                     <fmt:message key="page.order.not.found"/><br>
                 </h1>
@@ -256,10 +256,10 @@
         </tbody>
     </table>
 </c:if>
-<div class="error">
-    <c:if test="${not empty requestScope.error}">
+<div class="validationError">
+    <c:if test="${not empty requestScope.validationError}">
     <span>
-            ${requestScope.error}
+            ${requestScope.validationError}
     </span>
     </c:if>
 </div>

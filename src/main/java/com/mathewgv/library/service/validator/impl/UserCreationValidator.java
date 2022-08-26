@@ -1,7 +1,7 @@
 package com.mathewgv.library.service.validator.impl;
 
 import com.mathewgv.library.service.dto.UserCreationDto;
-import com.mathewgv.library.service.validator.Error;
+import com.mathewgv.library.service.validator.ValidationError;
 import com.mathewgv.library.service.validator.ValidationResult;
 import com.mathewgv.library.service.validator.Validator;
 
@@ -28,22 +28,22 @@ public class UserCreationValidator implements Validator<UserCreationDto> {
     public ValidationResult isValid(UserCreationDto object) {
         var validationResult = new ValidationResult();
         if (object.getFirstName() != null && !Pattern.matches(NAME_REGEX, object.getFirstName())) {
-            validationResult.add(new Error(ERROR_NAME_KEY));
+            validationResult.add(new ValidationError(ERROR_NAME_KEY));
         }
         if (object.getSurname() != null && !Pattern.matches(NAME_REGEX, object.getSurname())) {
-            validationResult.add(new Error(ERROR_SURNAME_KEY));
+            validationResult.add(new ValidationError(ERROR_SURNAME_KEY));
         }
         if (object.getLogin() != null && !Pattern.matches(LOGIN_REGEX, object.getLogin())) {
-            validationResult.add(new Error(ERROR_LOGIN_KEY));
+            validationResult.add(new ValidationError(ERROR_LOGIN_KEY));
         }
         if (object.getTelephone() != null && !Pattern.matches(TELEPHONE_REGEX, object.getTelephone())) {
-            validationResult.add(new Error(ERROR_TELEPHONE_KEY));
+            validationResult.add(new ValidationError(ERROR_TELEPHONE_KEY));
         }
         if (object.getPassportNumber() != null && !Pattern.matches(PASSPORT_REGEX, object.getPassportNumber())) {
-            validationResult.add(new Error(ERROR_PASSPORT_KEY));
+            validationResult.add(new ValidationError(ERROR_PASSPORT_KEY));
         }
         if (object.getPassword() != null && !Pattern.matches(PASSWORD_REGEX, object.getPassword())) {
-            validationResult.add(new Error(ERROR_PASSWORD_KEY));
+            validationResult.add(new ValidationError(ERROR_PASSWORD_KEY));
         }
         return validationResult;
     }

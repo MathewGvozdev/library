@@ -1,7 +1,7 @@
 package com.mathewgv.library.service.validator.impl;
 
 import com.mathewgv.library.service.dto.BookCreationDto;
-import com.mathewgv.library.service.validator.Error;
+import com.mathewgv.library.service.validator.ValidationError;
 import com.mathewgv.library.service.validator.ValidationResult;
 import com.mathewgv.library.service.validator.Validator;
 
@@ -23,9 +23,9 @@ public class BookDtoValidator implements Validator<BookCreationDto> {
             object.getAuthors() != null && !Pattern.matches(CYRILLIC_REGEX, object.getAuthors()) ||
             object.getGenres() != null && !Pattern.matches(CYRILLIC_REGEX, object.getGenres()) ||
             object.getSeries() != null && !Pattern.matches(CYRILLIC_REGEX, object.getSeries()) ||
-            object.getPublisher() != null && !Pattern.matches(CYRILLIC_REGEX, object.getPublisher()) ||
+            object.getPublisher() != null && !Pattern.matches(TITLE_REGEX, object.getPublisher()) ||
             object.getPublisherCity() != null && !Pattern.matches(CYRILLIC_REGEX, object.getPublisherCity())) {
-            validationResult.add(new Error(ERROR_KEY));
+            validationResult.add(new ValidationError(ERROR_KEY));
         }
         return validationResult;
     }
