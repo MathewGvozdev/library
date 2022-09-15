@@ -123,11 +123,11 @@
             <button type="submit" class="aqua">
                 <fmt:message key="page.button.confirm"/>
             </button>
-            <c:if test="${not empty requestScope.validationErrors}">
+            <c:if test="${not empty requestScope.errors}">
                 <div class="validationError">
-                    <c:forEach var="validationError" items="${requestScope.validationErrors}">
+                    <c:forEach var="validationError" items="${requestScope.errors}">
                         <span>
-                                <fmt:message key="${validationError.code}"/><br>
+                                <fmt:message key="${validationError.key}"/><br>
                         </span>
                     </c:forEach>
                 </div>
